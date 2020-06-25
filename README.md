@@ -1,1 +1,1 @@
-# pos-backoffice
+# POS back-end
