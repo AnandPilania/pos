@@ -41,6 +41,22 @@ return [
 
     'debug' => (bool) env('APP_DEBUG', false),
 
+    'debug_hide' => [
+        '_ENV' => [
+            'APP_KEY',
+            'DB_PASSWORD'
+        ],
+
+        '_SERVER' => [
+            'APP_KEY',
+            'DB_PASSWORD'
+        ],
+
+        '_POST' => [
+            'password',
+        ]
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Application URL

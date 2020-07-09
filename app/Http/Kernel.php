@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\AdminAuth;
+use App\Http\Middleware\APIAuth;
+use App\Http\Middleware\CustomerAuth;
+use App\Http\Middleware\UserAuth;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -63,5 +67,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+
+        'admin-auth' => AdminAuth::class,
+        'user-auth' => UserAuth::class,
+        'customer-auth' => CustomerAuth::class,
+        'api-auth' => APIAuth::class,
+        'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
     ];
 }
