@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Http\Middleware\AdminAuth;
 use App\Http\Middleware\APIAuth;
+use App\Http\Middleware\CheckRoles;
 use App\Http\Middleware\CustomerAuth;
 use App\Http\Middleware\UserAuth;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -73,5 +74,7 @@ class Kernel extends HttpKernel
         'customer-auth' => CustomerAuth::class,
         'api-auth' => APIAuth::class,
         'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
+
+        'role' => CheckRoles::class
     ];
 }

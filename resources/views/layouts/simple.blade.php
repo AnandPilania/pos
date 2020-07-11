@@ -24,7 +24,7 @@
         <link rel="stylesheet" href="{{ mix('/css/pickitapps.admin.css') }}">
 
         <!-- You can include a specific file from public/css/themes/ folder to alter the default color theme of the template. eg: -->
-        <!-- <link rel="stylesheet" href="{{ mix('/css/themes/xwork.css') }}"> -->
+        <link rel="stylesheet" href="{{ mix('/css/themes/xwork.css') }}">
         @yield('css_after')
 
         <!-- Scripts -->

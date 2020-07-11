@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="{{ mix('css/pickitapps.admin.css') }}">
 
     <!-- You can include a specific file from public/css/themes/ folder to alter the default color theme of the template. eg: -->
-    <link rel="stylesheet" href="{{ mix('css/themes/xwork.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/themes/xmodern.css') }}">
 
 @yield('css_after')
 
@@ -54,8 +54,7 @@
                 <!-- Options -->
                 <div>
                     <!-- Close Sidebar, Visible only on mobile screens -->
-                    <a class="d-lg-none text-white ml-2" data-toggle="layout" data-action="sidebar_close"
-                       href="javascript:void(0)">
+                    <a class="d-lg-none text-white ml-2" data-toggle="layout" data-action="sidebar_close" href="javascript:void(0)">
                         <i class="fa fa-times-circle"></i>
                     </a>
                     <!-- END Close Sidebar -->
@@ -84,7 +83,6 @@
         <!-- Side Navigation -->
         <div class="content-side content-side-full">
             <ul class="nav-main">
-                <li class="nav-main-heading">DASHBOARD</li>
                 <li class="nav-main-item">
                     <a class="nav-main-link {{ request()->is('*dashboard*') ? 'active' : ''}}"
                        href="{{route('admin.dashboard')}}">
@@ -93,31 +91,29 @@
                     </a>
                 </li>
 
-                <li class="nav-main-heading">Employee Management</li>
+                <li class="nav-main-heading">Product</li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link{{ request()->is('*employees*') ? ' active' : '' }}"
-                       href="{{route('admin.employees.show')}}">
+                    <a class="nav-main-link{{ request()->is('*products*') ? ' active' : '' }}"
+                       href="{{url()->current().'/products'}}">
                         <i class="nav-main-link-icon far fa-user-circle"></i>
-                        <span class="nav-main-link-name">Employees</span>
+                        <span class="nav-main-link-name">Products</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link{{ request()->is('*positions*') ? ' active' : '' }}"
-                       href="{{route('admin.positions.show')}}">
-                        <i class="nav-main-link-icon far fa-user-circle"></i>
-                        <span class="nav-main-link-name">Positions</span>
+                    <a class="nav-main-link{{ request()->is('admin/categories*') ? ' active' : '' }}"
+                       href="{{url()->current().'/categories'}}">
+                        <i class="nav-main-link-icon si si-notebook"></i>
+                        <span class="nav-main-link-name">Categories</span>
                     </a>
                 </li>
 
-                <li class="nav-main-heading">Client Management</li>
+                <li class="nav-main-heading">To Mainboard</li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link{{ request()->is('*clients*') ? ' active' : '' }}"
-                       href="{{route('admin.clients.show')}}">
-                        <i class="nav-main-link-icon si si-emoticon-smile"></i>
-                        <span class="nav-main-link-name">Clients</span>
+                    <a class="nav-main-link" href="{{route('admin.clients.show')}}">
+                        <i class="nav-main-link-icon si si-arrow-left"></i>
+                        <span class="nav-main-link-name">Go Back</span>
                     </a>
                 </li>
-
             </ul>
         </div>
         <!-- END Side Navigation -->

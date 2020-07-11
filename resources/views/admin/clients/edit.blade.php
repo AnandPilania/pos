@@ -39,24 +39,24 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/customers/edit')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.clients.edit')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row push">
-                        <div class="col-md-8">
+                        <div class="col-12 col-xl-8">
                             <div class="form-group row">
                                 <div class="col-md-6">
                                     <label>
                                         First Name <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" name="first-name" placeholder="First Name"
-                                           value="{{$customer->first_name}}">
+                                           value="{{$client->first_name}}">
                                 </div>
                                 <div class="col-md-6">
                                     <label>
                                         Last Name <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" name="last-name" placeholder="Last Name"
-                                           value="{{$customer->last_name}}">
+                                           value="{{$client->last_name}}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -64,7 +64,7 @@
                                     Email <span class="text-danger">*</span>
                                 </label>
                                 <input type="email" class="form-control" name="email" placeholder="Email"
-                                       value="{{$customer->email}}">
+                                       value="{{$client->email}}">
                             </div>
                             <div class="form-group">
                                 <label>
@@ -79,19 +79,19 @@
                                 <input type="text" class="js-datepicker form-control" name="birthday"
                                        data-week-start="0" data-autoclose="true" data-today-highlight="true"
                                        data-date-format="mm/dd/yyyy" placeholder="mm/dd/yyyy"
-                                       value="{{ date('m/d/Y', strtotime($customer->birthday)) }}">
+                                       value="{{ date('m/d/Y', strtotime($client->birthday)) }}">
                             </div>
                             <div class="form-group">
                                 <label class="d-block">Gender</label>
                                 <div class="custom-control custom-radio custom-control-inline custom-control-primary">
                                     <input type="radio" class="custom-control-input" id="example-radio-custom-inline1"
-                                           name="gender" value="Male" @if($customer->gender == 'Male') checked @endif >
+                                           name="gender" value="Male" @if($client->gender == 'Male') checked @endif >
                                     <label class="custom-control-label" for="example-radio-custom-inline1">Male</label>
                                 </div>
                                 <div class="custom-control custom-radio custom-control-inline custom-control-primary">
                                     <input type="radio" class="custom-control-input" id="example-radio-custom-inline2"
                                            name="gender" value="Female"
-                                           @if($customer->gender == 'Female') checked @endif>
+                                           @if($client->gender == 'Female') checked @endif>
                                     <label class="custom-control-label"
                                            for="example-radio-custom-inline2">Female</label>
                                 </div>
@@ -102,14 +102,14 @@
                                         PhoneNumber <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" name="phone-number"
-                                           placeholder="+18003030203" value="{{$customer->phonenumber}}">
+                                           placeholder="+18003030203" value="{{$client->phonenumber}}">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="dm-project-new-name">
                                         Company
                                     </label>
                                     <input type="text" class="form-control" name="company" placeholder="Company"
-                                           value="{{$customer->company}}">
+                                           value="{{$client->company}}">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -117,7 +117,7 @@
                                     Address
                                 </label>
                                 <input type="text" class="form-control" name="address" placeholder="Address"
-                                       value="{{$customer->address}}">
+                                       value="{{$client->address}}">
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-4">
@@ -125,21 +125,21 @@
                                         City
                                     </label>
                                     <input type="text" class="form-control" name="city" placeholder="City"
-                                           value="{{$customer->city}}">
+                                           value="{{$client->city}}">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="dm-project-new-name">
                                         State
                                     </label>
                                     <input type="text" class="form-control" name="state" placeholder="State"
-                                           value="{{$customer->state}}">
+                                           value="{{$client->state}}">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="dm-project-new-name">
                                         Zip Code
                                     </label>
                                     <input type="text" class="form-control" name="zip-code" placeholder="Zip Code"
-                                           value="{{$customer->zipcode}}">
+                                           value="{{$client->zipcode}}">
                                 </div>
                             </div>
                             <h2 class="content-heading pt-0"></h2>
@@ -152,7 +152,7 @@
                                          data-week-start="0" data-autoclose="true" data-today-highlight="true">
                                         <input type="text" class="form-control" name="start-date" placeholder="From"
                                                data-week-start="1" data-autoclose="true" data-today-highlight="true"
-                                               value="{{ date('m/d/Y', strtotime($customer->start_date)) }}" disabled="disabled">
+                                               value="{{ date('m/d/Y', strtotime($client->start_date)) }}" disabled="disabled">
                                         <div class="input-group-prepend input-group-append">
                                             <span class="input-group-text font-w600">
                                                 <i class="fa fa-fw fa-arrow-right"></i>
@@ -160,7 +160,7 @@
                                         </div>
                                         <input type="text" class="form-control" name="expire-date" placeholder="To"
                                                data-week-start="0" data-autoclose="true" data-today-highlight="true"
-                                               value="{{ date('m/d/Y', strtotime($customer->expire_date)) }}" disabled="disabled">
+                                               value="{{ date('m/d/Y', strtotime($client->expire_date)) }}" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -174,7 +174,7 @@
                                             </span>
                                         </div>
                                         <input type="text" class="form-control text-center" name="price"
-                                               placeholder="00.000" value="{{$customer->price}}" disabled="disabled">
+                                               placeholder="00.000" value="{{$client->price}}" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="col-md-3 d-flex flex-column-reverse">
@@ -190,21 +190,21 @@
                                 <label for="dm-project-new-name">
                                     URL (Frontend Site URL)
                                 </label>
-                                <label class="form-control">{{url('/restaurant').'/'.$customer->id}}</label>
+                                <label class="form-control">{{url('/restaurant').'/'.$client->id}}</label>
                             </div>
 
                         </div>
                     </div>
 
-                    <input type="hidden" value="{{$customer->id}}" name="id">
+                    <input type="hidden" value="{{$client->id}}" name="id">
                     <!-- Submit -->
                     <div class="row push">
-                        <div class="col-lg-8 col-xl-5 offset-lg-4">
+                        <div class="col-lg-8 col-xl-5">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{url('/admin/customers')}}">
+                                <a class="btn btn-danger" href="{{route('admin.clients.show')}}">
                                     <i class="fa fa-times-circle mr-1"></i> Cancel
                                 </a>
                             </div>
@@ -234,8 +234,8 @@
                         <p>Do you want add new history of invoice of this customer or just edit this invoice ?</p>
                     </div>
                     <div class="block-content block-content-full text-right bg-light">
-                        <a href="javascript:resuscitateCustomer({{$customer->id}}, 1);" class="btn btn-sm btn-primary">Add new invoice</a>
-                        <a href="javascript:resuscitateCustomer({{$customer->id}}, 0);" class="btn btn-sm btn-success">Edit current invoice</a>
+                        <a href="javascript:resuscitateCustomer({{$client->id}}, 1);" class="btn btn-sm btn-primary">Add new invoice</a>
+                        <a href="javascript:resuscitateCustomer({{$client->id}}, 0);" class="btn btn-sm btn-success">Edit current invoice</a>
                         <button class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -268,9 +268,9 @@
             $("#edit-button").show();
             $("#save-button").hide();
             $("#cancel-button").hide();
-            $("[name='start-date']").val('{{ date('m/d/Y', strtotime($customer->start_date)) }}');
-            $("[name='expire-date']").val('{{ date('m/d/Y', strtotime($customer->expire_date)) }}');
-            $("[name='price']").val({{$customer->price}});
+            $("[name='start-date']").val('{{ date('m/d/Y', strtotime($client->start_date)) }}');
+            $("[name='expire-date']").val('{{ date('m/d/Y', strtotime($client->expire_date)) }}');
+            $("[name='price']").val({{$client->price}});
             $("[name='start-date']").attr("disabled", "disabled");
             $("[name='expire-date']").attr("disabled", "disabled");
             $("[name='price']").attr("disabled", "disabled");

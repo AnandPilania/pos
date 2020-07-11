@@ -23,18 +23,23 @@ class AdminController
 
     public function index()
     {
-        $user = session()->get('user');
-        $user_type = session()->get('user-type');
+        //$user = session()->get('user');
+        //$user_type = session()->get('user-type');
 
-        if (isset($user) && isset($user_type)) {
-            if ($user_type == 3) {
-                return redirect('/admin/my-page');
-            } else {
-                return redirect('/admin/dashboard');
-            }
-        } else {
-            return view('admin.auth.login');
+        if (auth()->user()) {
+            return redirect()->route('admin.dashboard');
         }
+        return redirect()->route('admin.login.show');
+
+//        if (isset($user) && isset($user_type)) {
+//            if ($user_type == 3) {
+//                return redirect('/admin/my-page');
+//            } else {
+//                return redirect('/admin/dashboard');
+//            }
+//        } else {
+//            return view('admin.auth.login');
+//        }
     }
 
     public function doLogin()
@@ -98,20 +103,6 @@ class AdminController
         session()->remove('user-type');
         session()->remove('selected-client-id');
         return redirect('/admin/login');
-    }
-
-    public function dashboard()
-    {
-        $employees = Employees::count();
-        $customers = Customers::count();
-        $products = Products::count();
-        $categories = Categories::count();
-        return view('admin.dashboard')->with([
-            'employees' => $employees,
-            'customers' => $customers,
-            'products' => $products,
-            'categories' => $categories,
-        ]);
     }
 
     public function showProfilePage() {

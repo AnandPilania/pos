@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.client')
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
@@ -7,11 +7,11 @@
 
 @section('content')
     <!-- Hero -->
-    <div class="bg-image" style="background-image: url({{asset('media/photos/Food4.jpg')}});">
+    <div class="bg-image" style="background-image: url({{asset('media/photos/Food5.jpg')}});">
         <div class="bg-black-50">
             <div class="content content-full">
                 <h1 class="font-size-h2 text-white my-2">
-                    <i class="fa fa-plus text-white-50 mr-1"></i> New Product
+                    <i class="fa fa-pencil-alt text-white-50 mr-1"></i> Edit Product
                 </h1>
             </div>
         </div>
@@ -41,7 +41,7 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/products/'.$customer_id.'/add')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{url('/admin/products/edit')}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Vital Info -->
                     <h2 class="content-heading pt-0">Vital Info</h2>
@@ -54,19 +54,21 @@
                         <div class="col-lg-8 col-xl-5">
                             <div class="form-group">
                                 <label>
-                                    Product Name (English) <span class="text-danger">*</span>
+                                    Product Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" name="product-name" placeholder="eg: Pizza">
+                                <input type="text" class="form-control" name="product-name" placeholder="eg: Pizza"
+                                       value="{{$product->name}}">
                             </div>
                             <div class="form-group">
                                 <label>
                                     Product Name (Other language)
                                 </label>
                                 <div class="custom-control custom-checkbox custom-control-inline custom-control-primary mb-1">
-                                    <input type="checkbox" class="custom-control-input" id="checkbox-name-rtl" name="rtl-direction">
-                                    <label class="custom-control-label" for="checkbox-name-rtl">RTL?</label>
+                                    <input type="checkbox" class="custom-control-input" id="checkbox-name-rtl" name="rtl-direction" @if($product->rtl_direction == 1) checked @endif>
+                                    <label class="custom-control-label" for="checkbox-name-rtl" >RTL?</label>
                                 </div>
-                                <input type="text" class="form-control" name="product-name-ar" placeholder="eg: Pizza">
+                                <input type="text" class="form-control" name="product-name-ar" placeholder="eg: Pizza"
+                                       value="{{$product->name_second}}" @if($product->rtl_direction == 1) dir="rtl" @endif>
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-8">
@@ -75,14 +77,13 @@
                                     </label>
                                     <!-- bootstrap-imageupload. -->
                                     <div class="imageupload panel panel-default">
-                                        <div class="file-tab panel-body">
-                                            <label class="btn btn-primary btn-file" style="margin-bottom: 0px;">
-                                                <span>Browse</span>
-                                                <!-- The file is stored here. -->
-                                                <input type="file" name="image">
-                                            </label>
-                                            <button type="button" class="btn btn-danger">Remove</button>
-                                        </div>
+                                        <img id="preview"
+                                             src="{{asset('media/images/products/original').'/'.$product->picture}}"
+                                             class="image-preview-edit"/>
+                                        <input type="file" id="image" name="image" style="display: none;"/>
+                                        <!--<input type="hidden" style="display: none" value="0" name="remove" id="remove">-->
+                                        <a href="javascript:changeProfile()" class="btn btn-primary">Change</a>
+                                        <a href="javascript:removeImage()" class="btn btn-danger">Original</a>
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +91,7 @@
                                 <label>
                                     Youtube video URL
                                 </label>
-                                <input type="text" class="form-control" name="video-url" placeholder="https://www.youtube.com/watch?v=GLSG_Wh_YWc">
+                                <input type="text" class="form-control" name="video-url" placeholder="https://www.youtube.com/watch?v=GLSG_Wh_YWc" value="{{$product->video_url}}">
                             </div>
                             <div class="form-group row">
                                 <div class="col-lg-8">
@@ -98,9 +99,11 @@
                                         Category <span class="text-danger">*</span>
                                     </label>
                                     <select class="custom-select" name="category">
-                                        <option value="0" disabled="disabled" selected>Select a category</option>
                                         @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
+                                            <option value="{{$category->id}}"
+                                                    @if($category->id == $product->category_id) selected @endif>
+                                                {{$category->name}}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -112,19 +115,20 @@
                                         Price <span class="text-danger">*</span>
                                     </label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control text-center" name="product-price" placeholder="15.233">
+                                        <input type="text" class="form-control text-center" name="product-price"
+                                               placeholder="15.233" value="{{$product->price}}">
                                         <div class="input-group-append">
                                             <select class="custom-select" name="currency" style="border-radius: 0px 4px 4px 0px;">
                                                 <option value="0" disabled="disabled" selected>Currency</option>
                                                 @foreach($currency_list as $currency)
-                                                    <option value="{{$currency->id}}">{{$currency->name}}</option>
+                                                    <option value="{{$currency->id}}" @if($currency->id == $product->currency_id) selected @endif>{{$currency->name}}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     <!-- END Vital Info -->
@@ -138,27 +142,29 @@
                         </div>
                         <div class="col-lg-4 col-xl-3">
                             <div class="form-group">
-                                <label for="dm-project-edit-description">Description (English)</label>
+                                <label for="dm-project-edit-description">Description</label>
                                 <textarea class="form-control" name="product-description" rows="6"
-                                          placeholder="Product Description Here..."></textarea>
+                                          placeholder="Product Description Here...">{{$product->description}}</textarea>
                             </div>
                         </div>
                         <div class="col-lg-4 col-xl-3">
                             <div class="form-group">
                                 <label for="dm-project-edit-description">Description (Other language)</label>
                                 <textarea class="form-control" name="product-description-ar" rows="6"
-                                          placeholder="Product Description Here..."></textarea>
+                                          placeholder="وصف المنتج هنا ..."
+                                          @if($product->rtl_direction == 1) dir="rtl" @endif>{{$product->description_second}}</textarea>
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" value="{{$product->id}}" name="id">
                     <!-- Submit -->
                     <div class="row push">
                         <div class="col-lg-8 col-xl-5 offset-lg-4">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-success">
-                                    <i class="fa fa-check-circle mr-1"></i> Add New Product
+                                    <i class="fa fa-check-circle mr-1"></i> Update Product
                                 </button>
-                                <a class="btn btn-warning" href="{{url('/admin/products').'/'.$customer_id}}">
+                                <a class="btn btn-warning" href="{{url('/admin/products').'/'.$product->customer_id}}">
                                     <i class="fa fa-times-circle mr-1"></i> Cancel
                                 </a>
                             </div>
@@ -175,13 +181,38 @@
 @section('js_after')
     <!-- Page JS Plugins -->
     <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
-
     <!-- Page JS Code -->
     <script>
-        var $imageupload = $('.imageupload');
-        $imageupload.imageupload();
+        function changeProfile() {
+            $('#image').click();
+        }
 
-        $(document).ready(()=>{
+        $('#image').change(function () {
+            var imgPath = this.value;
+            var ext = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+            if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg")
+                readURL(this);
+            else
+                alert("Please select image file (jpg, jpeg, png).")
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.readAsDataURL(input.files[0]);
+                reader.onload = function (e) {
+                    $('#preview').attr('src', e.target.result);
+//              $("#remove").val(0);
+                };
+            }
+        }
+
+        function removeImage() {
+            $('#preview').attr('src', "{{asset('media/images/categories/original').'/'.$category->picture}}");
+//      $("#remove").val(1);
+        }
+
+        $(document).ready(() => {
 
             $("#checkbox-name-rtl").on("change", () => {
                 if ($("#checkbox-name-rtl").prop("checked") == true) {

@@ -14,7 +14,7 @@
                 <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Clients</h1>
                 <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">App</li>
+                        <li class="breadcrumb-item">Admin</li>
                         <li class="breadcrumb-item active" aria-current="page">Clients</li>
                     </ol>
                 </nav>
@@ -30,82 +30,80 @@
                 <h3 class="block-title">Client List</h3>
             </div>
             <div class="block-content block-content-full">
-                @if(Session::get('user-type')==1)
-                    <div style="margin-bottom: 10px;">
-                        <a class="btn btn-primary" href="{{url('/admin/customers/add')}}"><i class="si si-user-follow"></i>
+{{--                @if(Session::get('user-type')==1)--}}
+                    <div class="mb-2">
+                        <a class="btn btn-primary" href="{{route('admin.clients.add.show')}}"><i class="si si-user-follow"></i>
                             Add
                             Client</a>
                     </div>
-                @endif
+{{--                @endif--}}
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
-                        <th class="text-center" style="width: 80px;">No</th>
+                        <th class="d-none d-sm-table-cell text-center" style="width: 80px;">No</th>
                         <th class="d-none d-sm-table-cell">Name</th>
                         <th class="d-none d-sm-table-cell">Company</th>
-                        <th class="d-none d-sm-table-cell">StartDate</th>
-                        <th class="d-none d-sm-table-cell">ExpireDate</th>
-                        @if(Session::get('user-type') === 1)
+                        <th class="d-none d-xl-table-cell">StartDate</th>
+                        <th class="d-none d-xl-table-cell">ExpireDate</th>
+{{--                        @if(Session::get('user-type') === 1)--}}
                             <th class="d-none d-sm-table-cell" style="width: 80px;">Enable</th>
-                        @endif
+{{--                        @endif--}}
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Print</th>
-                        @if(Session::get('user-type') === 1)
+{{--                        @if(Session::get('user-type') === 1)--}}
                             <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
-                        @endif
+{{--                        @endif--}}
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($customers as $customer)
+                    @foreach($clients as $client)
                         <tr>
                             <td class="text-center">{{$loop->iteration}}</td>
                             <td class="font-w600">
-                                @if(Session::get('user-type')==1)
-                                    <a href="{{url('/admin/customers/edit').'/'.$customer->id}}">{{$customer->first_name.' '.$customer->last_name}}</a>
-                                @elseif(Session::get('user-type')==2)
-                                    <a href="{{url('/admin/customers/detail').'/'.$customer->id}}">{{$customer->first_name.' '.$customer->last_name}}</a>
-                                @endif
+{{--                                @if(Session::get('user-type')==1)--}}
+                                    <a href="{{route('admin.clients.detail.show', ['client_id' => $client->id])}}">{{$client->first_name.' '.$client->last_name}}</a>
+{{--                                @endif--}}
                             </td>
                             <td class="d-none d-sm-table-cell">
-                                {{ $customer->company }}
+                                {{ $client->company }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{ date('d M Y', strtotime($customer->start_date)) }}
+                            <td class="d-none d-xl-table-cell">
+                                {{ date('d M Y', strtotime($client->start_date)) }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{ date('d M Y', strtotime($customer->expire_date)) }}
+                            <td class="d-none d-xl-table-cell">
+                                {{ date('d M Y', strtotime($client->expire_date)) }}
                             </td>
-                            @if(Session::get('user-type')==1)
+{{--                            @if(Session::get('user-type')==1)--}}
                                 <td class="text-center">
                                     <div class="custom-control custom-switch custom-control custom-control-inline mb-2"
                                          align="center">
                                         <input type="checkbox" class="custom-control-input"
-                                               id="enable-toggle-{{$customer->id}}"
-                                               name="enable-toggle-{{$customer->id}}"
-                                               @if($customer->enable_flag == 1) checked @endif >
+                                               id="enable-toggle-{{$client->id}}"
+                                               name="enable-toggle-{{$client->id}}"
+                                               @if($client->enable_flag == 1) checked @endif >
                                         <label class="custom-control-label"
-                                               for="enable-toggle-{{$customer->id}}"></label>
+                                               for="enable-toggle-{{$client->id}}"></label>
                                     </div>
                                 </td>
-                            @endif
+{{--                            @endif--}}
                             <td class="text-center">
-                                <a href="{{url('/admin/customers/print-invoice').'/'.$customer->id}}"><i
+                                <a href="{{url('/admin/customers/print-invoice').'/'.$client->id}}"><i
                                         class="si si-printer"></i></a>
                             </td>
-                            @if(Session::get('user-type')==1)
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <a href="{{url('/admin/customers/edit').'/'.$customer->id}}"
-                                           class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <a href="javascript:delCustomer({{$customer->id}})"
-                                           class="btn btn-sm btn-primary"
-                                           data-toggle="tooltip" title="Delete">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            @endif
+{{--                            @if(Session::get('user-type')==1)--}}
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="{{route('admin.clients.edit.show', ['id'=>$client->id])}}"
+                                       class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <a href="javascript:delCustomer({{$client->id}})"
+                                       class="btn btn-sm btn-primary"
+                                       data-toggle="tooltip" title="Delete">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </td>
+{{--                            @endif--}}
                         </tr>
                     @endforeach
                     </tbody>

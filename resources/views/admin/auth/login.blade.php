@@ -35,14 +35,14 @@
                     <!-- For more info and examples you can check out https://github.com/jzaefferer/jquery-validation -->
                     <div class="row no-gutters justify-content-center">
                         <div class="col-sm-8 col-xl-6">
-                            <form class="js-validation-signin" action="{{url('/admin/login')}}" method="post">
+                            <form class="js-validation-signin" action="{{route('admin.login')}}" method="post">
                                 @csrf
                                 <div class="py-3">
                                     <div class="form-group">
-                                        <input type="text" class="form-control form-control-lg form-control-alt" id="login-username" name="login-username" placeholder="Email">
+                                        <input type="text" class="form-control form-control-lg form-control-alt" id="login-username" name="email" placeholder="Email">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-lg form-control-alt" id="login-password" name="login-password" placeholder="Password">
+                                        <input type="password" class="form-control form-control-lg form-control-alt" id="login-password" name="password" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group">

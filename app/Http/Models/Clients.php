@@ -6,12 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Customers extends Authenticatable implements JWTSubject
+class Clients extends Authenticatable implements JWTSubject
 {
-    //
-    protected $table = 't_customers';
 
-    public $timestamps = false;
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

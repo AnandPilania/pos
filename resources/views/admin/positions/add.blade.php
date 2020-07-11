@@ -10,7 +10,7 @@
     <div class="bg-body-light">
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Add Employee</h1>
+                <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Add Position</h1>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/employees/add')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.positions.add')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row push">
                         <div class="col-md-8">
@@ -74,12 +74,12 @@
 
                     <!-- Submit -->
                     <div class="row push">
-                        <div class="col-lg-8 col-xl-5 offset-lg-4">
+                        <div class="col-lg-8 col-xl-5">
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{url('/admin/employees')}}">
+                                <a class="btn btn-danger" href="{{route('admin.positions.show')}}">
                                     <i class="fa fa-times-circle mr-1"></i> Cancel
                                 </a>
                             </div>

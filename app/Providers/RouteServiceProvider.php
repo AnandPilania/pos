@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,11 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
+     * Prefix of admin site
+     */
+    public const ADMIN_PREFIX = '/admin';
+
+    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -31,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-
+        View::share('admin_prefix', self::ADMIN_PREFIX);
         parent::boot();
     }
 

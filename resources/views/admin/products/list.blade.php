@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.client')
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
@@ -15,7 +15,7 @@
                 <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Products</h1>
                 <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">App</li>
+                        <li class="breadcrumb-item">Client</li>
                         <li class="breadcrumb-item active" aria-current="page">Products</li>
                     </ol>
                 </nav>
@@ -27,32 +27,13 @@
     <!-- Page Content -->
     <div class="content">
 
-        @if(Session::get('user-type')!=3)
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6" style="display: flex;">
-                    <div style="display: flex; align-items: center; margin-right: 10px;">
-                        <span>Client:</span>
-                    </div>
-
-{{--                    <select class="custom-select" id="sel-client">--}}
-                    <select class="js-select2 form-control" id="sel-client" name="val-select2" style="width: 100%;" data-placeholder="Choose one..">
-                        @foreach($customers as $customer)
-                            <option value="{{$customer->id}}" @if($customer->id == $customer_id) selected @endif>
-                                {{$customer->company}}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        @endif
-
         <div class="block block-rounded block-bordered">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Product List</h3>
             </div>
             <div class="block-content block-content-full">
-                <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                    <a class="btn btn-primary" href="{{url('/admin/products/').'/'.$customer_id.'/add'}}"><i
+                <div class="mb-2 d-flex justify-content-between">
+                    <a class="btn btn-primary" href="{{url()->current().'/add'}}"><i
                             class="si si-plus"></i> Add Product</a>
                     <div>
                         <a class="btn btn-success" href="{{url('/admin/products/show-all')}}"><i
@@ -64,44 +45,34 @@
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
-                        <th class="text-center" style="width: 80px;">#</th>
-                        <th class="d-none d-sm-table-cell" style="width: 100px;">Picture</th>
-                        <th class="d-none d-sm-table-cell" style="width: 20%;">Product Name</th>
+                        <th class="text-center" style="width: 80px;">No</th>
+                        <th class="d-none d-sm-table-cell" style="width: 100px;">Image</th>
+                        <th class="text-center" >Product Name</th>
                         <th class="d-none d-sm-table-cell" style="width: 150px;">Category</th>
-                        <th class="d-none d-sm-table-cell">Description</th>
-                        <th class="d-none d-sm-table-cell" style="width: 150px;">Price</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Order</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Video</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Show</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Actions</th>
+                        <th class="d-none d-xl-table-cell" style="width: 150px;">Price</th>
+                        <th class="d-none d-md-table-cell" style="width: 80px;">Video</th>
+                        <th class="text-center" style="width: 80px;">Show</th>
+                        <th class="text-center" style="width: 80px;">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($products as $product)
                         <tr>
                             <td class="text-center">{{$loop->iteration}}</td>
-                            <td class="font-w600">
-                                <div align="center">
-                                    <img src="{{asset('/media/images/products/thumbnail/').'/'.$product->picture}}"
+                            <td class="font-w600 d-none d-sm-table-cell text-center">
+                                <img src="{{asset('/media/images/products/thumbnail/').'/'.$product->picture}}"
                                          style="width: 80px;">
-                                </div>
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="text-center">
                                 <a href="{{url('/admin/products/edit/').'/'.$product->id}}">{{$product->name}}</a>
                             </td>
                             <td class="d-none d-sm-table-cell">
-                                <a href="{{url('/admin/categories/detail/').'/'.$product->category->id}}">{{$product->category->name}}</a>
+                                <a href="{{url('/admin/categories/detail/').'/'.($product->category->id ?? '')}}">{{$product->category->name ?? ''}}</a>
                             </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{$product->description}}
+                            <td class="d-none d-xl-table-cell">
+                                <span class="badge badge-success">{{$product->price.' '.($product->currency->name ?? '')}}</span>
                             </td>
-                            <td class="d-none d-sm-table-cell">
-                                <span class="badge badge-success">{{$product->price.' '.$product->currency->name}}</span>
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{$product->show_order}}
-                            </td>
-                            <td class="text-center">
+                            <td class="d-none d-md-table-cell text-center">
                                 <a href="javascript:openVideoDialog('{{$product->video_id}}', '{{$product->name}}');"><i class="far fa-play-circle"></i> </a>
                             </td>
                             <td class="text-center">
