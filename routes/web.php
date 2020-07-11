@@ -87,9 +87,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], fu
 
                 });
 
-                Route::prefix('categories')->group(function () {
-
-                    Route::get('/', 'AdminController@showCategoryFirstPage');
+                Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
+                    Route::get('/', 'CategoriesController@index')->name('show');
 
                     Route::get('/edit/{id}', 'AdminController@showCategoryEditPage');
                     Route::get('/edit', 'AdminController@showCategoriesPage');
@@ -115,8 +114,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin'], fu
 
 
 
-        Route::get('/profile', 'AdminController@showProfilePage')->name('profile.show');
-        Route::post('/profile/edit', 'AdminController@editProfile')->name('profile.edit');
+        Route::get('/profile', 'AuthController@showProfilePage')->name('profile.show');
+        Route::post('/profile/edit', 'AuthController@editProfile')->name('profile.edit');
     });
 
     Route::middleware('customer-auth')->group(function (){

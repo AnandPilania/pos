@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.client')
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
@@ -15,7 +15,7 @@
                 <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Categories</h1>
                 <nav class="flex-sm-00-auto ml-sm-3" aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item">App</li>
+                        <li class="breadcrumb-item">Client</li>
                         <li class="breadcrumb-item active" aria-current="page">Categories</li>
                     </ol>
                 </nav>
@@ -27,31 +27,13 @@
     <!-- Page Content -->
     <div class="content">
 
-        @if(Session::get('user-type')!=3)
-            <div class="row" style="margin-bottom: 10px;">
-                <div class="col-md-6" style="display: flex;">
-                    <div style="display: flex; align-items: center; margin-right: 10px;">
-                        <span>Client:</span>
-                    </div>
-
-                    <select class="js-select2 form-control" id="sel-client" name="val-select2" style="width: 100%;" data-placeholder="Choose one..">
-                        @foreach($customers as $customer)
-                            <option value="{{$customer->id}}" @if($customer->id == $customer_id) selected @endif>
-                                {{$customer->company}}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        @endif
-
         <div class="block block-rounded block-bordered">
             <div class="block-header block-header-default">
                 <h3 class="block-title">Category List</h3>
             </div>
             <div class="block-content block-content-full">
                 <div style="margin-bottom: 10px; display: flex; justify-content: space-between;">
-                    <a class="btn btn-primary" href="{{url('/admin/categories').'/'.$customer_id.'/add'}}"><i
+                    <a class="btn btn-primary" href="{{url('/admin/categories').'/'.$client_id.'/add'}}"><i
                             class="si si-plus"></i> Add Category</a>
                     <div>
                         <a class="btn btn-success" href="{{url('/admin/categories/show-all')}}"><i

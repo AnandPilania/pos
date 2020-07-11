@@ -94,14 +94,14 @@
                 <li class="nav-main-heading">Product</li>
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*products*') ? ' active' : '' }}"
-                       href="{{url()->current().'/products'}}">
+                       href="{{route('admin.clients.products.show', $client_id)}}">
                         <i class="nav-main-link-icon far fa-user-circle"></i>
                         <span class="nav-main-link-name">Products</span>
                     </a>
                 </li>
                 <li class="nav-main-item">
-                    <a class="nav-main-link{{ request()->is('admin/categories*') ? ' active' : '' }}"
-                       href="{{url()->current().'/categories'}}">
+                    <a class="nav-main-link{{ request()->is('*categories*') ? ' active' : '' }}"
+                       href="{{route('admin.clients.categories.show', $client_id)}}">
                         <i class="nav-main-link-icon si si-notebook"></i>
                         <span class="nav-main-link-name">Categories</span>
                     </a>

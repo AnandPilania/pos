@@ -3,9 +3,9 @@
 
 namespace App\Http\Controllers\App;
 
-use App\Http\Models\Categories;
+use App\Http\Models\Category;
 use App\Http\Models\Customers;
-use App\Http\Models\Products;
+use App\Http\Models\Product;
 use App\Http\Utils\Utils;
 use Intervention\Image\Facades\Image;
 
@@ -40,7 +40,7 @@ class AppController
         if (!isset($search))
             $search = '';
 
-        $first_category = Categories::where([
+        $first_category = Category::where([
             ['customer_id', $customer_id],
             ['show_flag', 1],
         ])->orderBy('show_order')->first();
@@ -51,7 +51,7 @@ class AppController
             else $category_id = 0;
         }
 
-        $category_array = Categories::where([
+        $category_array = Category::where([
             ['customer_id', $customer_id],
             ['show_flag', 1],
         ])->orderBy('show_order')->get();
@@ -71,7 +71,7 @@ class AppController
 
         $product_array = [];
         if ($category_id != 0) {
-            $product_array = Products::where([
+            $product_array = Product::where([
                 ['category_id', $category_id],
                 ['show_flag', 1]
             ])->where(function ($query) use ($search_clause) {
@@ -103,7 +103,7 @@ class AppController
 
     public function getProductDetail() {
         $id = request('id');
-        $product = Products::where('id', $id)->with('currency', 'category')->first();
+        $product = Product::where('id', $id)->with('currency', 'category')->first();
         $product->setHidden([
             'currency_id',
             'category_id',

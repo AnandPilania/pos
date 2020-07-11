@@ -4,10 +4,11 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Http\Models\Category;
 use App\Http\Models\Client;
 use App\Http\Models\Product;
 
-class ProductsController
+class CategoriesController
 {
     public function index()
     {
@@ -17,14 +18,14 @@ class ProductsController
             return redirect()->back();
         }
 
-        $products = Product::where('customer_id', $client_id)->with('category', 'currency')->get();
+        $categories = Category::where('customer_id', $client_id)->get();
 
-        return view('admin.products.list')
+        return view('admin.categories.list')
             ->with([
-                'products' => $products,
+                'categories' => $categories,
                 'client_id' => $client_id
             ])
-            ->withTitle('Products');
+            ->withTitle('Categories');
 
     }
 }

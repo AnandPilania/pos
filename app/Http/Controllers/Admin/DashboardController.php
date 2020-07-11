@@ -3,19 +3,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Models\Categories;
-use App\Http\Models\Clients;
+use App\Http\Models\Category;
+use App\Http\Models\Client;
 use App\Http\Models\Employees;
-use App\Http\Models\Products;
+use App\Http\Models\Product;
 
 class DashboardController
 {
     public function index()
     {
         $employees = Employees::count();
-        $customers = Clients::count();
-        $products = Products::count();
-        $categories = Categories::count();
+        $customers = Client::count();
+        $products = Product::count();
+        $categories = Category::count();
 
         return view('admin.dashboard')->with([
             'employees' => $employees,

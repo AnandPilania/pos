@@ -4,9 +4,9 @@
 namespace App\Http\Controllers\Admin;
 
 
-use App\Http\Models\Clients;
+use App\Http\Models\Client;
 use App\Http\Models\Invoices;
-use App\Http\Models\Products;
+use App\Http\Models\Product;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,7 +14,7 @@ class ClientsController
 {
     public function index()
     {
-        $clients = Clients::get();
+        $clients = Client::get();
         return view('admin.clients.list')
             ->with('clients', $clients)
             ->withTitle('Client List');
@@ -29,7 +29,7 @@ class ClientsController
     public function showEditPage()
     {
         $id = request('id');
-        $client = Clients::find($id);
+        $client = Client::find($id);
         if ($client != null) {
             return view('admin.clients.edit')
                 ->with('client', $client)
@@ -41,14 +41,15 @@ class ClientsController
     public function showDetailPage()
     {
         $id = request('client_id');
-        $customer = Clients::find($id);
+        $customer = Client::find($id);
 
-        $products = Products::where('customer_id', $id)->with('category', 'currency')->get();
+        $products = Product::where('customer_id', $id)->with('category', 'currency')->get();
         if ($customer != null) {
             return view('admin.clients.detail')
                 ->with([
                     'customer' => $customer,
                     'products' => $products,
+                    'client_id' => $id
                 ])
                 ->withTitle('Client Detail');
         }

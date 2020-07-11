@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Clients extends Authenticatable implements JWTSubject
+class Client extends Authenticatable implements JWTSubject
 {
+
+    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for arrays.

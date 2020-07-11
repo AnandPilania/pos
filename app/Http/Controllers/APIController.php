@@ -3,10 +3,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Categories;
+use App\Http\Models\Category;
 use App\Http\Models\Currency;
 use App\Http\Models\Customers;
-use App\Http\Models\Products;
+use App\Http\Models\Product;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
@@ -51,7 +51,7 @@ class APIController
             'password'
         ]);
 
-        $categoryList = Categories::select('id', 'name', 'name_second', 'rtl_direction')->where([
+        $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $user->id],
             ['show_flag', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
@@ -76,7 +76,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $categoryList = Categories::select('id', 'name', 'name_second', 'rtl_direction')->where([
+        $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $client->id],
             ['show_flag', 1],
         ])->orderBy('show_order')->with('products:category_id,name,name_second,picture,video_id,price,description,description_second,video_url,currency_id')->get();
@@ -105,7 +105,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $total_count = Products::where([
+        $total_count = Product::where([
             ['category_id', $category_id],
             ['show_flag', 1]
         ])->where(function ($query) use ($where_clause) {
@@ -117,7 +117,7 @@ class APIController
             }
         })->count();
 
-        $products = Products::where([
+        $products = Product::where([
             ['category_id', $category_id],
             ['show_flag', 1]
         ])->where(function ($query) use ($where_clause) {
@@ -143,7 +143,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where([
+        $product = Product::where([
             ['id', $product_id],
             ['show_flag', 1]
         ])->with('category', 'currency')->first();
@@ -176,7 +176,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $categoryList = Categories::select('id', 'name', 'name_second', 'rtl_direction')->where([
+        $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $client->id],
             ['show_flag', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
@@ -374,7 +374,7 @@ class APIController
             $where_clause[] = ['description_second', 'like', "%$search%"];
         }
 
-        $total_count = Products::where('customer_id', $user->id)
+        $total_count = Product::where('customer_id', $user->id)
             ->where(function ($query) use ($where_clause) {
                 if (count($where_clause) > 0) {
                     $query->where([$where_clause[0]]);
@@ -410,7 +410,7 @@ class APIController
             $order_by = "id";
         }
 
-        $products = Products::where('customer_id', $user->id)
+        $products = Product::where('customer_id', $user->id)
             ->where(function ($query) use ($where_clause) {
                 if (count($where_clause) > 0) {
                     $query->where([$where_clause[0]]);
@@ -444,7 +444,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where([
+        $product = Product::where([
             ['id', $product_id],
             ['customer_id', $user->id]
         ])
@@ -458,7 +458,7 @@ class APIController
             'customer_id'
         ]);
 
-        $categories = Categories::where([
+        $categories = Category::where([
             ['customer_id', $user->id],
             ['show_flag', 1]
         ])
@@ -494,7 +494,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = new Products();
+        $product = new Product();
         $product->customer_id = $user->id;
         $product->name = $name;
         $product->price = $price;
@@ -531,7 +531,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where([
+        $product = Product::where([
             ['id', $id],
             ['customer_id', $user->id]
         ])
@@ -577,7 +577,7 @@ class APIController
                 ->fit(320, 320)
                 ->save($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
 
-            Products::where('id', $id)->update([
+            Product::where('id', $id)->update([
                 'name' => $name,
                 'price' => $price,
                 'currency_id' => $currency,
@@ -590,7 +590,7 @@ class APIController
             ]);
             return Utils::makeResponse([$imageName]);
         } else {
-            Products::where('id', $id)->update([
+            Product::where('id', $id)->update([
                 'name' => $name,
                 'price' => $price,
                 'currency_id' => $currency,
@@ -614,7 +614,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where([
+        $product = Product::where([
             ['id', $product_id],
             ['customer_id', $user->id]
         ])
@@ -624,9 +624,9 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $show_flag = Products::where('id', $product_id)->first()->show_flag;
+        $show_flag = Product::where('id', $product_id)->first()->show_flag;
 
-        Products::where('id', $product_id)->update([
+        Product::where('id', $product_id)->update([
             'show_flag' => 1 - $show_flag,
         ]);
 
@@ -645,7 +645,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where('customer_id', $user->id)
+        $product = Product::where('customer_id', $user->id)
             ->whereIn('id', $product_ids)
             ->get();
 
@@ -653,7 +653,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        Products::where('customer_id', $user->id)
+        Product::where('customer_id', $user->id)
             ->whereIn('id', $product_ids)
             ->update([
                 'show_flag' => $state
@@ -665,14 +665,14 @@ class APIController
     public function toggleProductAllVisible()
     {
         $user = request('user');
-        Products::where('customer_id', $user->id)->update(['show_flag' => 1]);
+        Product::where('customer_id', $user->id)->update(['show_flag' => 1]);
         return Utils::makeResponse();
     }
 
     public function toggleProductAllInvisible()
     {
         $user = request('user');
-        Products::where('customer_id', $user->id)->update(['show_flag' => 0]);
+        Product::where('customer_id', $user->id)->update(['show_flag' => 0]);
         return Utils::makeResponse();
     }
 
@@ -687,7 +687,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $product = Products::where('customer_id', $user->id)
+        $product = Product::where('customer_id', $user->id)
             ->whereIn('id', $product_ids)
             ->get();
 
@@ -695,7 +695,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        Products::where('customer_id', $user->id)
+        Product::where('customer_id', $user->id)
             ->whereIn('id', $product_ids)
             ->delete();
 
@@ -717,7 +717,7 @@ class APIController
             $where_clause[] = ['name_second', 'like', "%$search%"];
         }
 
-        $total_count = Categories::where('customer_id', $user->id)
+        $total_count = Category::where('customer_id', $user->id)
             ->where(function ($query) use ($where_clause) {
                 if (count($where_clause) > 0) {
                     $query->where([$where_clause[0]]);
@@ -751,7 +751,7 @@ class APIController
             $order_by = "id";
         }
 
-        $categories = Categories::where('customer_id', $user->id)
+        $categories = Category::where('customer_id', $user->id)
             ->where(function ($query) use ($where_clause) {
                 if (count($where_clause) > 0) {
                     $query->where([$where_clause[0]]);
@@ -779,7 +779,7 @@ class APIController
     {
         $user = request('user');
 
-        $categories = Categories::where([
+        $categories = Category::where([
             ['customer_id', $user->id],
             ['show_flag', 1],
         ])
@@ -800,7 +800,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $category = Categories::where([
+        $category = Category::where([
             ['id', $category_id],
             ['customer_id', $user->id]
         ])
@@ -829,7 +829,7 @@ class APIController
             'category-name' => 'required',
         ]);
 
-        $category = new Categories();
+        $category = new Category();
         $category->customer_id = $user->id;
         $category->name = $name;
         $category->show_flag = $status;
@@ -854,7 +854,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $category = Categories::where([
+        $category = Category::where([
             ['id', $id],
             ['customer_id', $user->id]
         ])
@@ -863,7 +863,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        Categories::where('id', $id)->update([
+        Category::where('id', $id)->update([
             'name' => $name,
             'show_flag' => $status
         ]);
@@ -879,7 +879,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $category = Categories::where([
+        $category = Category::where([
             ['id', $category_id],
             ['customer_id', $user->id]
         ])
@@ -889,9 +889,9 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $show_flag = Categories::where('id', $category_id)->first()->show_flag;
+        $show_flag = Category::where('id', $category_id)->first()->show_flag;
 
-        Products::where('id', $category_id)->update([
+        Product::where('id', $category_id)->update([
             'show_flag' => 1 - $show_flag,
         ]);
 
@@ -910,7 +910,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $category = Categories::where('customer_id', $user->id)
+        $category = Category::where('customer_id', $user->id)
             ->whereIn('id', $category_ids)
             ->get();
 
@@ -918,7 +918,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        Categories::where('customer_id', $user->id)
+        Category::where('customer_id', $user->id)
             ->whereIn('id', $category_ids)
             ->update([
                 'show_flag' => $state
@@ -930,14 +930,14 @@ class APIController
     public function toggleCategoryAllVisible()
     {
         $user = request('user');
-        Categories::where('customer_id', $user->id)->update(['show_flag' => 1]);
+        Category::where('customer_id', $user->id)->update(['show_flag' => 1]);
         return Utils::makeResponse();
     }
 
     public function toggleCategoryAllInvisible()
     {
         $user = request('user');
-        Categories::where('customer_id', $user->id)->update(['show_flag' => 0]);
+        Category::where('customer_id', $user->id)->update(['show_flag' => 0]);
         return Utils::makeResponse();
     }
 
@@ -952,7 +952,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $category = Categories::where('customer_id', $user->id)
+        $category = Category::where('customer_id', $user->id)
             ->whereIn('id', $category_ids)
             ->get();
 
@@ -960,7 +960,7 @@ class APIController
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        Categories::where('customer_id', $user->id)
+        Category::where('customer_id', $user->id)
             ->whereIn('id', $category_ids)
             ->delete();
 

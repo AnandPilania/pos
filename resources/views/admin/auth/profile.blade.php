@@ -46,7 +46,7 @@
                     <div class="row push">
                         <div class="col-lg-4">
                             <p class="text-muted">
-                                Some vital information about your account
+                                Vital information about your account
                             </p>
                         </div>
                         <div class="col-lg-8 col-xl-5">

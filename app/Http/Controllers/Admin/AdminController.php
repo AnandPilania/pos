@@ -4,11 +4,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Models\Admin;
-use App\Http\Models\Categories;
+use App\Http\Models\Category;
 use App\Http\Models\Currency;
 use App\Http\Models\Customers;
 use App\Http\Models\Invoices;
-use App\Http\Models\Products;
+use App\Http\Models\Product;
 use App\Http\Models\Employees;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\DB;
@@ -105,10 +105,7 @@ class AdminController
         return redirect('/admin/login');
     }
 
-    public function showProfilePage() {
-        $user = session()->get('user');
-        return view('admin.auth.profile')->with('user', $user);
-    }
+
 
     public function showMyPage() {
         $user = session()->get('user');
@@ -121,67 +118,7 @@ class AdminController
         }
     }
 
-    public function editProfile() {
-        $id = request('id');
-        $first_name = request('first-name');
-        $last_name = request('last-name');
-        $email = request('email');
-        $password = request('password');
-        $user_type = session()->get('user-type');
 
-        if ($user_type === 3) {
-            request()->validate([
-                'first-name' => 'required',
-                'last-name' => 'required',
-                'email' => 'required|email',
-            ]);
-        } else {
-            request()->validate([
-                'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
-                'first-name' => 'required',
-                'last-name' => 'required',
-                'email' => 'required|email',
-            ]);
-        }
-
-        $update_array = array(
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-        );
-
-        if ($password != '') {
-            $update_array['password'] = hash::make($password);
-        }
-
-        if ($user_type !== 3) {
-            if (isset(request()->image)) {
-                $imageName = time() . '.' . request()->image->getClientOriginalExtension();
-
-                $original_image_path = public_path('media/avatars');
-                if (!file_exists($original_image_path)) {
-                    mkdir($original_image_path);
-                }
-
-                request()->image->move($original_image_path, $imageName);
-                $update_array['avatar'] = $imageName;
-            }
-        }
-
-        if($user_type === 1) {
-            Admin::where('id', $id)->update($update_array);
-            session()->put('user', Admin::where('id', $id)->first());
-        } else if($user_type === 2) {
-            Employees::where('id', $id)->update($update_array);
-            session()->put('user', Employees::where('id', $id)->first());
-        } else {
-            Customers::where('id', $id)->update($update_array);
-            session()->put('user', Customers::where('id', $id)->first());
-        }
-
-        return back()
-            ->with('success', 'You have successfully updated your profile.');
-    }
 
     public function showEmployeesPage()
     {
@@ -315,7 +252,7 @@ class AdminController
             return redirect('/admin/my-page');
         }
 
-        $products = Products::where('customer_id', $id)->with('category','currency')->get();
+        $products = Product::where('customer_id', $id)->with('category','currency')->get();
         if ($customer != null) {
             return view('customer_detail')->with([
                 'customer' => $customer,
@@ -612,7 +549,7 @@ class AdminController
     {
         $customer_id = request('customer_id');
         if (session()->get('user-type') != 3 || $customer_id == session()->get('user')->id) {
-            $products = Products::where('customer_id', $customer_id)->with('category', 'currency')->get();
+            $products = Product::where('customer_id', $customer_id)->with('category', 'currency')->get();
             $customers = Customers::get();
 
             return view('products')->with([
@@ -630,7 +567,7 @@ class AdminController
         if (session()->get('user-type') == 3) {
             $customer_id = session()->get('user')->id;
         }
-        $categories = Categories::where('customer_id', $customer_id)->get();
+        $categories = Category::where('customer_id', $customer_id)->get();
         $currency_list = Currency::get();
         return view('product_add')->with([
             'categories' => $categories,
@@ -642,8 +579,8 @@ class AdminController
     public function showProductEditPage()
     {
         $id = request('id');
-        $product = Products::where('id', $id)->first();
-        $categories = Categories::where('customer_id', $product->customer_id)->get();
+        $product = Product::where('id', $id)->first();
+        $categories = Category::where('customer_id', $product->customer_id)->get();
         $currency_list = Currency::get();
         if ($product != null) {
             return view('product_edit')->with([
@@ -658,8 +595,8 @@ class AdminController
     public function showProductDetailPage()
     {
         $id = request('id');
-        $product = Products::where('id', $id)->first();
-        $categories = Categories::get();
+        $product = Product::where('id', $id)->first();
+        $categories = Category::get();
         if ($product != null) {
             return view('product_detail')->with([
                 'product' => $product,
@@ -735,7 +672,7 @@ class AdminController
             $video_id = $match[1];
         else $video_id = $video_url;
 
-        $product = new Products();
+        $product = new Product();
         $product->customer_id = $customer_id;
         $product->name = $name;
         $product->name_second = $name_ar;
@@ -818,7 +755,7 @@ class AdminController
                 ->fit(320, 320)
                 ->save($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
 
-            Products::where('id', $id)->update([
+            Product::where('id', $id)->update([
                 'name' => $name,
                 'name_second' => $name_ar,
                 'price' => $price,
@@ -832,7 +769,7 @@ class AdminController
                 'picture' => $imageName,
             ]);
         } else {
-            Products::where('id', $id)->update([
+            Product::where('id', $id)->update([
                 'name' => $name,
                 'name_second' => $name_ar,
                 'price' => $price,
@@ -852,7 +789,7 @@ class AdminController
     public function delProduct()
     {
         $id = request('id');
-        Products::where('id', $id)->delete();
+        Product::where('id', $id)->delete();
 
         return Utils::makeResponse();
     }
@@ -860,9 +797,9 @@ class AdminController
     public function toggleProductVisible()
     {
         $id = request('id');
-        $show_flag = Products::where('id', $id)->first()->show_flag;
+        $show_flag = Product::where('id', $id)->first()->show_flag;
 
-        Products::where('id', $id)->update([
+        Product::where('id', $id)->update([
             'show_flag' => 1 - $show_flag,
         ]);
 
@@ -873,10 +810,10 @@ class AdminController
 
         $user_type = session()->get('user-type');
         if ($user_type === 1 || $user_type === 2) {
-            Products::query()->update(['show_flag' => 1]);
+            Product::query()->update(['show_flag' => 1]);
         } else {
             $customer_id = session()->get('user')->id;
-            Products::where('customer_id', $customer_id)->update(['show_flag' => 1]);
+            Product::where('customer_id', $customer_id)->update(['show_flag' => 1]);
         }
         return back();
     }
@@ -885,10 +822,10 @@ class AdminController
 
         $user_type = session()->get('user-type');
         if ($user_type === 1 || $user_type === 2) {
-            Products::query()->update(['show_flag' => 0]);
+            Product::query()->update(['show_flag' => 0]);
         } else {
             $customer_id = session()->get('user')->id;
-            Products::where('customer_id', $customer_id)->update(['show_flag' => 0]);
+            Product::where('customer_id', $customer_id)->update(['show_flag' => 0]);
         }
         return back();
 
@@ -920,7 +857,7 @@ class AdminController
     {
         $customer_id = request('customer_id');
         if (session()->get('user-type') != 3 || $customer_id == session()->get('user')->id) {
-            $categories = Categories::where('customer_id', $customer_id)->orderBy('show_order')->get();
+            $categories = Category::where('customer_id', $customer_id)->orderBy('show_order')->get();
             $customers = Customers::get();
             return view('categories')->with([
                 'categories' => $categories,
@@ -943,7 +880,7 @@ class AdminController
     public function showCategoryEditPage()
     {
         $id = request('id');
-        $category = Categories::where('id', $id)->first();
+        $category = Category::where('id', $id)->first();
         if ($category != null) {
             return view('category_edit')->with([
                 'category' => $category
@@ -955,8 +892,8 @@ class AdminController
     public function showCategoryDetailPage()
     {
         $id = request('id');
-        $category = Categories::where('id', $id)->first();
-        $products = Products::where('category_id', $id)->get();
+        $category = Category::where('id', $id)->first();
+        $products = Product::where('category_id', $id)->get();
         if ($category != null) {
             return view('category_detail')->with([
                 'category' => $category,
@@ -984,7 +921,7 @@ class AdminController
         ]);
 
         if(isset($order)) {
-            if (Categories::where([
+            if (Category::where([
                 ['customer_id', $customer_id],
                 ['show_order', $order],
             ])->count() > 0) {
@@ -996,7 +933,7 @@ class AdminController
         $rtl_direction = 0;
         if (isset($direction) && $direction == 'on')
             $rtl_direction = 1;
-        $category = new Categories();
+        $category = new Category();
         $category->customer_id = $customer_id;
         $category->name = $name;
         $category->tags = $tags;
@@ -1025,9 +962,9 @@ class AdminController
             'category-name' => 'required',
         ]);
 
-        $customer_id = Categories::where('id', $id)->first()->customer_id;
+        $customer_id = Category::where('id', $id)->first()->customer_id;
         if(isset($order)) {
-            if (Categories::where([
+            if (Category::where([
                     ['customer_id', $customer_id],
                     ['show_order', $order],
                     ['id', '!=', $id],
@@ -1041,7 +978,7 @@ class AdminController
         if (isset($direction) && $direction == 'on')
             $rtl_direction = 1;
 
-        Categories::where('id', $id)->update([
+        Category::where('id', $id)->update([
             'name' => $name,
             'tags' => $tags,
             'name_second' => $name_ar,
@@ -1057,8 +994,8 @@ class AdminController
     public function delCategory()
     {
         $id = request('id');
-        Categories::where('id', $id)->delete();
-        Products::where('category_id', $id)->delete();
+        Category::where('id', $id)->delete();
+        Product::where('category_id', $id)->delete();
 
         return Utils::makeResponse();
     }
@@ -1066,9 +1003,9 @@ class AdminController
     public function toggleCategoryVisible()
     {
         $id = request('id');
-        $show_flag = Categories::where('id', $id)->first()->show_flag;
+        $show_flag = Category::where('id', $id)->first()->show_flag;
 
-        Categories::where('id', $id)->update([
+        Category::where('id', $id)->update([
             'show_flag' => 1 - $show_flag,
         ]);
 
@@ -1078,10 +1015,10 @@ class AdminController
     public function toggleCategoryAllVisible() {
         $user_type = session()->get('user-type');
         if ($user_type === 1 || $user_type === 2) {
-            Categories::query()->update(['show_flag' => 1]);
+            Category::query()->update(['show_flag' => 1]);
         } else {
             $customer_id = session()->get('user')->id;
-            Categories::where('customer_id', $customer_id)->update(['show_flag' => 1]);
+            Category::where('customer_id', $customer_id)->update(['show_flag' => 1]);
         }
         return back();
     }
@@ -1089,10 +1026,10 @@ class AdminController
     public function toggleCategoryAllInvisible() {
         $user_type = session()->get('user-type');
         if ($user_type === 1 || $user_type === 2) {
-            Categories::query()->update(['show_flag' => 0]);
+            Category::query()->update(['show_flag' => 0]);
         } else {
             $customer_id = session()->get('user')->id;
-            Categories::where('customer_id', $customer_id)->update(['show_flag' => 0]);
+            Category::where('customer_id', $customer_id)->update(['show_flag' => 0]);
         }
         return back();
     }
