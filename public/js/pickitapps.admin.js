@@ -19164,6 +19164,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_clients_list__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./pages/admin/clients-list */ "./resources/assets/js/pickitapps/pages/admin/clients-list.js");
 /* harmony import */ var _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./pages/admin/clients-add */ "./resources/assets/js/pickitapps/pages/admin/clients-add.js");
 /* harmony import */ var _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/admin/clients-edit */ "./resources/assets/js/pickitapps/pages/admin/clients-edit.js");
+/* harmony import */ var _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pages/admin/products-list */ "./resources/assets/js/pickitapps/pages/admin/products-list.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19207,6 +19208,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -19237,7 +19239,8 @@ var App = /*#__PURE__*/function (_Template) {
       SubscriptionsAdd: _pages_admin_subscriptions_add__WEBPACK_IMPORTED_MODULE_13__["default"],
       ClientsList: _pages_admin_clients_list__WEBPACK_IMPORTED_MODULE_14__["default"],
       ClientsAdd: _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__["default"],
-      ClientsEdit: _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__["default"]
+      ClientsEdit: _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__["default"],
+      ProductsList: _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__["default"]
     };
     return _this;
   }
@@ -22209,6 +22212,111 @@ var PositionsList = /*#__PURE__*/function () {
   }]);
 
   return PositionsList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/products-list.js":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/products-list.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProductsList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var ProductsList = /*#__PURE__*/function () {
+  function ProductsList() {
+    _classCallCheck(this, ProductsList);
+
+    this.init();
+  }
+
+  _createClass(ProductsList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+      this.initEventListeners();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      this.dataTable = jQuery('.table').dataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("[name^='show-toggle-']").on('change', function () {
+        var id = this.name.split("show-toggle-")[1];
+        axios.post(route('admin.clients.products.toggle-active', clientId), {
+          id: id
+        }).then(function (result) {
+          return result['data'];
+        }).then(function (data) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data);
+        })["catch"](function (error) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+        });
+      });
+    }
+  }, {
+    key: "openVideoDialog",
+    value: function openVideoDialog(videoId, productName) {
+      $("#modal-block-fadein .block-title").html(productName);
+      $("#modal-block-fadein iframe").attr("src", "https://www.youtube.com/embed/" + videoId);
+      $("#modal-block-fadein").modal('show');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'Are you sure to delete this product ?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(route('admin.clients.products.delete', clientId), {
+            id: id
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
+          })["catch"](function (error) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return ProductsList;
 }();
 
 

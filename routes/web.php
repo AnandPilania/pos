@@ -79,19 +79,15 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
                 // Products
                 Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
                     Route::get('/', 'ProductsController@index')->name('show');
-
-                    Route::get('/edit/{id}', 'AdminController@showProductEditPage');
-                    Route::post('/edit', 'AdminController@editProduct');
-                    Route::post('/del', 'AdminController@delProduct');
-                    Route::get('/{id}', 'AdminController@showProductDetailPage');
-                    Route::post('/toggle-visible', 'AdminController@toggleProductVisible');
-                    Route::get('/show-all', 'AdminController@toggleProductAllVisible');
-                    Route::get('/hide-all', 'AdminController@toggleProductAllInvisible');
-
-                    Route::get('/{customer_id}', 'AdminController@showProductsPage');
-                    Route::get('/{customer_id}/add', 'AdminController@showProductAddPage');
-                    Route::post('/{customer_id}/add', 'AdminController@addProduct');
-
+                    Route::get('/add', 'ProductsController@showAddPage')->name('add.show');
+                    Route::post('/add', 'ProductsController@add')->name('add');
+                    Route::post('/delete', 'ProductsController@delete')->name('delete');
+                    Route::post('/toggle-active', 'ProductsController@toggleActive')->name('toggle-active');
+                    Route::get('/show-all', 'ProductsController@toggleProductAllVisible')->name('toggle-all-active');
+                    Route::get('/hide-all', 'ProductsController@toggleProductAllInvisible')->name('toggle-all-inactive');
+                    Route::get('/detail/{id}', 'ProductsController@showDetailPage')->name('detail.show');
+                    Route::get('/{id}', 'ProductsController@showEditPage')->name('edit.show');
+                    Route::post('/{id}', 'ProductsController@edit')->name('edit');
                 });
 
                 // Categories
