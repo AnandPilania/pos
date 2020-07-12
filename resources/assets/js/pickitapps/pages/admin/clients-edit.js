@@ -1,5 +1,5 @@
 import Helpers from "../../modules/helpers";
-export default class ClientsAdd {
+export default class ClientsEdit {
     constructor() {
         this.init();
     }
@@ -36,7 +36,6 @@ export default class ClientsAdd {
                     email: true
                 },
                 'password': {
-                    required: true,
                     minlength: 5
                 },
                 'phone-number': {
@@ -53,7 +52,6 @@ export default class ClientsAdd {
             },
             messages: {
                 'password': {
-                    required: 'Please provide a password',
                     minlength: 'Your password must be at least 5 characters long'
                 },
                 'start-date': {

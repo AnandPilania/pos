@@ -22,33 +22,17 @@ class Utils
         return '' . rand(pow(10, $digits - 1), pow(10, $digits) - 1);
     }
 
-    public static function getFirestoreDB() {
-        $db = new FirestoreClient([
-            'projectId' => 'pick-it-apps',
-        ]);
-        return $db;
-    }
+    public static function getNumberOfMonths($date1, $date2) {
+        $ts1 = strtotime($date1);
+        $ts2 = strtotime($date2);
 
-    public static function getCategoryDBRef() {
-        $db = self::getFirestoreDB();
-        return $db->collection("category");
-    }
+        $year1 = date('Y', $ts1);
+        $year2 = date('Y', $ts2);
 
-    public static function getProductDBRef() {
-        $db = self::getFirestoreDB();
-        return $db->collection("product");
-    }
+        $month1 = date('m', $ts1);
+        $month2 = date('m', $ts2);
 
-    public static function getStorage() {
-        $storage = new StorageClient([
-            'keyFilePath' => 'E:\Projects\20190726_flutter_web_Omni\Project\Web\Omni_Web\1.json',
-            'projectId' => 'pick-it-apps',
-        ]);
-        return $storage;
-    }
-
-    public static function getBucket() {
-        $storage = self::getStorage();
-        return $storage->bucket('pick-it-apps.appspot.com');
+        $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
+        return $diff;
     }
 }

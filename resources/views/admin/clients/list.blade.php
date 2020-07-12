@@ -50,7 +50,7 @@
                     <tr>
                         <th class="d-none d-sm-table-cell text-center" style="width: 80px;">No</th>
                         <th class="d-none d-sm-table-cell">Name</th>
-                        <th class="d-none d-sm-table-cell">Company</th>
+                        <th class="d-none d-sm-table-cell">Subscription</th>
                         <th class="d-none d-xl-table-cell">StartDate</th>
                         <th class="d-none d-xl-table-cell">ExpireDate</th>
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Enable</th>
@@ -69,7 +69,9 @@
                                 </a>
                             </td>
                             <td class="d-none d-sm-table-cell">
-                                {{ $client->company }}
+                                @foreach($client->subscriptions as $s)
+                                    <span class="badge badge-success">{{ $s->name }}</span>
+                                @endforeach
                             </td>
                             <td class="d-none d-xl-table-cell">
                                 {{ date('d M Y', strtotime($client->start_date)) }}

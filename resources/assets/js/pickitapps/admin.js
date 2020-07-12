@@ -26,6 +26,7 @@ import SubscriptionsList from "./pages/admin/subscriptions-list";
 import SubscriptionsAdd from "./pages/admin/subscriptions-add";
 import ClientsList from "./pages/admin/clients-list";
 import ClientsAdd from "./pages/admin/clients-add";
+import ClientsEdit from "./pages/admin/clients-edit";
 
 // App extends Template
 export default class App extends Template {
@@ -47,7 +48,8 @@ export default class App extends Template {
             SubscriptionsList,
             SubscriptionsAdd,
             ClientsList,
-            ClientsAdd
+            ClientsAdd,
+            ClientsEdit
         }
     }
 

@@ -60,12 +60,12 @@ trait HasSubscriptionsTrait
 
     public function subscriptions() {
 
-        return $this->belongsToMany(Subscription::class,'users_subscriptions');
+        return $this->belongsToMany(Subscription::class,'clients_subscriptions');
 
     }
     public function sanctions() {
 
-        return $this->belongsToMany(Sanction::class,'users_sanctions');
+        return $this->belongsToMany(Sanction::class,'clients_sanctions');
 
     }
     protected function hasSanction($sanction) {

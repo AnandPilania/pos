@@ -19163,6 +19163,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_subscriptions_add__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./pages/admin/subscriptions-add */ "./resources/assets/js/pickitapps/pages/admin/subscriptions-add.js");
 /* harmony import */ var _pages_admin_clients_list__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./pages/admin/clients-list */ "./resources/assets/js/pickitapps/pages/admin/clients-list.js");
 /* harmony import */ var _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./pages/admin/clients-add */ "./resources/assets/js/pickitapps/pages/admin/clients-add.js");
+/* harmony import */ var _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/admin/clients-edit */ "./resources/assets/js/pickitapps/pages/admin/clients-edit.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19205,6 +19206,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -19234,7 +19236,8 @@ var App = /*#__PURE__*/function (_Template) {
       SubscriptionsList: _pages_admin_subscriptions_list__WEBPACK_IMPORTED_MODULE_12__["default"],
       SubscriptionsAdd: _pages_admin_subscriptions_add__WEBPACK_IMPORTED_MODULE_13__["default"],
       ClientsList: _pages_admin_clients_list__WEBPACK_IMPORTED_MODULE_14__["default"],
-      ClientsAdd: _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__["default"]
+      ClientsAdd: _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__["default"],
+      ClientsEdit: _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__["default"]
     };
     return _this;
   }
@@ -21525,12 +21528,29 @@ var ClientsAdd = /*#__PURE__*/function () {
           'password': {
             required: true,
             minlength: 5
+          },
+          'phone-number': {
+            required: true
+          },
+          'start-date': {
+            required: true,
+            date: true
+          },
+          'expire-date': {
+            required: true,
+            date: true
           }
         },
         messages: {
           'password': {
             required: 'Please provide a password',
             minlength: 'Your password must be at least 5 characters long'
+          },
+          'start-date': {
+            required: 'Start Date is required'
+          },
+          'expire-date': {
+            required: 'Expire Date is required'
           }
         }
       });
@@ -21538,6 +21558,103 @@ var ClientsAdd = /*#__PURE__*/function () {
   }]);
 
   return ClientsAdd;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/clients-edit.js":
+/*!********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/clients-edit.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ClientsEdit; });
+/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../modules/helpers */ "./resources/assets/js/pickitapps/modules/helpers.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var ClientsEdit = /*#__PURE__*/function () {
+  function ClientsEdit() {
+    _classCallCheck(this, ClientsEdit);
+
+    this.init();
+  }
+
+  _createClass(ClientsEdit, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+      _modules_helpers__WEBPACK_IMPORTED_MODULE_0__["default"].run('datepicker');
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'first-name': {
+            required: true
+          },
+          'last-name': {
+            required: true
+          },
+          'email': {
+            required: true,
+            email: true
+          },
+          'password': {
+            minlength: 5
+          },
+          'phone-number': {
+            required: true
+          },
+          'start-date': {
+            required: true,
+            date: true
+          },
+          'expire-date': {
+            required: true,
+            date: true
+          }
+        },
+        messages: {
+          'password': {
+            minlength: 'Your password must be at least 5 characters long'
+          },
+          'start-date': {
+            required: 'Start Date is required'
+          },
+          'expire-date': {
+            required: 'Expire Date is required'
+          }
+        }
+      });
+    }
+  }]);
+
+  return ClientsEdit;
 }();
 
 

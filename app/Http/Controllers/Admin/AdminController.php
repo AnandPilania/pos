@@ -7,7 +7,7 @@ use App\Http\Models\Admin;
 use App\Http\Models\Category;
 use App\Http\Models\Currency;
 use App\Http\Models\Customers;
-use App\Http\Models\Invoices;
+use App\Http\Models\Invoice;
 use App\Http\Models\Product;
 use App\Http\Models\Employees;
 use App\Http\Models\Role;
@@ -321,7 +321,7 @@ class AdminController
 
         $customer->save();
 
-        $invoice = new Invoices();
+        $invoice = new Invoice();
         $invoice->customer_id = $customer->id;
         $invoice->start_date = $start_date;
         $invoice->expire_date = $expire_date;
@@ -417,7 +417,7 @@ class AdminController
         $expire_date = date('Y-m-d', strtotime($expire_date));
 
         if ($add_flag == 1) {
-            $invoice = new Invoices();
+            $invoice = new Invoice();
             $invoice->customer_id = $id;
             $invoice->start_date = $start_date;
             $invoice->expire_date = $expire_date;
@@ -432,7 +432,7 @@ class AdminController
                 'current_invoice_id' => $invoice->id,
             ]);
         } else {
-            Invoices::where('id', Customers::where('id', $id)->first()->current_invoice_id)->update([
+            Invoice::where('id', Customers::where('id', $id)->first()->current_invoice_id)->update([
                 'start_date' => $start_date,
                 'expire_date' => $expire_date,
                 'price' => $price,
@@ -498,8 +498,8 @@ class AdminController
     {
         $id = request('id');
         $customer = Customers::where('id', $id)->first();
-        $invoices = Invoices::where('customer_id', $id)->get();
-        $total = Invoices::where('customer_id', $id)->sum('price');
+        $invoices = Invoice::where('customer_id', $id)->get();
+        $total = Invoice::where('customer_id', $id)->sum('price');
 
         $pdf = PDF::loadView('customer_invoice_pdf', [
             'customer' => $customer,
@@ -515,8 +515,8 @@ class AdminController
 
         $id = request('id');
         $customer = Customers::where('id', $id)->first();
-        $invoices = Invoices::where('customer_id', $id)->get();
-        $total = Invoices::where('customer_id', $id)->sum('price');
+        $invoices = Invoice::where('customer_id', $id)->get();
+        $total = Invoice::where('customer_id', $id)->sum('price');
 
         return view('customer_invoice_print_preview')->with([
             'customer' => $customer,

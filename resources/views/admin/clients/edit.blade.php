@@ -7,9 +7,11 @@
     <!-- Page JS Plugins -->
     <script src="{{asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 
-    <script>jQuery(function () {
-            Pickitapps.helpers(['datepicker']);
-        });</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.ClientsEdit();
+        });
+    </script>
     <!-- Page JS Code -->
     <script>
 

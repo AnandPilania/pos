@@ -58,7 +58,7 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.clients.add')}}" method="POST">
+                <form action="{{route('admin.clients.add')}}" class="js-validation" method="POST">
                     @csrf
                     <h2 class="content-heading">Company Details</h2>
                     <div class="row">
@@ -190,6 +190,16 @@
                     <div class="row">
                         <div class="col-xl-8">
                             <div class="form-group">
+                                <label>Subscription Name</label> <span class="text-danger">*</span>
+                                <select class="custom-select" name="subscription">
+                                    <option value="" disabled="disabled" selected>Select a subscription</option>
+                                    @foreach($subscriptions as $subscription)
+                                        <option
+                                            value="{{$subscription->id}}">{{$subscription->name . ' - ' . $subscription->price . ''}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>
                                     Start Date ~ Expire Date <span class="text-danger">*</span>
                                 </label>
@@ -208,7 +218,7 @@
                             </div>
                             <div class="form-group">
                                 <label>
-                                    Price <span class="text-danger">*</span>
+                                    Discount Price (for free tutorial usage)
                                 </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -216,8 +226,8 @@
                                             KWD
                                         </span>
                                     </div>
-                                    <input type="text" class="form-control text-center" name="price"
-                                           placeholder="00.000">
+                                    <input type="text" class="form-control text-center" name="discount"
+                                           placeholder="100.000">
                                 </div>
                             </div>
                         </div>

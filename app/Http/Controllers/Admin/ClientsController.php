@@ -5,8 +5,9 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Models\Client;
-use App\Http\Models\Invoices;
+use App\Http\Models\Invoice;
 use App\Http\Models\Product;
+use App\Http\Models\Subscription;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,7 +15,7 @@ class ClientsController
 {
     public function index()
     {
-        $clients = Client::get();
+        $clients = Client::with('subscriptions')->get();
         return view('admin.clients.list')
             ->with('clients', $clients)
             ->withTitle('Client List');
@@ -22,7 +23,9 @@ class ClientsController
 
     public function showAddPage()
     {
+        $subscriptions = Subscription::get();
         return view('admin.clients.add')
+            ->with('subscriptions', $subscriptions)
             ->withTitle('Add Client');
     }
 
@@ -30,9 +33,13 @@ class ClientsController
     {
         $id = request('id');
         $client = Client::find($id);
+        $subscriptions = Subscription::get();
         if ($client != null) {
             return view('admin.clients.edit')
-                ->with('client', $client)
+                ->with([
+                    'client' => $client,
+                    'subscriptions' => $subscriptions
+                ])
                 ->withTitle('Edit Client');
         }
         return redirect()->route('admin.clients.show');
@@ -56,7 +63,7 @@ class ClientsController
         return redirect()->route('admin.clients.show');
     }
 
-    public function addCustomer()
+    public function add()
     {
         $first_name = request('first-name');
         $last_name = request('last-name');
@@ -70,20 +77,23 @@ class ClientsController
         $city = request('city');
         $state = request('state');
         $zipcode = request('zip-code');
+        $contact_person = request('contact-person');
+        $contact_email = request('contact-email');
+        $contact_phone = request('contact-phone');
+        $subscription = request('subscription');
         $start_date = request('start-date');
         $expire_date = request('expire-date');
-        $price = request('price');
+        $discount = request('discount');
 
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:clients',
             'password' => 'required',
-            'birthday' => 'required|date',
             'phone-number' => 'required',
+            'subscription' => 'required',
             'start-date' => 'required|date',
             'expire-date' => 'required|date',
-            'price' => 'required|numeric',
         ]);
 
         $birthday = strtotime($birthday);
@@ -95,42 +105,55 @@ class ClientsController
         $expire_date = strtotime($expire_date);
         $expire_date = date('Y-m-d', $expire_date);
 
-        $customer = new Customers();
-        $customer->first_name = $first_name;
-        $customer->last_name = $last_name;
-        $customer->email = $email;
-        $customer->password = hash::make($password);
-        $customer->birthday = $birthday;
-        $customer->gender = $gender;
-        $customer->phonenumber = $phonenumber;
-        $customer->company = $company;
-        $customer->address = $address;
-        $customer->city = $city;
-        $customer->state = $state;
-        $customer->zipcode = $zipcode;
-        $customer->start_date = $start_date;
-        $customer->expire_date = $expire_date;
-        $customer->price = $price;
+        $client = new Client();
+        $client->first_name = $first_name;
+        $client->last_name = $last_name;
+        $client->email = $email;
+        $client->password = bcrypt($password);
+        $client->birthday = $birthday;
+        $client->gender = $gender;
+        $client->phonenumber = $phonenumber;
+        $client->company = $company;
+        $client->address = $address;
+        $client->city = $city;
+        $client->state = $state;
+        $client->zipcode = $zipcode;
+        $client->start_date = $start_date;
+        $client->expire_date = $expire_date;
+        $client->contact_person = $contact_person;
+        $client->contact_email = $contact_email;
+        $client->contact_phone = $contact_phone;
 
-        $customer->save();
+        $client->save();
 
-        $invoice = new Invoices();
-        $invoice->customer_id = $customer->id;
+        $client->subscriptions()->attach($subscription);
+
+        $invoice = new Invoice();
+        $invoice->customer_id = $client->id;
+        $invoice->subscription_id = $subscription;
         $invoice->start_date = $start_date;
         $invoice->expire_date = $expire_date;
-        $invoice->price = $price;
+
+        $numberOfMonths = Utils::getNumberOfMonths($start_date, $expire_date);
+        if ($numberOfMonths == 0) $numberOfMonths = 1;
+
+        $sb = Subscription::find($subscription);
+        $invoice->subscription_months = $numberOfMonths;
+        $invoice->subscription_total_price = $sb->price * $numberOfMonths;
+        $invoice->discount = $discount;
+        $invoice->price = ($sb->price * $numberOfMonths - $discount) < 0 ? 0 : ($sb->price * $numberOfMonths - $discount);
 
         $invoice->save();
 
-        Customers::where('id', $customer->id)->update([
+        Client::where('id', $client->id)->update([
             'current_invoice_id' => $invoice->id
         ]);
 
         return back()
-            ->with('success', 'You have successfully add new customer.');
+            ->with('success', 'Successfully added.');
     }
 
-    public function editCustomer()
+    public function edit()
     {
         $id = request('id');
         $first_name = request('first-name');
@@ -149,7 +172,7 @@ class ClientsController
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:clients,email,' . $id,
             'birthday' => 'required|date',
             'phone-number' => 'required',
         ]);
@@ -210,7 +233,7 @@ class ClientsController
         $expire_date = date('Y-m-d', strtotime($expire_date));
 
         if ($add_flag == 1) {
-            $invoice = new Invoices();
+            $invoice = new Invoice();
             $invoice->customer_id = $id;
             $invoice->start_date = $start_date;
             $invoice->expire_date = $expire_date;
@@ -225,7 +248,7 @@ class ClientsController
                 'current_invoice_id' => $invoice->id,
             ]);
         } else {
-            Invoices::where('id', Customers::where('id', $id)->first()->current_invoice_id)->update([
+            Invoice::where('id', Customers::where('id', $id)->first()->current_invoice_id)->update([
                 'start_date' => $start_date,
                 'expire_date' => $expire_date,
                 'price' => $price,
@@ -269,8 +292,8 @@ class ClientsController
     {
         $id = request('id');
         $customer = Client::find($id);
-        $invoices = Invoices::where('customer_id', $id)->get();
-        $total = Invoices::where('customer_id', $id)->sum('price');
+        $invoices = Invoice::where('customer_id', $id)->get();
+        $total = Invoice::where('customer_id', $id)->sum('price');
 
         $pdf = PDF::loadView('customer_invoice_pdf', [
             'customer' => $customer,
@@ -287,8 +310,8 @@ class ClientsController
 
         $id = request('id');
         $customer = Client::find($id);
-        $invoices = Invoices::where('customer_id', $id)->get();
-        $total = Invoices::where('customer_id', $id)->sum('price');
+        $invoices = Invoice::where('customer_id', $id)->get();
+        $total = Invoice::where('customer_id', $id)->sum('price');
 
         return view('admin.clients.invoice_print_preview')->with([
             'customer' => $customer,
