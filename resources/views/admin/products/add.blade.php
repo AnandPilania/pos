@@ -1,8 +1,19 @@
 @extends('layouts.client')
-
 @section('css_before')
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
+@endsection
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+    <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.clientId = {{$client_id}};
+            window.page = new Pickitapps.pages.ProductsAdd();
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -30,7 +41,7 @@
                     </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.
                         <ul>
@@ -41,7 +52,8 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/products/'.$customer_id.'/add')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.clients.products.add', $client_id)}}"
+                      class="js-validation" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Vital Info -->
                     <h2 class="content-heading pt-0">Vital Info</h2>
@@ -76,7 +88,7 @@
                                     <!-- bootstrap-imageupload. -->
                                     <div class="imageupload panel panel-default">
                                         <div class="file-tab panel-body">
-                                            <label class="btn btn-primary btn-file" style="margin-bottom: 0px;">
+                                            <label class="btn btn-primary btn-file mb-0">
                                                 <span>Browse</span>
                                                 <!-- The file is stored here. -->
                                                 <input type="file" name="image">
@@ -172,27 +184,3 @@
     <!-- END Page Content -->
 @endsection
 
-@section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
-
-    <!-- Page JS Code -->
-    <script>
-        var $imageupload = $('.imageupload');
-        $imageupload.imageupload();
-
-        $(document).ready(()=>{
-
-            $("#checkbox-name-rtl").on("change", () => {
-                if ($("#checkbox-name-rtl").prop("checked") == true) {
-                    $("[name='product-name-ar']").attr("dir", "rtl");
-                    $("[name='product-description-ar']").attr("dir", "rtl");
-                } else {
-                    $("[name='product-name-ar']").removeAttr("dir");
-                    $("[name='product-description-ar']").removeAttr("dir");
-                }
-            });
-
-        });
-    </script>
-@endsection

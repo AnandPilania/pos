@@ -9,6 +9,7 @@ use App\Http\Models\Client;
 use App\Http\Models\Currency;
 use App\Http\Models\Product;
 use App\Http\Utils\Utils;
+use Spatie\ImageOptimizer\Image;
 
 class ProductsController
 {
@@ -32,33 +33,34 @@ class ProductsController
 
     public function showAddPage()
     {
-        $customer_id = request('customer_id');
-        if (session()->get('user-type') == 3) {
-            $customer_id = session()->get('user')->id;
-        }
-        $categories = Category::where('customer_id', $customer_id)->get();
+        $client_id = request('client_id');
+        $categories = Category::where('customer_id', $client_id)->get();
         $currency_list = Currency::get();
-        return view('product_add')->with([
-            'categories' => $categories,
-            'customer_id' => $customer_id,
-            'currency_list' => $currency_list
-        ]);
+        return view('admin.products.add')
+            ->with([
+                'categories' => $categories,
+                'client_id' => $client_id,
+                'currency_list' => $currency_list
+            ]);
     }
 
     public function showEditPage()
     {
         $id = request('id');
+        $client_id = request('client_id');
         $product = Product::where('id', $id)->first();
         $categories = Category::where('customer_id', $product->customer_id)->get();
         $currency_list = Currency::get();
         if ($product != null) {
-            return view('product_edit')->with([
-                'product' => $product,
-                'categories' => $categories,
-                'currency_list' => $currency_list,
-            ]);
+            return view('admin.products.edit')
+                ->with([
+                    'product' => $product,
+                    'categories' => $categories,
+                    'currency_list' => $currency_list,
+                    'client_id' => $client_id
+                ]);
         }
-        return redirect('/admin/products');
+        return redirect()->route('admin.clients.products.show');
     }
 
     public function showDetailPage()
@@ -77,10 +79,7 @@ class ProductsController
 
     public function add()
     {
-        $customer_id = request('customer_id');
-        if (session()->get('user-type') == 3) {
-            $customer_id = session()->get('user')->id;
-        }
+        $client_id = request('client_id');
         $name = request('product-name');
         $name_ar = request('product-name-ar');
         $category_id = request('category');
@@ -142,7 +141,7 @@ class ProductsController
         else $video_id = $video_url;
 
         $product = new Product();
-        $product->customer_id = $customer_id;
+        $product->customer_id = $client_id;
         $product->name = $name;
         $product->name_second = $name_ar;
         $product->price = $price;
@@ -164,6 +163,7 @@ class ProductsController
     public function edit()
     {
         $id = request('id');
+        $client_id = request('client_id');
         $name = request('product-name');
         $name_ar = request('product-name-ar');
         $category_id = request('category');
@@ -278,28 +278,15 @@ class ProductsController
 
     public function toggleProductAllVisible()
     {
-
-        $user_type = session()->get('user-type');
-        if ($user_type === 1 || $user_type === 2) {
-            Product::query()->update(['show_flag' => 1]);
-        } else {
-            $customer_id = session()->get('user')->id;
-            Product::where('customer_id', $customer_id)->update(['show_flag' => 1]);
-        }
+        $client_id = request('client_id');
+        Product::where('customer_id', $client_id)->update(['active' => 1]);
         return back();
     }
 
     public function toggleProductAllInvisible()
     {
-
-        $user_type = session()->get('user-type');
-        if ($user_type === 1 || $user_type === 2) {
-            Product::query()->update(['show_flag' => 0]);
-        } else {
-            $customer_id = session()->get('user')->id;
-            Product::where('customer_id', $customer_id)->update(['show_flag' => 0]);
-        }
+        $client_id = request('client_id');
+        Product::where('customer_id', $client_id)->update(['active' => 0]);
         return back();
-
     }
 }

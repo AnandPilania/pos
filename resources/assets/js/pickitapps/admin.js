@@ -28,6 +28,8 @@ import ClientsList from "./pages/admin/clients-list";
 import ClientsAdd from "./pages/admin/clients-add";
 import ClientsEdit from "./pages/admin/clients-edit";
 import ProductsList from "./pages/admin/products-list";
+import ProductsAdd from "./pages/admin/products-add";
+import ProductsEdit from "./pages/admin/products-edit";
 
 // App extends Template
 export default class App extends Template {
@@ -51,7 +53,9 @@ export default class App extends Template {
             ClientsList,
             ClientsAdd,
             ClientsEdit,
-            ProductsList
+            ProductsList,
+            ProductsAdd,
+            ProductsEdit
         }
     }
 

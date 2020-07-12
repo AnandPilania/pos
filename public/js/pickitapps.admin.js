@@ -19165,6 +19165,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./pages/admin/clients-add */ "./resources/assets/js/pickitapps/pages/admin/clients-add.js");
 /* harmony import */ var _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./pages/admin/clients-edit */ "./resources/assets/js/pickitapps/pages/admin/clients-edit.js");
 /* harmony import */ var _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pages/admin/products-list */ "./resources/assets/js/pickitapps/pages/admin/products-list.js");
+/* harmony import */ var _pages_admin_products_add__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./pages/admin/products-add */ "./resources/assets/js/pickitapps/pages/admin/products-add.js");
+/* harmony import */ var _pages_admin_products_edit__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./pages/admin/products-edit */ "./resources/assets/js/pickitapps/pages/admin/products-edit.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19195,6 +19197,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
  // Import page js
+
+
 
 
 
@@ -19240,7 +19244,9 @@ var App = /*#__PURE__*/function (_Template) {
       ClientsList: _pages_admin_clients_list__WEBPACK_IMPORTED_MODULE_14__["default"],
       ClientsAdd: _pages_admin_clients_add__WEBPACK_IMPORTED_MODULE_15__["default"],
       ClientsEdit: _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__["default"],
-      ProductsList: _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__["default"]
+      ProductsList: _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__["default"],
+      ProductsAdd: _pages_admin_products_add__WEBPACK_IMPORTED_MODULE_18__["default"],
+      ProductsEdit: _pages_admin_products_edit__WEBPACK_IMPORTED_MODULE_19__["default"]
     };
     return _this;
   }
@@ -22212,6 +22218,198 @@ var PositionsList = /*#__PURE__*/function () {
   }]);
 
   return PositionsList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/products-add.js":
+/*!********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/products-add.js ***!
+  \********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProductsAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ProductsAdd = /*#__PURE__*/function () {
+  function ProductsAdd() {
+    _classCallCheck(this, ProductsAdd);
+
+    this.init();
+  }
+
+  _createClass(ProductsAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+      this.initEventListeners();
+      this.initImageUploadComponent();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'product-name': {
+            required: true
+          },
+          'product-price': {
+            required: true,
+            number: true
+          }
+        }
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("#checkbox-name-rtl").on("change", function () {
+        if ($("#checkbox-name-rtl").prop("checked") === true) {
+          $("[name='product-name-ar']").attr("dir", "rtl");
+          $("[name='product-description-ar']").attr("dir", "rtl");
+        } else {
+          $("[name='product-name-ar']").removeAttr("dir");
+          $("[name='product-description-ar']").removeAttr("dir");
+        }
+      });
+    }
+  }, {
+    key: "initImageUploadComponent",
+    value: function initImageUploadComponent() {
+      $('.imageupload').imageupload();
+    }
+  }]);
+
+  return ProductsAdd;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/products-edit.js":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/products-edit.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ProductsEdit; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ProductsEdit = /*#__PURE__*/function () {
+  function ProductsEdit() {
+    _classCallCheck(this, ProductsEdit);
+
+    this.init();
+  }
+
+  _createClass(ProductsEdit, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+      this.initEventListeners();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'product-name': {
+            required: true
+          },
+          'product-price': {
+            required: true,
+            number: true
+          }
+        }
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      var t = this;
+      $('#image').on('change', function () {
+        var imgPath = this.value;
+        var ext = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+        if (ext == "gif" || ext == "png" || ext == "jpg" || ext == "jpeg") t.readURL(this);else alert("Please select image file (jpg, jpeg, png).");
+      });
+      $("#checkbox-name-rtl").on("change", function () {
+        if ($("#checkbox-name-rtl").prop("checked") === true) {
+          $("[name='product-name-ar']").attr("dir", "rtl");
+          $("[name='product-description-ar']").attr("dir", "rtl");
+        } else {
+          $("[name='product-name-ar']").removeAttr("dir");
+          $("[name='product-description-ar']").removeAttr("dir");
+        }
+      });
+    }
+  }, {
+    key: "changeProfile",
+    value: function changeProfile() {
+      $('#image').click();
+    }
+  }, {
+    key: "readURL",
+    value: function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.readAsDataURL(input.files[0]);
+
+        reader.onload = function (e) {
+          $('#preview').attr('src', e.target.result);
+        };
+      }
+    }
+  }, {
+    key: "removeImage",
+    value: function removeImage(url) {
+      $('#preview').attr('src', url);
+    }
+  }]);
+
+  return ProductsEdit;
 }();
 
 
