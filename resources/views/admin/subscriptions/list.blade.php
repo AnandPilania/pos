@@ -52,7 +52,7 @@
                     <tr>
                         <th class="text-center d-none d-sm-table-cell" style="width: 80px;">No</th>
                         <th class="d-none d-sm-table-cell">Name</th>
-                        <th class="d-none d-sm-table-cell">Slug</th>
+                        <th class="d-none d-sm-table-cell">Price</th>
                         <th class="d-none d-sm-table-cell">Description</th>
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
                     </tr>
@@ -65,7 +65,7 @@
                                 {{$subscription->name}}
                             </td>
                             <td class="d-none d-sm-table-cell">
-                                {{$subscription->slug}}
+                                {{$subscription->price}}
                             </td>
                             <td class="d-none d-sm-table-cell">
                                 {{$subscription->description}}

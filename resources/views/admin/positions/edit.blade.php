@@ -69,8 +69,7 @@
                             <div class="form-group">
                                 <label>Description</label>
                                 <textarea class="form-control" name="description" rows="3"
-                                          value="{{$position->description}}"
-                                          placeholder="Client Manager Role has the whole permissions to manage clients, like add/edit/delete clients and etc ..."></textarea>
+                                          placeholder="Description here ...">{{$position->description}}</textarea>
                             </div>
                         </div>
                     </div>

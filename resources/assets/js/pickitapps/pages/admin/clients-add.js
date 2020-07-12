@@ -1,11 +1,12 @@
-
-export default class SubscriptionsAdd {
+import Helpers from "../../modules/helpers";
+export default class ClientsAdd {
     constructor() {
         this.init();
     }
 
     init() {
         this.initValidators();
+        Helpers.run('datepicker');
     }
 
     initValidators() {
@@ -24,15 +25,25 @@ export default class SubscriptionsAdd {
                 jQuery(el).remove();
             },
             rules: {
-                'name': {
+                'first-name': {
                     required: true,
                 },
-                'slug': {
+                'last-name': {
                     required: true,
                 },
-                'price': {
+                'email': {
                     required: true,
-                    number: true
+                    email: true
+                },
+                'password': {
+                    required: true,
+                    minlength: 5
+                }
+            },
+            messages: {
+                'password': {
+                    required: 'Please provide a password',
+                    minlength: 'Your password must be at least 5 characters long'
                 }
             }
         });

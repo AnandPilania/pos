@@ -16,15 +16,17 @@
     <div class="content">
         <div class="block block-rounded block-bordered">
             <div class="block-content">
-                <div align="right">
-                    <a href="{{url('/admin/customers/print-invoice').'/'.$customer->id.'/print'}}" class="btn btn-primary"><i class="si si-printer"></i> Export to PDF</a>
-                    <a href="{{url('/admin/customers')}}" class="btn btn-warning"><i class="far fa-arrow-alt-circle-left"></i> Back</a>
+                <div class="text-right">
+                    <a href="{{route('admin.clients.invoice.print', $customer->id)}}"
+                       class="btn btn-primary"><i class="si si-printer"></i> Export to PDF</a>
+                    <a href="{{route('admin.clients.show')}}" class="btn btn-warning"><i
+                            class="far fa-arrow-alt-circle-left"></i> Back</a>
                 </div>
 
-                <div align="center">
+                <div class="text-center my-3">
                     <h1>Invoice</h1>
                 </div>
-                <div style="margin-top: 10px; margin-bottom: 10px;">
+                <div class="my-3">
                     <span>Name: </span> {{$customer->first_name.' '.$customer->last_name}} <br>
                     <span>Email: </span> {{$customer->email}} <br>
                     <span>Phone: </span> {{$customer->phonenumber}} <br>
@@ -35,22 +37,22 @@
                     <thead>
                     <tr>
                         <th class="text-center" style="width: 40px;">No</th>
-                        <th class="d-none d-sm-table-cell" style="width: 120px;">StartDate</th>
-                        <th class="d-none d-sm-table-cell" style="width: 120px;">ExpireDate</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Price</th>
+                        <th class="" style="width: 120px;">StartDate</th>
+                        <th class="" style="width: 120px;">ExpireDate</th>
+                        <th class="" style="width: 80px;">Price</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($invoices as $invoice)
                         <tr>
                             <td class="text-center">{{$loop->iteration}}</td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="">
                                 {{ date('d M Y', strtotime($invoice->start_date)) }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="">
                                 {{ date('d M Y', strtotime($invoice->expire_date)) }}
                             </td>
-                            <td class="d-none d-sm-table-cell">
+                            <td class="">
                                 {{ $invoice->price.' KWD' }}
                             </td>
                         </tr>

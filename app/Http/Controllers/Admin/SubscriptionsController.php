@@ -34,7 +34,7 @@ class SubscriptionsController
 
         return view('admin.subscriptions.edit')
             ->with([
-                'position' => $subscription,
+                'subscription' => $subscription,
                 'sanctions' => $sanctions,
                 'id' => $id
             ]);
@@ -44,11 +44,13 @@ class SubscriptionsController
     {
         $name = request('name');
         $slug = request('slug');
+        $price = request('price');
         $description = request('description');
 
         request()->validate([
             'name' => 'required',
-            'slug' => 'required|unique:subscriptions'
+            'slug' => 'required|unique:subscriptions',
+            'price' => 'required|numeric'
         ]);
 
         if (empty(request('sanctions'))) {
@@ -60,6 +62,7 @@ class SubscriptionsController
         $subscription = new Subscription();
         $subscription->name = $name;
         $subscription->slug = $slug;
+        $subscription->price = $price;
         $subscription->description = $description;
         $subscription->save();
 
@@ -72,13 +75,14 @@ class SubscriptionsController
     public function edit()
     {
         $id = request('id');
-
         $name = request('name');
+        $price = request('price');
         $slug = request('slug');
         $description = request('description');
 
         request()->validate([
             'name' => 'required',
+            'price' => 'required|numeric',
             'slug' => 'required|unique:subscriptions,slug,' . $id
         ]);
 
@@ -92,6 +96,7 @@ class SubscriptionsController
             ->update([
                 'name' => $name,
                 'slug' => $slug,
+                'price' => $price,
                 'description' => $description,
             ]);
 
@@ -107,7 +112,7 @@ class SubscriptionsController
         $id = request('id');
         $subscription = Subscription::find($id);
         $subscription->sanctions()->detach();
-        $subscription->users()->detach();
+        $subscription->clients()->detach();
         $subscription->delete();
 
         return Utils::makeResponse();

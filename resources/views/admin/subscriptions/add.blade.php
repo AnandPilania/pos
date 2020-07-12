@@ -67,6 +67,13 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>
+                                    Price <span class="text-danger">*</span> (Monthly)
+                                </label>
+                                <input type="text" class="form-control @error('price') is-invalid @enderror"
+                                       name="price" placeholder="Price">
+                            </div>
+                            <div class="form-group">
                                 <label>Description</label>
                                 <textarea class="form-control" name="description" rows="3"
                                           placeholder="..."></textarea>

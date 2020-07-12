@@ -48,7 +48,7 @@
                     @csrf
                     <h2 class="content-heading">Position Information</h2>
                     <div class="row">
-                        <div class="col-xl-8 col-12">
+                        <div class="col-xl-8">
                             <div class="row">
                                 <div class="col-md-6 form-group">
                                     <label>
@@ -76,7 +76,7 @@
 
                     <h2 class="content-heading">Permissions <span class="text-danger">*</span></h2>
                     <div class="row">
-                        <div class="col-xl-8 col-12">
+                        <div class="col-xl-8">
                             <table class="table table-sm table-vcenter">
                                 <thead>
                                 <tr>

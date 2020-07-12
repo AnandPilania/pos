@@ -242,46 +242,25 @@ class ClientsController
         return Utils::makeResponse();
     }
 
-    public function delCustomer()
+    public function delete()
     {
         $id = request('id');
-        Customers::where('id', $id)->delete();
+        $user = Client::find($id);
+        $user->subscriptions()->detach();
+        $user->sanctions()->detach();
+        $user->delete();
 
         return Utils::makeResponse();
     }
 
-    public function toggleCustomerEnable()
+    public function toggleActive()
     {
         $id = request('id');
-        $enable_flag = Customers::where('id', $id)->first()->enable_flag;
+        $active = Client::where('id', $id)->first()->active;
 
-        Customers::where('id', $id)->update([
-            'enable_flag' => 1 - $enable_flag,
+        Client::where('id', $id)->update([
+            'active' => 1 - $active,
         ]);
-
-        return Utils::makeResponse();
-    }
-
-    public function toggleCustomerAddProduct()
-    {
-        $customer_id = request('customer_id');
-        $product_id = request('product_id');
-        $exist_flag = CustomerProducts::where([
-            'customer_id' => $customer_id,
-            'product_id' => $product_id,
-        ])->exists();
-
-        if ($exist_flag) {
-            CustomerProducts::where([
-                'customer_id' => $customer_id,
-                'product_id' => $product_id,
-            ])->delete();
-        } else {
-            $customer_product = new CustomerProducts();
-            $customer_product->customer_id = $customer_id;
-            $customer_product->product_id = $product_id;
-            $customer_product->save();
-        }
 
         return Utils::makeResponse();
     }
@@ -289,7 +268,7 @@ class ClientsController
     public function printCustomerInvoice()
     {
         $id = request('id');
-        $customer = Customers::where('id', $id)->first();
+        $customer = Client::find($id);
         $invoices = Invoices::where('customer_id', $id)->get();
         $total = Invoices::where('customer_id', $id)->sum('price');
 
@@ -307,11 +286,11 @@ class ClientsController
     {
 
         $id = request('id');
-        $customer = Customers::where('id', $id)->first();
+        $customer = Client::find($id);
         $invoices = Invoices::where('customer_id', $id)->get();
         $total = Invoices::where('customer_id', $id)->sum('price');
 
-        return view('customer_invoice_print_preview')->with([
+        return view('admin.clients.invoice_print_preview')->with([
             'customer' => $customer,
             'invoices' => $invoices,
             'total' => $total,

@@ -24,6 +24,8 @@ import PositionsAdd from "./pages/admin/positions-add";
 import BusinessTypesAdd from "./pages/admin/business-types-add";
 import SubscriptionsList from "./pages/admin/subscriptions-list";
 import SubscriptionsAdd from "./pages/admin/subscriptions-add";
+import ClientsList from "./pages/admin/clients-list";
+import ClientsAdd from "./pages/admin/clients-add";
 
 // App extends Template
 export default class App extends Template {
@@ -43,7 +45,9 @@ export default class App extends Template {
             PositionsAdd,
             BusinessTypesAdd,
             SubscriptionsList,
-            SubscriptionsAdd
+            SubscriptionsAdd,
+            ClientsList,
+            ClientsAdd
         }
     }
 

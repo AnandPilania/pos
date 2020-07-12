@@ -67,10 +67,16 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label>
+                                    Price <span class="text-danger">*</span> (Monthly)
+                                </label>
+                                <input type="text" class="form-control @error('price') is-invalid @enderror"
+                                       name="price" value="{{$subscription->price}}" placeholder="Price">
+                            </div>
+                            <div class="form-group">
                                 <label>Description</label>
-                                <textarea class="form-control" name="description" rows="3"
-                                          value="{{$subscription->description}}"
-                                          placeholder="..."></textarea>
+                                <textarea class="form-control" name="description" rows="5"
+                                          placeholder="...">{{$subscription->description}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -121,7 +127,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{route('admin.subscription.show')}}">
+                                <a class="btn btn-danger" href="{{route('admin.subscriptions.show')}}">
                                     <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
