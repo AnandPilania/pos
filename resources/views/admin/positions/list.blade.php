@@ -7,6 +7,19 @@
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css')}}">
 @endsection
 
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.PositionsList();
+        });
+    </script>
+@endsection
+
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -28,7 +41,7 @@
     <div class="content">
         <div class="block block-rounded block-bordered">
             <div class="block-header block-header-default">
-                <h3 class="block-title">Positions List</h3>
+                <h3 class="block-title">Position List</h3>
             </div>
             <div class="block-content block-content-full">
                 <div class="mb-2">
@@ -77,40 +90,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
-    <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            window.page = new Pickitapps.pages.PositionsList();
-        });
-    </script>
-
-    <script>
-
-        $(document).ready(function () {
-            $("[name^='enable-toggle-']").on('change', function () {
-                var id = this.name.split("enable-toggle-")[1];
-                $.ajax({
-                    url: '{{url('/admin/employees/toggle-enable')}}',
-                    type: "POST",
-                    data: {
-                        "id": id,
-                    },
-                    error: function () {
-                    },
-                    success: function (data) {
-                        if (data.message.length == 0) {
-                            //window.location.reload();
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 @endsection

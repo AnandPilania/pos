@@ -7,10 +7,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Models\Permission;
 use App\Http\Models\Role;
 use App\Http\Utils\Utils;
-use Illuminate\Support\Facades\Hash;
 
 class PositionsController
 {
+
     public function index()
     {
         $roles = Role::get();
@@ -64,13 +64,10 @@ class PositionsController
         $role->description = $description;
         $role->save();
 
-        foreach (request('permissions') as $permission_id) {
-            $permission = Permission::find($permission_id);
-            $role->permissions()->attach($permission);
-        }
+        $role->permissions()->attach(request('permissions'));
 
         return back()
-            ->with('success', "You have successfully added.");
+            ->with('success', "Successfully added.");
     }
 
     public function edit()
@@ -83,7 +80,7 @@ class PositionsController
 
         request()->validate([
             'name' => 'required',
-            'slug' => 'required'
+            'slug' => 'required|unique:roles'
         ]);
 
         if (empty(request('permissions'))) {
@@ -103,15 +100,16 @@ class PositionsController
         $role->permissions()->sync(request('permissions'));
 
         return back()
-            ->with('success', 'You have successfully updated.');
+            ->with('success', 'Successfully updated.');
     }
 
     public function delete()
     {
         $id = request('id');
         $role = Role::find($id);
-
-        Role::where('id', $id)->delete();
+        $role->permissions()->detach();
+        $role->users()->detach();
+        $role->delete();
 
         return Utils::makeResponse();
     }

@@ -15,6 +15,7 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "spatie/laravel-image-optimizer": "^1.6",
+        "tightenco/ziggy": "^0.9.4",
         "tymon/jwt-auth": "^1.0",
         "yajra/laravel-datatables-oracle": "^9.10"
     },

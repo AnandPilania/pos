@@ -1,3 +1,4 @@
+import {responseBodyHandling, catchErrorHandling} from "../../utils/axios";
 
 export default class EmployeesList {
     constructor() {
@@ -6,13 +7,28 @@ export default class EmployeesList {
 
     init() {
         this.initDataTable();
+        this.initEventListeners();
     }
 
     initDataTable() {
-        jQuery('.table').dataTable({
+        this.dataTable = jQuery('.table').dataTable({
             pageLength: 10,
             lengthMenu: [5, 10, 20]
-        })
+        });
+    }
+
+    initEventListeners() {
+        $("[name^='enable-toggle-']").on('change', function () {
+            const id = this.name.split("enable-toggle-")[1];
+            axios.post(route('admin.employees.toggle-active'), {id})
+                .then(result => result['data'])
+                .then(data => {
+                    responseBodyHandling(data);
+                })
+                .catch(error => {
+                    catchErrorHandling(error);
+                });
+        });
     }
 
     delete(id) {
@@ -35,18 +51,18 @@ export default class EmployeesList {
         }).then((result) => {
             if (result.value) {
 
-                axios.post(baseUrl + '/employees/delete', {id})
-                    .then(result => {
-                        console.log(result);
+                axios.post(route('admin.employees.delete'), {id})
+                    .then(response => response['data'])
+                    .then(data => {
+                        responseBodyHandling(data, true);
                     })
-                    .catch(error=> {
-                        console.log(error);
+                    .catch(error => {
+                        catchErrorHandling(error);
                     });
 
             } else if (result.dismiss === 'cancel') {
 
             }
         });
-
     }
 }

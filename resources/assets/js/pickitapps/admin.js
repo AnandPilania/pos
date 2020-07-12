@@ -18,6 +18,9 @@ import AuthLogin from './pages/admin/auth-login';
 import PositionsList from './pages/admin/positions-list';
 import BusinessTypesList from "./pages/admin/business-types-list";
 import EmployeesList from "./pages/admin/employees-list";
+import EmployeesAdd from "./pages/admin/employees-add";
+import EmployeesEdit from "./pages/admin/employees-edit";
+import PositionsAdd from "./pages/admin/positions-add";
 
 // App extends Template
 export default class App extends Template {
@@ -31,7 +34,10 @@ export default class App extends Template {
             AuthLogin,
             PositionsList,
             BusinessTypesList,
-            EmployeesList
+            EmployeesList,
+            EmployeesAdd,
+            EmployeesEdit,
+            PositionsAdd
         }
     }
 

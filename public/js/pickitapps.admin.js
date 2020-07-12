@@ -18610,6 +18610,502 @@ var i=Object.getOwnPropertySymbols,o=Object.prototype.hasOwnProperty,s=Object.pr
 
 /***/ }),
 
+/***/ "./node_modules/toastr/toastr.js":
+/*!***************************************!*\
+  !*** ./node_modules/toastr/toastr.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
+ * Toastr
+ * Copyright 2012-2015
+ * Authors: John Papa, Hans Fjällemark, and Tim Ferrell.
+ * All Rights Reserved.
+ * Use, reproduction, distribution, and modification of this code is subject to the terms and
+ * conditions of the MIT license, available at http://www.opensource.org/licenses/mit-license.php
+ *
+ * ARIA Support: Greta Krafsig
+ *
+ * Project: https://github.com/CodeSeven/toastr
+ */
+/* global define */
+(function (define) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js")], __WEBPACK_AMD_DEFINE_RESULT__ = (function ($) {
+        return (function () {
+            var $container;
+            var listener;
+            var toastId = 0;
+            var toastType = {
+                error: 'error',
+                info: 'info',
+                success: 'success',
+                warning: 'warning'
+            };
+
+            var toastr = {
+                clear: clear,
+                remove: remove,
+                error: error,
+                getContainer: getContainer,
+                info: info,
+                options: {},
+                subscribe: subscribe,
+                success: success,
+                version: '2.1.4',
+                warning: warning
+            };
+
+            var previousToast;
+
+            return toastr;
+
+            ////////////////
+
+            function error(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.error,
+                    iconClass: getOptions().iconClasses.error,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function getContainer(options, create) {
+                if (!options) { options = getOptions(); }
+                $container = $('#' + options.containerId);
+                if ($container.length) {
+                    return $container;
+                }
+                if (create) {
+                    $container = createContainer(options);
+                }
+                return $container;
+            }
+
+            function info(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.info,
+                    iconClass: getOptions().iconClasses.info,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function subscribe(callback) {
+                listener = callback;
+            }
+
+            function success(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.success,
+                    iconClass: getOptions().iconClasses.success,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function warning(message, title, optionsOverride) {
+                return notify({
+                    type: toastType.warning,
+                    iconClass: getOptions().iconClasses.warning,
+                    message: message,
+                    optionsOverride: optionsOverride,
+                    title: title
+                });
+            }
+
+            function clear($toastElement, clearOptions) {
+                var options = getOptions();
+                if (!$container) { getContainer(options); }
+                if (!clearToast($toastElement, options, clearOptions)) {
+                    clearContainer(options);
+                }
+            }
+
+            function remove($toastElement) {
+                var options = getOptions();
+                if (!$container) { getContainer(options); }
+                if ($toastElement && $(':focus', $toastElement).length === 0) {
+                    removeToast($toastElement);
+                    return;
+                }
+                if ($container.children().length) {
+                    $container.remove();
+                }
+            }
+
+            // internal functions
+
+            function clearContainer (options) {
+                var toastsToClear = $container.children();
+                for (var i = toastsToClear.length - 1; i >= 0; i--) {
+                    clearToast($(toastsToClear[i]), options);
+                }
+            }
+
+            function clearToast ($toastElement, options, clearOptions) {
+                var force = clearOptions && clearOptions.force ? clearOptions.force : false;
+                if ($toastElement && (force || $(':focus', $toastElement).length === 0)) {
+                    $toastElement[options.hideMethod]({
+                        duration: options.hideDuration,
+                        easing: options.hideEasing,
+                        complete: function () { removeToast($toastElement); }
+                    });
+                    return true;
+                }
+                return false;
+            }
+
+            function createContainer(options) {
+                $container = $('<div/>')
+                    .attr('id', options.containerId)
+                    .addClass(options.positionClass);
+
+                $container.appendTo($(options.target));
+                return $container;
+            }
+
+            function getDefaults() {
+                return {
+                    tapToDismiss: true,
+                    toastClass: 'toast',
+                    containerId: 'toast-container',
+                    debug: false,
+
+                    showMethod: 'fadeIn', //fadeIn, slideDown, and show are built into jQuery
+                    showDuration: 300,
+                    showEasing: 'swing', //swing and linear are built into jQuery
+                    onShown: undefined,
+                    hideMethod: 'fadeOut',
+                    hideDuration: 1000,
+                    hideEasing: 'swing',
+                    onHidden: undefined,
+                    closeMethod: false,
+                    closeDuration: false,
+                    closeEasing: false,
+                    closeOnHover: true,
+
+                    extendedTimeOut: 1000,
+                    iconClasses: {
+                        error: 'toast-error',
+                        info: 'toast-info',
+                        success: 'toast-success',
+                        warning: 'toast-warning'
+                    },
+                    iconClass: 'toast-info',
+                    positionClass: 'toast-top-right',
+                    timeOut: 5000, // Set timeOut and extendedTimeOut to 0 to make it sticky
+                    titleClass: 'toast-title',
+                    messageClass: 'toast-message',
+                    escapeHtml: false,
+                    target: 'body',
+                    closeHtml: '<button type="button">&times;</button>',
+                    closeClass: 'toast-close-button',
+                    newestOnTop: true,
+                    preventDuplicates: false,
+                    progressBar: false,
+                    progressClass: 'toast-progress',
+                    rtl: false
+                };
+            }
+
+            function publish(args) {
+                if (!listener) { return; }
+                listener(args);
+            }
+
+            function notify(map) {
+                var options = getOptions();
+                var iconClass = map.iconClass || options.iconClass;
+
+                if (typeof (map.optionsOverride) !== 'undefined') {
+                    options = $.extend(options, map.optionsOverride);
+                    iconClass = map.optionsOverride.iconClass || iconClass;
+                }
+
+                if (shouldExit(options, map)) { return; }
+
+                toastId++;
+
+                $container = getContainer(options, true);
+
+                var intervalId = null;
+                var $toastElement = $('<div/>');
+                var $titleElement = $('<div/>');
+                var $messageElement = $('<div/>');
+                var $progressElement = $('<div/>');
+                var $closeElement = $(options.closeHtml);
+                var progressBar = {
+                    intervalId: null,
+                    hideEta: null,
+                    maxHideTime: null
+                };
+                var response = {
+                    toastId: toastId,
+                    state: 'visible',
+                    startTime: new Date(),
+                    options: options,
+                    map: map
+                };
+
+                personalizeToast();
+
+                displayToast();
+
+                handleEvents();
+
+                publish(response);
+
+                if (options.debug && console) {
+                    console.log(response);
+                }
+
+                return $toastElement;
+
+                function escapeHtml(source) {
+                    if (source == null) {
+                        source = '';
+                    }
+
+                    return source
+                        .replace(/&/g, '&amp;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#39;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                }
+
+                function personalizeToast() {
+                    setIcon();
+                    setTitle();
+                    setMessage();
+                    setCloseButton();
+                    setProgressBar();
+                    setRTL();
+                    setSequence();
+                    setAria();
+                }
+
+                function setAria() {
+                    var ariaValue = '';
+                    switch (map.iconClass) {
+                        case 'toast-success':
+                        case 'toast-info':
+                            ariaValue =  'polite';
+                            break;
+                        default:
+                            ariaValue = 'assertive';
+                    }
+                    $toastElement.attr('aria-live', ariaValue);
+                }
+
+                function handleEvents() {
+                    if (options.closeOnHover) {
+                        $toastElement.hover(stickAround, delayedHideToast);
+                    }
+
+                    if (!options.onclick && options.tapToDismiss) {
+                        $toastElement.click(hideToast);
+                    }
+
+                    if (options.closeButton && $closeElement) {
+                        $closeElement.click(function (event) {
+                            if (event.stopPropagation) {
+                                event.stopPropagation();
+                            } else if (event.cancelBubble !== undefined && event.cancelBubble !== true) {
+                                event.cancelBubble = true;
+                            }
+
+                            if (options.onCloseClick) {
+                                options.onCloseClick(event);
+                            }
+
+                            hideToast(true);
+                        });
+                    }
+
+                    if (options.onclick) {
+                        $toastElement.click(function (event) {
+                            options.onclick(event);
+                            hideToast();
+                        });
+                    }
+                }
+
+                function displayToast() {
+                    $toastElement.hide();
+
+                    $toastElement[options.showMethod](
+                        {duration: options.showDuration, easing: options.showEasing, complete: options.onShown}
+                    );
+
+                    if (options.timeOut > 0) {
+                        intervalId = setTimeout(hideToast, options.timeOut);
+                        progressBar.maxHideTime = parseFloat(options.timeOut);
+                        progressBar.hideEta = new Date().getTime() + progressBar.maxHideTime;
+                        if (options.progressBar) {
+                            progressBar.intervalId = setInterval(updateProgress, 10);
+                        }
+                    }
+                }
+
+                function setIcon() {
+                    if (map.iconClass) {
+                        $toastElement.addClass(options.toastClass).addClass(iconClass);
+                    }
+                }
+
+                function setSequence() {
+                    if (options.newestOnTop) {
+                        $container.prepend($toastElement);
+                    } else {
+                        $container.append($toastElement);
+                    }
+                }
+
+                function setTitle() {
+                    if (map.title) {
+                        var suffix = map.title;
+                        if (options.escapeHtml) {
+                            suffix = escapeHtml(map.title);
+                        }
+                        $titleElement.append(suffix).addClass(options.titleClass);
+                        $toastElement.append($titleElement);
+                    }
+                }
+
+                function setMessage() {
+                    if (map.message) {
+                        var suffix = map.message;
+                        if (options.escapeHtml) {
+                            suffix = escapeHtml(map.message);
+                        }
+                        $messageElement.append(suffix).addClass(options.messageClass);
+                        $toastElement.append($messageElement);
+                    }
+                }
+
+                function setCloseButton() {
+                    if (options.closeButton) {
+                        $closeElement.addClass(options.closeClass).attr('role', 'button');
+                        $toastElement.prepend($closeElement);
+                    }
+                }
+
+                function setProgressBar() {
+                    if (options.progressBar) {
+                        $progressElement.addClass(options.progressClass);
+                        $toastElement.prepend($progressElement);
+                    }
+                }
+
+                function setRTL() {
+                    if (options.rtl) {
+                        $toastElement.addClass('rtl');
+                    }
+                }
+
+                function shouldExit(options, map) {
+                    if (options.preventDuplicates) {
+                        if (map.message === previousToast) {
+                            return true;
+                        } else {
+                            previousToast = map.message;
+                        }
+                    }
+                    return false;
+                }
+
+                function hideToast(override) {
+                    var method = override && options.closeMethod !== false ? options.closeMethod : options.hideMethod;
+                    var duration = override && options.closeDuration !== false ?
+                        options.closeDuration : options.hideDuration;
+                    var easing = override && options.closeEasing !== false ? options.closeEasing : options.hideEasing;
+                    if ($(':focus', $toastElement).length && !override) {
+                        return;
+                    }
+                    clearTimeout(progressBar.intervalId);
+                    return $toastElement[method]({
+                        duration: duration,
+                        easing: easing,
+                        complete: function () {
+                            removeToast($toastElement);
+                            clearTimeout(intervalId);
+                            if (options.onHidden && response.state !== 'hidden') {
+                                options.onHidden();
+                            }
+                            response.state = 'hidden';
+                            response.endTime = new Date();
+                            publish(response);
+                        }
+                    });
+                }
+
+                function delayedHideToast() {
+                    if (options.timeOut > 0 || options.extendedTimeOut > 0) {
+                        intervalId = setTimeout(hideToast, options.extendedTimeOut);
+                        progressBar.maxHideTime = parseFloat(options.extendedTimeOut);
+                        progressBar.hideEta = new Date().getTime() + progressBar.maxHideTime;
+                    }
+                }
+
+                function stickAround() {
+                    clearTimeout(intervalId);
+                    progressBar.hideEta = 0;
+                    $toastElement.stop(true, true)[options.showMethod](
+                        {duration: options.showDuration, easing: options.showEasing}
+                    );
+                }
+
+                function updateProgress() {
+                    var percentage = ((progressBar.hideEta - (new Date().getTime())) / progressBar.maxHideTime) * 100;
+                    $progressElement.width(percentage + '%');
+                }
+            }
+
+            function getOptions() {
+                return $.extend({}, getDefaults(), toastr.options);
+            }
+
+            function removeToast($toastElement) {
+                if (!$container) { $container = getContainer(); }
+                if ($toastElement.is(':visible')) {
+                    return;
+                }
+                $toastElement.remove();
+                $toastElement = null;
+                if ($container.children().length === 0) {
+                    $container.remove();
+                    previousToast = undefined;
+                }
+            }
+
+        })();
+    }).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+}(__webpack_require__(/*! !webpack amd define */ "./node_modules/webpack/buildin/amd-define.js")));
+
+
+/***/ }),
+
+/***/ "./node_modules/webpack/buildin/amd-define.js":
+/*!***************************************!*\
+  !*** (webpack)/buildin/amd-define.js ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
+
+/***/ }),
+
 /***/ "./node_modules/webpack/buildin/global.js":
 /*!***********************************!*\
   !*** (webpack)/buildin/global.js ***!
@@ -18659,6 +19155,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_positions_list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/admin/positions-list */ "./resources/assets/js/pickitapps/pages/admin/positions-list.js");
 /* harmony import */ var _pages_admin_business_types_list__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/admin/business-types-list */ "./resources/assets/js/pickitapps/pages/admin/business-types-list.js");
 /* harmony import */ var _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/admin/employees-list */ "./resources/assets/js/pickitapps/pages/admin/employees-list.js");
+/* harmony import */ var _pages_admin_employees_add__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pages/admin/employees-add */ "./resources/assets/js/pickitapps/pages/admin/employees-add.js");
+/* harmony import */ var _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pages/admin/employees-edit */ "./resources/assets/js/pickitapps/pages/admin/employees-edit.js");
+/* harmony import */ var _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pages/admin/positions-add */ "./resources/assets/js/pickitapps/pages/admin/positions-add.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18693,6 +19192,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -18714,7 +19216,10 @@ var App = /*#__PURE__*/function (_Template) {
       AuthLogin: _pages_admin_auth_login__WEBPACK_IMPORTED_MODULE_4__["default"],
       PositionsList: _pages_admin_positions_list__WEBPACK_IMPORTED_MODULE_5__["default"],
       BusinessTypesList: _pages_admin_business_types_list__WEBPACK_IMPORTED_MODULE_6__["default"],
-      EmployeesList: _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__["default"]
+      EmployeesList: _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__["default"],
+      EmployeesAdd: _pages_admin_employees_add__WEBPACK_IMPORTED_MODULE_8__["default"],
+      EmployeesEdit: _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__["default"],
+      PositionsAdd: _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__["default"]
     };
     return _this;
   }
@@ -18791,6 +19296,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var jquery_appear__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(jquery_appear__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var jquery_scroll_lock__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! jquery-scroll-lock */ "./node_modules/jquery-scroll-lock/jquery-scrollLock.js");
 /* harmony import */ var jquery_scroll_lock__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(jquery_scroll_lock__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var toastr__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! toastr */ "./node_modules/toastr/toastr.js");
+/* harmony import */ var toastr__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(toastr__WEBPACK_IMPORTED_MODULE_7__);
 /*
  *  Document   : bootstrap.js
  *  Author     : pixelcave
@@ -18804,11 +19311,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
  // ..and assign to window the ones that need it
 
 window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_0___default.a;
 window.SimpleBar = simplebar__WEBPACK_IMPORTED_MODULE_1___default.a;
 window.Cookies = js_cookie__WEBPACK_IMPORTED_MODULE_2___default.a;
+window.toastr = toastr__WEBPACK_IMPORTED_MODULE_7___default.a;
 
 /***/ }),
 
@@ -20820,8 +21329,14 @@ var BusinessTypesList = /*#__PURE__*/function () {
   }, {
     key: "initDataTable",
     value: function initDataTable() {
-      jQuery('.table').dataTable({
-        stateSave: true,
+      this.dataTable = jQuery('.table').dataTable({
+        processing: true,
+        // serverSide: true,
+        // ajax: route('admin.business-types.list').template,
+        // columns: [
+        //     {data: 'id', name: 'id'},
+        //     {data: 'name', name: 'name'},
+        // ],
         pageLength: 10,
         lengthMenu: [5, 10, 20]
       });
@@ -20829,9 +21344,11 @@ var BusinessTypesList = /*#__PURE__*/function () {
   }, {
     key: "delete",
     value: function _delete(id) {
+      var _this = this;
+
       swal({
         title: 'Are you sure?',
-        text: 'This position will be also detached from users.',
+        text: 'This posit type will be also detached from clients.',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger m-1',
@@ -20847,9 +21364,14 @@ var BusinessTypesList = /*#__PURE__*/function () {
         }
       }).then(function (result) {
         if (result.value) {
-          axios.post(baseUrl + '/business-types/delete', {
+          axios.post(route('admin.business-types.delete'), {
             id: id
           }).then(function (result) {
+            console.log(_this.dataTable);
+
+            if (_this.dataTable) {//this.dataTable.fnDestroy().fnDraw(false);
+            }
+
             console.log(result);
           })["catch"](function (error) {
             console.log(error);
@@ -20866,6 +21388,156 @@ var BusinessTypesList = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/pickitapps/pages/admin/employees-add.js":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/employees-add.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeesAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EmployeesAdd = /*#__PURE__*/function () {
+  function EmployeesAdd() {
+    _classCallCheck(this, EmployeesAdd);
+
+    this.init();
+  }
+
+  _createClass(EmployeesAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'first-name': {
+            required: true
+          },
+          'last-name': {
+            required: true
+          },
+          'email': {
+            required: true,
+            email: true
+          },
+          'password': {
+            required: true,
+            minlength: 5
+          }
+        },
+        messages: {
+          'password': {
+            required: 'Please provide a password',
+            minlength: 'Your password must be at least 5 characters long'
+          }
+        }
+      });
+    }
+  }]);
+
+  return EmployeesAdd;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/employees-edit.js":
+/*!**********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/employees-edit.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeesEdit; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EmployeesEdit = /*#__PURE__*/function () {
+  function EmployeesEdit() {
+    _classCallCheck(this, EmployeesEdit);
+
+    this.init();
+  }
+
+  _createClass(EmployeesEdit, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'first-name': {
+            required: true
+          },
+          'last-name': {
+            required: true
+          },
+          'password': {
+            minlength: 5
+          }
+        },
+        messages: {
+          'password': {
+            minlength: 'Your password must be at least 5 characters long'
+          }
+        }
+      });
+    }
+  }]);
+
+  return EmployeesEdit;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pickitapps/pages/admin/employees-list.js":
 /*!**********************************************************************!*\
   !*** ./resources/assets/js/pickitapps/pages/admin/employees-list.js ***!
@@ -20876,11 +21548,14 @@ var BusinessTypesList = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeesList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var EmployeesList = /*#__PURE__*/function () {
   function EmployeesList() {
@@ -20893,13 +21568,30 @@ var EmployeesList = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       this.initDataTable();
+      this.initEventListeners();
     }
   }, {
     key: "initDataTable",
     value: function initDataTable() {
-      jQuery('.table').dataTable({
+      this.dataTable = jQuery('.table').dataTable({
         pageLength: 10,
         lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("[name^='enable-toggle-']").on('change', function () {
+        var id = this.name.split("enable-toggle-")[1];
+        axios.post(route('admin.employees.toggle-active'), {
+          id: id
+        }).then(function (result) {
+          return result['data'];
+        }).then(function (data) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data);
+        })["catch"](function (error) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+        });
       });
     }
   }, {
@@ -20923,12 +21615,14 @@ var EmployeesList = /*#__PURE__*/function () {
         }
       }).then(function (result) {
         if (result.value) {
-          axios.post(baseUrl + '/employees/delete', {
+          axios.post(route('admin.employees.delete'), {
             id: id
-          }).then(function (result) {
-            console.log(result);
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
           })["catch"](function (error) {
-            console.log(error);
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
           });
         } else if (result.dismiss === 'cancel') {}
       });
@@ -20936,6 +21630,70 @@ var EmployeesList = /*#__PURE__*/function () {
   }]);
 
   return EmployeesList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/positions-add.js":
+/*!*********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/positions-add.js ***!
+  \*********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PositionsAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var PositionsAdd = /*#__PURE__*/function () {
+  function PositionsAdd() {
+    _classCallCheck(this, PositionsAdd);
+
+    this.init();
+  }
+
+  _createClass(PositionsAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'name': {
+            required: true
+          },
+          'slug': {
+            required: true
+          }
+        }
+      });
+    }
+  }]);
+
+  return PositionsAdd;
 }();
 
 
@@ -20952,11 +21710,14 @@ var EmployeesList = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PositionsList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var PositionsList = /*#__PURE__*/function () {
   function PositionsList() {
@@ -20983,7 +21744,7 @@ var PositionsList = /*#__PURE__*/function () {
     value: function deletePosition(id) {
       swal({
         title: 'Are you sure?',
-        text: 'This business type will be also detached from clients.',
+        text: 'This position will be also detached from users.',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger m-1',
@@ -20999,12 +21760,14 @@ var PositionsList = /*#__PURE__*/function () {
         }
       }).then(function (result) {
         if (result.value) {
-          axios.post(baseUrl + '/positions/delete', {
+          axios.post(route('admin.positions.delete'), {
             id: id
-          }).then(function (result) {
-            console.log(result);
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
           })["catch"](function (error) {
-            console.log(error);
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
           });
         } else if (result.dismiss === 'cancel') {}
       });
@@ -21015,6 +21778,44 @@ var PositionsList = /*#__PURE__*/function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/utils/axios.js":
+/*!*******************************************************!*\
+  !*** ./resources/assets/js/pickitapps/utils/axios.js ***!
+  \*******************************************************/
+/*! exports provided: responseBodyHandling, catchErrorHandling */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "responseBodyHandling", function() { return responseBodyHandling; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "catchErrorHandling", function() { return catchErrorHandling; });
+function responseBodyHandling(data) {
+  var pageReload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+  if (data.message === "") {
+    toastr.success('Operation Succeed!');
+
+    if (pageReload) {
+      window.location.reload();
+    }
+  } else {
+    toastr.info(data.message);
+  }
+}
+function catchErrorHandling(error) {
+  if (error.response) {
+    if (error.response.data && error.response.data.message !== undefined) {
+      toastr.error(error.response.data.message);
+    } else {
+      toastr.error('Internal Server Error\nPlease contact with Admin.');
+    }
+  } else {
+    toastr.error('Something went wrong, please try again after refresh the page.');
+  }
+}
 
 /***/ }),
 

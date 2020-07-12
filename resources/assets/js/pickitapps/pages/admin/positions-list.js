@@ -1,3 +1,4 @@
+import {catchErrorHandling, responseBodyHandling} from "../../utils/axios";
 
 export default class PositionsList {
     constructor() {
@@ -18,7 +19,7 @@ export default class PositionsList {
     deletePosition(id) {
         swal({
             title: 'Are you sure?',
-            text: 'This business type will be also detached from clients.',
+            text: 'This position will be also detached from users.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-danger m-1',
@@ -35,12 +36,13 @@ export default class PositionsList {
         }).then((result) => {
             if (result.value) {
 
-                axios.post(baseUrl + '/positions/delete', {id})
-                    .then(result => {
-                        console.log(result);
+                axios.post(route('admin.positions.delete'), {id})
+                    .then(response => response['data'])
+                    .then(data => {
+                        responseBodyHandling(data, true);
                     })
-                    .catch(error=> {
-                        console.log(error);
+                    .catch(error => {
+                        catchErrorHandling(error);
                     });
 
             } else if (result.dismiss === 'cancel') {

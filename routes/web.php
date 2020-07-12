@@ -40,10 +40,10 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
             Route::get('/', 'EmployeesController@index')->name('show');
             Route::get('/add', 'EmployeesController@showAddPage')->name('add.show');
             Route::post('/add', 'EmployeesController@add')->name('add');
-            Route::get('/edit/{id}', 'EmployeesController@showEditPage')->name('edit.show');
-            Route::post('/edit', 'EmployeesController@edit')->name('edit');
-            Route::post('/delete', 'EmployeesController@destroy')->name('delete');
+            Route::post('/delete', 'EmployeesController@delete')->name('delete');
             Route::post('/toggle-active', 'EmployeesController@toggleActive')->name('toggle-active');
+            Route::get('/{id}', 'EmployeesController@showEditPage')->name('edit.show');
+            Route::post('/{id}', 'EmployeesController@edit')->name('edit');
         });
 
         // Positions
@@ -120,6 +120,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
         // Business Types
         Route::group(['prefix' => 'business-types', 'as' => 'business-types.'], function () {
             Route::get('/', 'BusinessTypesController@index')->name('show');
+            Route::get('/getList', 'BusinessTypesController@getBusinessTypeList')->name('list');
             Route::get('/add', 'BusinessTypesController@showAddPage')->name('add.show');
             Route::post('/add', 'BusinessTypesController@add')->name('add');
             Route::post('/delete', 'BusinessTypesController@delete')->name('delete');

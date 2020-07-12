@@ -12,3 +12,9 @@
 // @import 'component1';
 
 @import "global";
+
+#toast-container > div {
+    box-shadow: none;
+    font-size: .875rem;
+    opacity: 1;
+}

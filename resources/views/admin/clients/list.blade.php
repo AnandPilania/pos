@@ -74,7 +74,7 @@
                             </td>
 {{--                            @if(Session::get('user-type')==1)--}}
                                 <td class="text-center">
-                                    <div class="custom-control custom-switch custom-control custom-control-inline mb-2"
+                                    <div class="custom-control custom-switch custom-control"
                                          align="center">
                                         <input type="checkbox" class="custom-control-input"
                                                id="enable-toggle-{{$client->id}}"

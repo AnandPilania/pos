@@ -9,17 +9,23 @@ export default class BusinessTypesList {
     }
 
     initDataTable() {
-        jQuery('.table').dataTable({
-            stateSave: true,
+        this.dataTable = jQuery('.table').dataTable({
+            processing: true,
+            // serverSide: true,
+            // ajax: route('admin.business-types.list').template,
+            // columns: [
+            //     {data: 'id', name: 'id'},
+            //     {data: 'name', name: 'name'},
+            // ],
             pageLength: 10,
             lengthMenu: [5, 10, 20]
-        })
+        });
     }
 
     delete(id) {
         swal({
             title: 'Are you sure?',
-            text: 'This position will be also detached from users.',
+            text: 'This posit type will be also detached from clients.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-danger m-1',
@@ -36,8 +42,12 @@ export default class BusinessTypesList {
         }).then((result) => {
             if (result.value) {
 
-                axios.post(baseUrl + '/business-types/delete', {id})
+                axios.post(route('admin.business-types.delete'), {id})
                     .then(result => {
+                        console.log(this.dataTable);
+                        if (this.dataTable) {
+                            //this.dataTable.fnDestroy().fnDraw(false);
+                        }
                         console.log(result);
                     })
                     .catch(error=> {

@@ -26,7 +26,7 @@
                     <div class="block-content block-content-full bg-primary-op aspect-ratio-16-9 d-flex justify-content-center align-items-center">
                         <div>
                             <div class="font-size-h1 font-w300 text-white">{{$employees}}</div>
-                            <div class="font-w600 mt-3 text-uppercase text-white">Employees</div>
+                            <div class="font-w600 mt-3 text-uppercase text-white">EmployeesList</div>
                         </div>
                     </div>
                 </a>

@@ -13,8 +13,10 @@ import 'bootstrap';
 import 'popper.js';
 import 'jquery.appear';
 import 'jquery-scroll-lock';
+import Toastr from 'toastr';
 
 // ..and assign to window the ones that need it
 window.$ = window.jQuery    = jQuery;
 window.SimpleBar            = SimpleBar;
 window.Cookies              = Cookies;
+window.toastr               = Toastr;

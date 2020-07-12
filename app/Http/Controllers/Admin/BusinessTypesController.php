@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Models\Permission;
 use App\Http\Models\BusinessType;
 use App\Http\Utils\Utils;
+use Yajra\DataTables\DataTables;
 
 class BusinessTypesController
 {
@@ -34,6 +35,11 @@ class BusinessTypesController
                 'business_type' => $businessType,
                 'id' => $id
             ]);
+    }
+
+    public function getBusinessTypeList() {
+        $list = BusinessType::get();
+        return datatables()->of($list)->make(true);
     }
 
     public function add()

@@ -1,5 +1,15 @@
 @extends('layouts.admin')
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
 
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.PositionsAdd();
+        });
+    </script>
+@endsection
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -34,28 +44,26 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.positions.edit', $id)}}" method="POST">
+                <form action="{{route('admin.positions.edit', $id)}}" class="js-validation" method="POST">
                     @csrf
                     <h2 class="content-heading">Position Info</h2>
                     <div class="row">
                         <div class="col-xl-8 col-12">
-                            <div class="form-group row">
-                                <div class="col-md-6 col-12">
+                            <div class="row">
+                                <div class="col-md-6 col-12 form-group">
                                     <label>
                                         Name <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
                                            name="name" value="{{$position->name}}" placeholder="Client Manager">
                                 </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>
-                                            Slug <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('slug') is-invalid @enderror"
-                                               name="slug" value="{{$position->slug}}"
-                                               placeholder="client-manager">
-                                    </div>
+                                <div class="col-md-6 col-12 form-group">
+                                    <label>
+                                        Slug <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                           name="slug" value="{{$position->slug}}"
+                                           placeholder="client-manager">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -87,11 +95,11 @@
                                                        id="permission-{{$permission->id}}" name="permissions[]"
                                                        value="{{$permission->id}}"
                                                        @foreach($position->permissions as $p)
-                                                           @if($p->id == $permission->id)
-                                                                checked
-                                                                @break
-                                                            @endif
-                                                        @endforeach
+                                                       @if($p->id == $permission->id)
+                                                       checked
+                                                    @break
+                                                    @endif
+                                                    @endforeach
                                                 >
                                                 <label class="custom-control-label"
                                                        for="permission-{{$permission->id}}">{{$permission->name}}</label>
@@ -126,11 +134,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-    <!-- Page JS Code -->
-    <script>
-
-    </script>
 @endsection

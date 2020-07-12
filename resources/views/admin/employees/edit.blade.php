@@ -1,8 +1,15 @@
 @extends('layouts.admin')
 
-@section('css_before')
-    <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.EmployeesEdit();
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -28,7 +35,7 @@
                     </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.
                         <ul>
@@ -39,40 +46,82 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/employees/edit')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.employees.edit', $id)}}" class="js-validation" method="POST">
                     @csrf
-                    <div class="row push">
+                    <h2 class="content-heading">Personal Information</h2>
+                    <div class="row">
                         <div class="col-12 col-xl-8">
-                            <div class="form-group row">
-                                <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
                                     <label>
                                         First Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="first-name" placeholder="First Name" value="{{$employee->first_name}}">
+                                    <input type="text" class="form-control @error('first-name') is-invalid @enderror"
+                                           name="first-name" value="{{$employee->first_name}}" placeholder="First Name">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 form-group">
                                     <label>
                                         Last Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="last-name" placeholder="Last Name" value="{{$employee->last_name}}">
+                                    <input type="text" class="form-control @error('last-name') is-invalid @enderror"
+                                           name="last-name" value="{{$employee->last_name}}" placeholder="Last Name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>
                                     Email <span class="text-danger">*</span>
                                 </label>
-                                <input type="email" class="form-control" name="email" placeholder="Email" value="{{$employee->email}}">
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                       name="email" value="{{$employee->email}}" placeholder="Email">
                             </div>
                             <div class="form-group">
                                 <label>
                                     Password <span class="text-danger">*</span>
                                 </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                       name="password" placeholder="Password">
                             </div>
                         </div>
                     </div>
 
-                    <input type="hidden" value="{{$employee->id}}" name="id">
+                    <h2 class="content-heading">Positions <span class="text-danger">*</span></h2>
+                    <div class="row">
+                        <div class="col-xl-8 col-12">
+                            <table class="table table-sm table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th class="pl-4">Name</th>
+                                    <th class="d-none d-sm-table-cell">Slug</th>
+                                    <th class="d-none d-lg-table-cell">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($positions as $position)
+                                    <tr>
+                                        <td class="font-w600">
+                                            <div class="custom-control custom-checkbox custom-control-primary">
+                                                <input type="checkbox" class="custom-control-input"
+                                                       id="permission-{{$position->id}}" name="positions[]"
+                                                       value="{{$position->id}}"
+                                                       @foreach($employee->roles as $r)
+                                                           @if($r->id == $position->id)
+                                                                checked
+                                                                @break
+                                                            @endif
+                                                        @endforeach
+                                                >
+                                                <label class="custom-control-label"
+                                                       for="permission-{{$position->id}}">{{$position->name}}</label>
+                                            </div>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">{{$position->slug}}</td>
+                                        <td class="d-none d-lg-table-cell">{{$position->description}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <!-- Submit -->
                     <div class="row push">
                         <div class="col-lg-8 col-xl-5">
@@ -92,14 +141,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
-
-    <!-- Page JS Code -->
-    <script>
-
-    </script>
 @endsection

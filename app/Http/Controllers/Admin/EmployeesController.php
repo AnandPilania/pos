@@ -4,15 +4,15 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Http\Models\Role;
 use App\Http\Models\User;
 use App\Http\Utils\Utils;
-use Illuminate\Support\Facades\Hash;
 
 class EmployeesController
 {
     public function index()
     {
-        $employees = User::where('id', '!=', 1)->get();
+        $employees = User::where('id', '!=', 1)->with('roles')->get();
         return view('admin.employees.list')
             ->with('employees', $employees)
             ->withTitle('Employee List');
@@ -20,16 +20,24 @@ class EmployeesController
 
     public function showAddPage()
     {
+        $roles = Role::get();
         return view('admin.employees.add')
+            ->with('positions', $roles)
             ->withTitle('Add Employee');
     }
 
     public function showEditPage()
     {
         $id = request('id');
-        $employee = User::where('id', $id)->first();
+        $employee = User::where('id', $id)->with('roles')->first();
+        $roles = Role::get();
+
         return view('admin.employees.edit')
-            ->with('employee', $employee)
+            ->with([
+                'employee' => $employee,
+                'positions' => $roles,
+                'id' => $id
+            ])
             ->withTitle('Edit Employee');
     }
 
@@ -43,20 +51,27 @@ class EmployeesController
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required',
         ]);
 
-        $employee = new User();
-        $employee->first_name = $first_name;
-        $employee->last_name = $last_name;
-        $employee->email = $email;
-        $employee->password = hash::make($password);
+        if (empty(request('positions'))) {
+            return back()->withErrors([
+                'msg' => 'You must select at least one position.'
+            ]);
+        }
 
-        $employee->save();
+        $user = new User();
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->email = $email;
+        $user->password = bcrypt($password);
+
+        $user->save();
+        $user->roles()->attach(request('positions'));
 
         return back()
-            ->with('success', "You have successfully add new employee's account.");
+            ->with('success', "Successfully added.");
     }
 
     public function edit()
@@ -70,15 +85,21 @@ class EmployeesController
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,id,' . $id,
         ]);
+
+        if (empty(request('positions'))) {
+            return back()->withErrors([
+                'msg' => 'You must select at least one position.'
+            ]);
+        }
 
         if ($password != '') {
             User::where('id', $id)->update([
                 'first_name' => $first_name,
                 'last_name' => $last_name,
                 'email' => $email,
-                'password' => hash::make($password),
+                'password' => bcrypt($password),
             ]);
         } else {
             User::where('id', $id)->update([
@@ -88,26 +109,32 @@ class EmployeesController
             ]);
         }
 
+        $user = User::find($id);
+        $user->roles()->sync(request('positions'));
+
         return back()
-            ->with('success', 'You have successfully updated employee\'s account.');
+            ->with('success', 'Successfully updated.');
     }
 
-    public function destroy()
+    public function delete()
     {
         $id = request('id');
-        User::where('id', $id)->delete();
-
+        $user = User::find($id);
+        $user->roles()->detach();
+        $user->permissions()->detach();
+        $user->delete();
         return Utils::makeResponse();
     }
 
     public function toggleActive()
     {
         $id = request('id');
-        $enable_flag = User::where('id', $id)->first()->enable_flag;
+        $active = User::where('id', $id)->first()->active;
 
-        User::where('id', $id)->update([
-            'enable_flag' => 1 - $enable_flag,
-        ]);
+        User::where('id', $id)
+            ->update([
+                'active' => 1 - $active,
+            ]);
 
         return Utils::makeResponse();
     }

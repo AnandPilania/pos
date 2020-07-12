@@ -30,6 +30,7 @@
 
 <!-- Scripts -->
     <script>window.Laravel = {!! json_encode(['csrfToken' => csrf_token(),]) !!};</script>
+    @routes
 </head>
 <body>
 <!-- Page Container -->

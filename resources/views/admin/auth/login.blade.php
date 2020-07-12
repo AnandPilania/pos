@@ -10,7 +10,6 @@
             window.page = new Pickitapps.pages.AuthLogin();
         });
     </script>
-
 @endsection
 
 @section('content')

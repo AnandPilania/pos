@@ -1,5 +1,15 @@
 @extends('layouts.admin')
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
 
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.PositionsAdd();
+        });
+    </script>
+@endsection
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -34,26 +44,26 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.positions.add')}}" method="POST">
+                <form action="{{route('admin.positions.add')}}" class="js-validation" method="POST">
                     @csrf
-                    <h2 class="content-heading">Position Info</h2>
+                    <h2 class="content-heading">Position Information</h2>
                     <div class="row">
                         <div class="col-xl-8 col-12">
-                            <div class="form-group row">
-                                <div class="col-md-6 col-12">
+                            <div class="row">
+                                <div class="col-md-6 form-group">
                                     <label>
                                         Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Client Manager">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                           name="name" placeholder="Client Manager">
                                 </div>
-                                <div class="col-md-6 col-12">
-                                    <div class="form-group">
-                                        <label>
-                                            Slug <span class="text-danger">*</span>
-                                        </label>
-                                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug"
-                                               placeholder="client-manager">
-                                    </div>
+                                <div class="col-md-6 form-group">
+                                    <label>
+                                        Slug <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                                           name="slug"
+                                           placeholder="client-manager">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -67,7 +77,7 @@
                     <h2 class="content-heading">Permissions <span class="text-danger">*</span></h2>
                     <div class="row">
                         <div class="col-xl-8 col-12">
-                            <table class="table table-sm table-borderless table-vcenter">
+                            <table class="table table-sm table-vcenter">
                                 <thead>
                                 <tr>
                                     <th class="pl-4">Name</th>
@@ -115,12 +125,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-
-    <!-- Page JS Code -->
-    <script>
-
-    </script>
 @endsection

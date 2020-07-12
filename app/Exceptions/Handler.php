@@ -50,6 +50,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => 'External API call failed. <br>Please contact with Administrator.'
+            ], 500);
+        }
         return parent::render($request, $exception);
     }
 }

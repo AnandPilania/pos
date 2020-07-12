@@ -1,9 +1,22 @@
 @extends('layouts.admin')
-
 @section('css_before')
     <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{asset('js/plugins/sweetalert2/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/dataTables.bootstrap4.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css')}}">
+@endsection
+
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
+    <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+    <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.EmployeesList();
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -30,17 +43,19 @@
                 <h3 class="block-title">Employee List</h3>
             </div>
             <div class="block-content block-content-full">
-                <div style="margin-bottom: 10px;">
-                    <a class="btn btn-primary" href="{{route('admin.employees.add.show')}}"><i class="fa fa-user-plus"></i> Add Employee</a>
+                <div class="mb-2">
+                    <a class="btn btn-primary" href="{{route('admin.employees.add.show')}}"><i
+                            class="fa fa-user-plus"></i> Add Employee</a>
                 </div>
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
-                        <th class="text-center d-none d-sm-table-cell" style="width: 80px;">No</th>
-                        <th class="d-none d-sm-table-cell">Name</th>
+                        <th class="text-center" style="width: 80px;">No</th>
+                        <th class="">Name</th>
                         <th class="d-none d-sm-table-cell">Email</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Enable</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
+                        <th class="d-none d-md-table-cell">Positions</th>
+                        <th class="" style="width: 80px;">Active</th>
+                        <th class="" style="width: 80px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -53,9 +68,13 @@
                             <td class="d-none d-sm-table-cell">
                                 {{$employee->email}}
                             </td>
+                            <td class="d-none d-md-table-cell">
+                                @foreach($employee->roles as $role)
+                                    <span class="badge badge-success">{{$role->name}}</span>
+                                @endforeach
+                            </td>
                             <td class="text-center">
-                                <div class="custom-control custom-switch custom-control custom-control-inline mb-2"
-                                     align="center">
+                                <div class="custom-control custom-switch custom-control">
                                     <input type="checkbox" class="custom-control-input"
                                            id="enable-toggle-{{$employee->id}}" name="enable-toggle-{{$employee->id}}"
                                            @if($employee->active == 1) checked @endif >
@@ -82,38 +101,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
-    <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            window.page = new Pickitapps.pages.EmployeesList();
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("[name^='enable-toggle-']").on('change', function () {
-                var id = this.name.split("enable-toggle-")[1];
-                $.ajax({
-                    url: '{{url('/admin/employees/toggle-enable')}}',
-                    type: "POST",
-                    data: {
-                        "id": id,
-                    },
-                    error: function () {
-                    },
-                    success: function (data) {
-                        if (data.message.length == 0) {
-                            //window.location.reload();
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 @endsection
