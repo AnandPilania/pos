@@ -21744,7 +21744,7 @@ var PositionsList = /*#__PURE__*/function () {
     value: function deletePosition(id) {
       swal({
         title: 'Are you sure?',
-        text: 'This position will be also detached from users.',
+        text: 'This position will be also detached from employees.',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger m-1',

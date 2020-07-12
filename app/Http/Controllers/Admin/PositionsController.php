@@ -49,7 +49,7 @@ class PositionsController
 
         request()->validate([
             'name' => 'required',
-            'slug' => 'required'
+            'slug' => 'required|unique:roles'
         ]);
 
         if (empty(request('permissions'))) {
@@ -80,7 +80,7 @@ class PositionsController
 
         request()->validate([
             'name' => 'required',
-            'slug' => 'required|unique:roles'
+            'slug' => 'required|unique:roles,id,' . $id
         ]);
 
         if (empty(request('permissions'))) {
