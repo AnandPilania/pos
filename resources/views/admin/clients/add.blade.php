@@ -164,9 +164,19 @@
                                     <input type="text" class="form-control" name="zip-code" placeholder="Zip Code">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Business Type</label>
+                                <select class="custom-select" name="business-type">
+                                    <option value="" disabled="disabled" selected>Select a business type</option>
+                                    @foreach($businessTypes as $e)
+                                        <option
+                                            value="{{$e->id}}">{{$e->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <h2 class="content-heading">Company Details</h2>
+                    <h2 class="content-heading">Contact Details</h2>
                     <div class="row">
                         <div class="col-xl-9">
                             <div class="form-group">

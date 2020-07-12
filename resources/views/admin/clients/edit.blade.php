@@ -166,9 +166,21 @@
                                            value="{{$client->zipcode}}">
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Business Type</label>
+                                <select class="custom-select" name="business-type">
+                                    <option value="" disabled="disabled" selected>Select a subscription</option>
+                                    @foreach($businessTypes as $e)
+                                        <option
+                                            value="{{$e->id}}"
+                                            @if($client->business_type_id == $e->id) selected @endif
+                                        >{{$e->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <h2 class="content-heading">Company Details</h2>
+                    <h2 class="content-heading">Contact Details</h2>
                     <div class="row">
                         <div class="col-xl-9">
                             <div class="form-group">
@@ -194,7 +206,9 @@
                             <div class="form-group">
                                 <label>Subscription Name</label> <span class="text-danger">*</span>
                                 <select class="custom-select" name="subscription" disabled>
-                                    <option value="" disabled="disabled" @if(!isset($invoice->subscription_id)) selected @endif>Select a subscription</option>
+                                    <option value="" disabled="disabled"
+                                            @if(!isset($invoice->subscription_id)) selected @endif>Select a subscription
+                                    </option>
                                     @foreach($subscriptions as $subscription)
                                         <option
                                             value="{{$subscription->id}}"

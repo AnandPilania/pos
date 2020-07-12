@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Http\Models\Client;
 use App\Http\Models\Permission;
 use App\Http\Models\BusinessType;
 use App\Http\Utils\Utils;
@@ -37,7 +38,8 @@ class BusinessTypesController
             ]);
     }
 
-    public function getBusinessTypeList() {
+    public function getBusinessTypeList()
+    {
         $list = BusinessType::get();
         return datatables()->of($list)->make(true);
     }
@@ -79,7 +81,10 @@ class BusinessTypesController
     public function delete()
     {
         $id = request('id');
-        $businessTypes = BusinessType::find($id);
+        Client::where('business_type_id', $id)
+            ->update([
+                'business_type_id' => NULL
+            ]);
 
         BusinessType::where('id', $id)->delete();
 

@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Http\Models\BusinessType;
 use App\Http\Models\Client;
 use App\Http\Models\Invoice;
 use App\Http\Models\Product;
@@ -24,8 +25,12 @@ class ClientsController
     public function showAddPage()
     {
         $subscriptions = Subscription::get();
+        $businessTypes = BusinessType::get();
         return view('admin.clients.add')
-            ->with('subscriptions', $subscriptions)
+            ->with([
+                'subscriptions' => $subscriptions,
+                'businessTypes' => $businessTypes
+            ])
             ->withTitle('Add Client');
     }
 
@@ -35,12 +40,14 @@ class ClientsController
         $client = Client::find($id);
         $subscriptions = Subscription::get();
         $invoice = Invoice::find($client->current_invoice_id);
+        $businessTypes = BusinessType::get();
         if ($client != null) {
             return view('admin.clients.edit')
                 ->with([
                     'client' => $client,
                     'subscriptions' => $subscriptions,
-                    'invoice' => $invoice
+                    'invoice' => $invoice,
+                    'businessTypes' => $businessTypes
                 ])
                 ->withTitle('Edit Client');
         }
@@ -79,6 +86,7 @@ class ClientsController
         $city = request('city');
         $state = request('state');
         $zipcode = request('zip-code');
+        $business = request('business-type');
         $contact_person = request('contact-person');
         $contact_email = request('contact-email');
         $contact_phone = request('contact-phone');
@@ -120,6 +128,7 @@ class ClientsController
         $client->city = $city;
         $client->state = $state;
         $client->zipcode = $zipcode;
+        $client->business_type_id = $business;
         $client->start_date = $start_date;
         $client->expire_date = $expire_date;
         $client->contact_person = $contact_person;
@@ -171,6 +180,7 @@ class ClientsController
         $city = request('city');
         $state = request('state');
         $zipcode = request('zip-code');
+        $business = request('business-type');
         $contact_person = request('contact-person');
         $contact_email = request('contact-email');
         $contact_phone = request('contact-phone');
@@ -179,7 +189,7 @@ class ClientsController
             'first-name' => 'required',
             'last-name' => 'required',
             'phone-number' => 'required',
-            'email' => 'required|email|unique:clients,email,'.$id,
+            'email' => 'required|email|unique:clients,email,' . $id,
         ]);
 
         $birthday = strtotime($birthday);
@@ -197,6 +207,7 @@ class ClientsController
             'city' => $city,
             'state' => $state,
             'zipcode' => $zipcode,
+            'business_type_id' => $business,
             'contact_email' => $contact_email,
             'contact_phone' => $contact_phone,
             'contact_person' => $contact_person
