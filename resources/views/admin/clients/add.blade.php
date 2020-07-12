@@ -168,7 +168,7 @@
                     </div>
                     <h2 class="content-heading">Company Details</h2>
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-9">
                             <div class="form-group">
                                 <label>Name of person</label>
                                 <input type="text" class="form-control" name="contact-person"
@@ -188,7 +188,7 @@
                     </div>
                     <h2 class="content-heading">Subscription Details</h2>
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-9">
                             <div class="form-group">
                                 <label>Subscription Name</label> <span class="text-danger">*</span>
                                 <select class="custom-select" name="subscription">

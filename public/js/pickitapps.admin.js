@@ -21594,6 +21594,7 @@ var ClientsEdit = /*#__PURE__*/function () {
     key: "init",
     value: function init() {
       this.initValidators();
+      this.initEventListeners();
       _modules_helpers__WEBPACK_IMPORTED_MODULE_0__["default"].run('datepicker');
     }
   }, {
@@ -21651,6 +21652,68 @@ var ClientsEdit = /*#__PURE__*/function () {
           }
         }
       });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("#save-button").on("click", function () {
+        $("#modal-confirm").modal('show');
+      });
+    }
+  }, {
+    key: "onEditButtonClicked",
+    value: function onEditButtonClicked() {
+      $("#edit-button").hide();
+      $("#save-button").show();
+      $("#cancel-button").show();
+      $("[name='start-date']").removeAttr("disabled");
+      $("[name='expire-date']").removeAttr("disabled");
+      $("[name='discount']").removeAttr("disabled");
+      $("[name='subscription']").removeAttr("disabled");
+    }
+  }, {
+    key: "onCancelButtonClicked",
+    value: function onCancelButtonClicked(startDate, expireDate, discount, subscriptionId) {
+      $("#edit-button").show();
+      $("#save-button").hide();
+      $("#cancel-button").hide();
+      $("[name='start-date']").val(startDate).attr("disabled", "disabled");
+      $("[name='expire-date']").val(expireDate).attr("disabled", "disabled");
+      $("[name='discount']").val(discount).attr("disabled", "disabled");
+      $("[name='subscription']").val(subscriptionId).attr("disabled", "disabled");
+    }
+  }, {
+    key: "resuscitateCustomer",
+    value: function resuscitateCustomer(id, add_flag) {
+      axios.post(route('admin.clients.resuscitate'), {
+        'id': id,
+        'start-date': $("[name='start-date']").val(),
+        'expire-date': $("[name='expire-date']").val(),
+        'discount': $("[name='discount']").val(),
+        'subscription': $("[name='subscription']").val(),
+        'add_flag': add_flag
+      }).then(function (response) {
+        return response['data'];
+      }).then(function (data) {
+        if (data.message.length === 0) {
+          if (add_flag === 1) {
+            toastr.success('You have successfully resuscitated this customer!');
+          } else {
+            toastr.success('You have successfully edit current invoice!');
+          }
+
+          $("#edit-button").show();
+          $("#save-button").hide();
+          $("#cancel-button").hide();
+          $("[name='start-date']").attr("disabled", "disabled");
+          $("[name='expire-date']").attr("disabled", "disabled");
+          $("[name='discount']").attr("disabled", "disabled");
+          $("[name='subscription']").attr("disabled", "disabled");
+          $("#modal-confirm").modal('hide');
+        } else {
+          toastr.info(data.message);
+        }
+      })["catch"](function (error) {});
     }
   }]);
 
@@ -22315,7 +22378,7 @@ __webpack_require__.r(__webpack_exports__);
 function responseBodyHandling(data) {
   var pageReload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
-  if (data.message === "") {
+  if (data.message.length === 0) {
     toastr.success('Operation Succeed!');
 
     if (pageReload) {

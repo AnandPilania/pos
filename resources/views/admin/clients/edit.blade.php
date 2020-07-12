@@ -6,73 +6,11 @@
 @section('js_after')
     <!-- Page JS Plugins -->
     <script src="{{asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
             window.page = new Pickitapps.pages.ClientsEdit();
-        });
-    </script>
-    <!-- Page JS Code -->
-    <script>
-
-        function onEditButtonClicked() {
-            $("#edit-button").hide();
-            $("#save-button").show();
-            $("#cancel-button").show();
-            $("[name='start-date']").removeAttr("disabled");
-            $("[name='expire-date']").removeAttr("disabled");
-            $("[name='price']").removeAttr("disabled");
-        }
-
-        function onCancelButtonClicked() {
-            $("#edit-button").show();
-            $("#save-button").hide();
-            $("#cancel-button").hide();
-            $("[name='start-date']").val('{{ date('m/d/Y', strtotime($client->start_date)) }}');
-            $("[name='expire-date']").val('{{ date('m/d/Y', strtotime($client->expire_date)) }}');
-            $("[name='price']").val({{$client->price}});
-            $("[name='start-date']").attr("disabled", "disabled");
-            $("[name='expire-date']").attr("disabled", "disabled");
-            $("[name='price']").attr("disabled", "disabled");
-        }
-
-        function resuscitateCustomer(id, add_flag) {
-            $.ajax({
-                url: '{{url('/admin/customers/resuscitate-customer')}}',
-                type: "POST",
-                data: {
-                    "id": id,
-                    "start-date": $("[name='start-date']").val(),
-                    "expire-date": $("[name='expire-date']").val(),
-                    "price": $("[name='price']").val(),
-                    "add_flag": add_flag
-                },
-                error: function () {
-                },
-                success: function (data) {
-                    if (data.message.length == 0) {
-                        if (add_flag == 1) {
-                            alert("You have successfully resuscitated this customer.");
-                        } else {
-                            alert("You have successfully edit current invoice.");
-                        }
-                        $("#edit-button").show();
-                        $("#save-button").hide();
-                        $("#cancel-button").hide();
-                        $("[name='start-date']").attr("disabled", "disabled");
-                        $("[name='expire-date']").attr("disabled", "disabled");
-                        $("[name='price']").attr("disabled", "disabled");
-                        $("#modal-confirm").modal('hide');
-                    }
-                }
-            });
-        }
-
-        $(document).ready(() => {
-
-            $("#save-button").on("click", () => {
-                $("#modal-confirm").modal('show');
-            });
         });
     </script>
 @endsection
@@ -110,7 +48,7 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.clients.edit', $client->id)}}" method="POST">
+                <form action="{{route('admin.clients.edit', $client->id)}}" class="js-validation" method="POST">
                     @csrf
                     <h2 class="content-heading">Company Details</h2>
                     <div class="row">
@@ -232,7 +170,7 @@
                     </div>
                     <h2 class="content-heading">Company Details</h2>
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-9">
                             <div class="form-group">
                                 <label>Name of person</label>
                                 <input type="text" class="form-control" name="contact-person"
@@ -252,7 +190,19 @@
                     </div>
                     <h2 class="content-heading">Subscription Details</h2>
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-9">
+                            <div class="form-group">
+                                <label>Subscription Name</label> <span class="text-danger">*</span>
+                                <select class="custom-select" name="subscription" disabled>
+                                    <option value="" disabled="disabled" @if(!isset($invoice->subscription_id)) selected @endif>Select a subscription</option>
+                                    @foreach($subscriptions as $subscription)
+                                        <option
+                                            value="{{$subscription->id}}"
+                                            @if(isset($invoice->subscription_id) && $invoice->subscription_id == $subscription->id) selected @endif
+                                        >{{$subscription->name . ' - ' . $subscription->price . ''}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <label>
                                     Start Date ~ Expire Date <span class="text-danger">*</span>
@@ -274,40 +224,44 @@
                                            disabled="disabled">
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-8 form-group">
-                                    <label>
-                                        Price <span class="text-danger">*</span>
-                                    </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                KWD
-                                            </span>
-                                        </div>
-                                        <input type="text" class="form-control text-center" name="price"
-                                               placeholder="00.000" value="{{$client->price}}" disabled="disabled">
+
+                            <div class="form-group">
+                                <label>
+                                    Discount Price
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            KWD
+                                        </span>
                                     </div>
-                                </div>
-                                <div class="col-md-4 d-flex flex-column-reverse form-group">
-                                    <div class="d-flex flex-row-reverse">
-                                        <a href="javascript:onCancelButtonClicked();" class="btn btn-danger"
-                                           id="cancel-button" style="display: none">Cancel</a>
-                                        <a href="javascript:;" class="btn btn-primary hidden" id="save-button"
-                                           style="margin-right: 5px; display: none">Save</a>
-                                        <a href="javascript:onEditButtonClicked();" class="btn btn-success"
-                                           id="edit-button"><i class="fa fa-pencil-alt"></i> Edit</a>
-                                    </div>
+                                    <input type="text" class="form-control text-center" name="discount"
+                                           placeholder="00.000" value="{{$invoice->discount ?? 0}}" disabled="disabled">
                                 </div>
                             </div>
-
+                            <div class="d-flex flex-column-reverse form-group">
+                                <div class="d-flex flex-row-reverse">
+                                    <a href="javascript:page.onCancelButtonClicked('{{ date('m/d/Y', strtotime($client->start_date)) }}',
+                                    '{{ date('m/d/Y', strtotime($client->expire_date)) }}', {{$invoice->discount ?? 0}}, {{$invoice->subscription_id ?? 0}});"
+                                       class="btn btn-danger"
+                                       id="cancel-button" style="display: none">Cancel</a>
+                                    <a href="javascript:;" class="btn btn-primary mr-2" id="save-button"
+                                       style="display: none">Save</a>
+                                    <a href="javascript:page.onEditButtonClicked();" class="btn btn-success"
+                                       id="edit-button"><i class="fa fa-pencil-alt"></i> Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="content-heading">WebMenu Details</h2>
+                    <div class="row">
+                        <div class="col-md-9">
                             <div class="form-group">
                                 <label for="dm-project-new-name">
                                     URL (Frontend Site URL)
                                 </label>
                                 <label class="form-control">{{url('/restaurant').'/'.$client->id}}</label>
                             </div>
-
                         </div>
                     </div>
 
@@ -349,9 +303,11 @@
                         <p>Do you want add new history of invoice of this customer or just edit this invoice ?</p>
                     </div>
                     <div class="block-content block-content-full text-right bg-light">
-                        <a href="javascript:resuscitateCustomer({{$client->id}}, 1);" class="btn btn-sm btn-primary">Add
+                        <a href="javascript:page.resuscitateCustomer({{$client->id}}, 1);"
+                           class="btn btn-sm btn-primary">Add
                             new invoice</a>
-                        <a href="javascript:resuscitateCustomer({{$client->id}}, 0);" class="btn btn-sm btn-success">Edit
+                        <a href="javascript:page.resuscitateCustomer({{$client->id}}, 0);"
+                           class="btn btn-sm btn-success">Edit
                             current invoice</a>
                         <button class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
                     </div>

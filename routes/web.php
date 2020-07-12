@@ -66,9 +66,12 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
             Route::get('/add', 'ClientsController@showAddPage')->name('add.show');
             Route::post('/add', 'ClientsController@add')->name('add');
             Route::get('/edit/{id}', 'ClientsController@showEditPage')->name('edit.show');
-            Route::post('/edit', 'ClientsController@edit')->name('edit');
+            Route::post('/edit/{id}', 'ClientsController@edit')->name('edit');
             Route::post('/delete', 'ClientsController@delete')->name('delete');
             Route::post('/toggle-active', 'ClientsController@toggleActive')->name('toggle-active');
+            Route::get('/print-invoice/{id}', 'ClientsController@showCustomerInvoicePrintPreviewPage')->name('invoice.preview');
+            Route::get('/print-invoice/{id}/print', 'ClientsController@printCustomerInvoice')->name('invoice.print');
+            Route::post('/resuscitate-customer', 'ClientsController@resuscitateCustomer')->name('resuscitate');
 
             Route::group(['prefix' => '{client_id}'], function () {
                 Route::get('/', 'ClientsController@showDetailPage')->name('detail.show');
@@ -110,11 +113,6 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
 
                 });
             });
-
-            Route::post('/toggle-add-product', 'AdminController@toggleCustomerAddProduct');
-            Route::get('/print-invoice/{id}', 'ClientsController@showCustomerInvoicePrintPreviewPage')->name('invoice.preview');
-            Route::get('/print-invoice/{id}/print', 'ClientsController@printCustomerInvoice')->name('invoice.print');
-            Route::post('/resuscitate-customer', 'ClientsController@resuscitateCustomer')->name('resuscitate');
         });
 
         // Business Types

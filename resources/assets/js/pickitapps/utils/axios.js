@@ -1,5 +1,5 @@
 export function responseBodyHandling(data, pageReload = false) {
-    if (data.message === "") {
+    if (data.message.length === 0) {
         toastr.success('Operation Succeed!');
         if (pageReload) {
             window.location.reload();

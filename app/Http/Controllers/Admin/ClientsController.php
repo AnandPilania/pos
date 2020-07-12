@@ -34,11 +34,13 @@ class ClientsController
         $id = request('id');
         $client = Client::find($id);
         $subscriptions = Subscription::get();
+        $invoice = Invoice::find($client->current_invoice_id);
         if ($client != null) {
             return view('admin.clients.edit')
                 ->with([
                     'client' => $client,
-                    'subscriptions' => $subscriptions
+                    'subscriptions' => $subscriptions,
+                    'invoice' => $invoice
                 ])
                 ->withTitle('Edit Client');
         }
@@ -146,7 +148,8 @@ class ClientsController
         $invoice->save();
 
         Client::where('id', $client->id)->update([
-            'current_invoice_id' => $invoice->id
+            'current_invoice_id' => $invoice->id,
+            'price' => $invoice->price
         ]);
 
         return back()
@@ -168,51 +171,45 @@ class ClientsController
         $city = request('city');
         $state = request('state');
         $zipcode = request('zip-code');
+        $contact_person = request('contact-person');
+        $contact_email = request('contact-email');
+        $contact_phone = request('contact-phone');
 
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email|unique:clients,email,' . $id,
-            'birthday' => 'required|date',
             'phone-number' => 'required',
+            'email' => 'required|email|unique:clients,email,'.$id,
         ]);
 
         $birthday = strtotime($birthday);
         $birthday = date('Y-m-d', $birthday);
 
+        $updateArray = [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'birthday' => $birthday,
+            'gender' => $gender,
+            'phonenumber' => $phonenumber,
+            'company' => $company,
+            'address' => $address,
+            'city' => $city,
+            'state' => $state,
+            'zipcode' => $zipcode,
+            'contact_email' => $contact_email,
+            'contact_phone' => $contact_phone,
+            'contact_person' => $contact_person
+        ];
+
         if ($password != '') {
-            Customers::where('id', $id)->update([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'password' => hash::make($password),
-                'birthday' => $birthday,
-                'gender' => $gender,
-                'phonenumber' => $phonenumber,
-                'company' => $company,
-                'address' => $address,
-                'city' => $city,
-                'state' => $state,
-                'zipcode' => $zipcode,
-            ]);
-        } else {
-            Customers::where('id', $id)->update([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'birthday' => $birthday,
-                'gender' => $gender,
-                'phonenumber' => $phonenumber,
-                'company' => $company,
-                'address' => $address,
-                'city' => $city,
-                'state' => $state,
-                'zipcode' => $zipcode,
-            ]);
+            $updateArray['password'] = bcrypt($password);
         }
 
+        Client::where('id', $id)->update($updateArray);
+
         return back()
-            ->with('success', 'You have successfully updated the customer\'s account');
+            ->with('success', 'Successfully updated.');
     }
 
     public function resuscitateCustomer()
@@ -220,47 +217,67 @@ class ClientsController
         $id = request('id');
         $start_date = request('start-date');
         $expire_date = request('expire-date');
-        $price = request('price');
+        $discount = request('discount');
+        $subscription = request('subscription');
         $add_flag = request('add_flag');
 
         request()->validate([
             'start-date' => 'required|date',
             'expire-date' => 'required|date',
-            'price' => 'required|numeric',
+            'subscription' => 'required',
         ]);
 
         $start_date = date('Y-m-d', strtotime($start_date));
         $expire_date = date('Y-m-d', strtotime($expire_date));
 
+        $numberOfMonths = Utils::getNumberOfMonths($start_date, $expire_date);
+        if ($numberOfMonths == 0) $numberOfMonths = 1;
+
+        $sb = Subscription::find($subscription);
+        $total_price = $sb->price * $numberOfMonths;
+
         if ($add_flag == 1) {
+
             $invoice = new Invoice();
             $invoice->customer_id = $id;
+            $invoice->subscription_id = $subscription;
             $invoice->start_date = $start_date;
             $invoice->expire_date = $expire_date;
-            $invoice->price = $price;
+
+            $invoice->subscription_months = $numberOfMonths;
+            $invoice->subscription_total_price = $total_price;
+            $invoice->discount = $discount;
+            $invoice->price = ($total_price - $discount) < 0 ? 0 : ($total_price - $discount);
 
             $invoice->save();
 
-            Customers::where('id', $id)->update([
+            Client::where('id', $id)->update([
                 'start_date' => $start_date,
                 'expire_date' => $expire_date,
-                'price' => $price,
+                'price' => $invoice->price,
                 'current_invoice_id' => $invoice->id,
             ]);
         } else {
-            Invoice::where('id', Customers::where('id', $id)->first()->current_invoice_id)->update([
-                'start_date' => $start_date,
-                'expire_date' => $expire_date,
-                'price' => $price,
-            ]);
+            Invoice::where('id', Client::find($id)->current_invoice_id)
+                ->update([
+                    'start_date' => $start_date,
+                    'expire_date' => $expire_date,
+                    'discount' => $discount,
+                    'price' => ($total_price - $discount) < 0 ? 0 : ($total_price - $discount),
+                    'subscription_id' => $subscription,
+                    'subscription_months' => $numberOfMonths,
+                    'subscription_total_price' => $total_price
+                ]);
 
-            Customers::where('id', $id)->update([
+            Client::where('id', $id)->update([
                 'start_date' => $start_date,
                 'expire_date' => $expire_date,
-                'price' => $price,
+                'price' => ($total_price - $discount) < 0 ? 0 : ($total_price - $discount),
             ]);
         }
 
+        $client = Client::find($id);
+        $client->subscriptions()->sync($subscription);
 
         return Utils::makeResponse();
     }
