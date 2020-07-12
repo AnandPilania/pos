@@ -19353,10 +19353,10 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/sass/dashmix/themes/xeco.scss":
-/*!********************************************************!*\
-  !*** ./resources/assets/sass/dashmix/themes/xeco.scss ***!
-  \********************************************************/
+/***/ "./resources/assets/sass/pickitapps/themes/xeco.scss":
+/*!***********************************************************!*\
+  !*** ./resources/assets/sass/pickitapps/themes/xeco.scss ***!
+  \***********************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
@@ -19364,9 +19364,42 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/sass/dashmix/themes/xinspire.scss":
+/***/ "./resources/assets/sass/pickitapps/themes/xinspire.scss":
+/*!***************************************************************!*\
+  !*** ./resources/assets/sass/pickitapps/themes/xinspire.scss ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/assets/sass/pickitapps/themes/xmodern.scss":
+/*!**************************************************************!*\
+  !*** ./resources/assets/sass/pickitapps/themes/xmodern.scss ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/assets/sass/pickitapps/themes/xsmooth.scss":
+/*!**************************************************************!*\
+  !*** ./resources/assets/sass/pickitapps/themes/xsmooth.scss ***!
+  \**************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/assets/sass/pickitapps/themes/xwork.scss":
 /*!************************************************************!*\
-  !*** ./resources/assets/sass/dashmix/themes/xinspire.scss ***!
+  !*** ./resources/assets/sass/pickitapps/themes/xwork.scss ***!
   \************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
@@ -19375,54 +19408,21 @@ if (token) {
 
 /***/ }),
 
-/***/ "./resources/assets/sass/dashmix/themes/xmodern.scss":
-/*!***********************************************************!*\
-  !*** ./resources/assets/sass/dashmix/themes/xmodern.scss ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/dashmix/themes/xsmooth.scss":
-/*!***********************************************************!*\
-  !*** ./resources/assets/sass/dashmix/themes/xsmooth.scss ***!
-  \***********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/dashmix/themes/xwork.scss":
-/*!*********************************************************!*\
-  !*** ./resources/assets/sass/dashmix/themes/xwork.scss ***!
-  \*********************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
 /***/ 0:
-/*!**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** multi ./resources/assets/js/laravel/app.js ./resources/assets/sass/app.scss ./resources/assets/sass/admin.scss ./resources/assets/sass/dashmix/themes/xeco.scss ./resources/assets/sass/dashmix/themes/xinspire.scss ./resources/assets/sass/dashmix/themes/xmodern.scss ./resources/assets/sass/dashmix/themes/xsmooth.scss ./resources/assets/sass/dashmix/themes/xwork.scss ***!
-  \**************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** multi ./resources/assets/js/laravel/app.js ./resources/assets/sass/app.scss ./resources/assets/sass/admin.scss ./resources/assets/sass/pickitapps/themes/xeco.scss ./resources/assets/sass/pickitapps/themes/xinspire.scss ./resources/assets/sass/pickitapps/themes/xmodern.scss ./resources/assets/sass/pickitapps/themes/xsmooth.scss ./resources/assets/sass/pickitapps/themes/xwork.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/js/laravel/app.js */"./resources/assets/js/laravel/app.js");
 __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/app.scss */"./resources/assets/sass/app.scss");
 __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/admin.scss */"./resources/assets/sass/admin.scss");
-__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/dashmix/themes/xeco.scss */"./resources/assets/sass/dashmix/themes/xeco.scss");
-__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/dashmix/themes/xinspire.scss */"./resources/assets/sass/dashmix/themes/xinspire.scss");
-__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/dashmix/themes/xmodern.scss */"./resources/assets/sass/dashmix/themes/xmodern.scss");
-__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/dashmix/themes/xsmooth.scss */"./resources/assets/sass/dashmix/themes/xsmooth.scss");
-module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/dashmix/themes/xwork.scss */"./resources/assets/sass/dashmix/themes/xwork.scss");
+__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/pickitapps/themes/xeco.scss */"./resources/assets/sass/pickitapps/themes/xeco.scss");
+__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/pickitapps/themes/xinspire.scss */"./resources/assets/sass/pickitapps/themes/xinspire.scss");
+__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/pickitapps/themes/xmodern.scss */"./resources/assets/sass/pickitapps/themes/xmodern.scss");
+__webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/pickitapps/themes/xsmooth.scss */"./resources/assets/sass/pickitapps/themes/xsmooth.scss");
+module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/sass/pickitapps/themes/xwork.scss */"./resources/assets/sass/pickitapps/themes/xwork.scss");
 
 
 /***/ })

@@ -2,6 +2,7 @@
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
+    <link rel="stylesheet" href="{{asset('js/plugins/sweetalert2/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/dataTables.bootstrap4.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css')}}">
 @endsection
@@ -30,8 +31,8 @@
                 <h3 class="block-title">Positions List</h3>
             </div>
             <div class="block-content block-content-full">
-                <div style="margin-bottom: 10px;">
-                    <a class="btn btn-primary" href="{{route('admin.positions.add.show')}}"><i class="fa fa-user-plus"></i> Add Position</a>
+                <div class="mb-2">
+                    <a class="btn btn-primary" href="{{route('admin.positions.add.show')}}"><i class="si si-plus"></i> Add Position</a>
                 </div>
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
@@ -62,7 +63,7 @@
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <a href="javascript:delEmployee({{$position->id}})" class="btn btn-sm btn-primary"
+                                    <a href="javascript:page.deletePosition({{$position->id}})" class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
@@ -80,30 +81,17 @@
 
 @section('js_after')
     <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/sweetalert2/sweetalert2.min.js')}}"></script>
     <script src="{{asset('js/plugins/datatables/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
-    <!-- Page JS Code -->
-    <script src="{{asset('js/pages/be_tables_datatables.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.PositionsList();
+        });
+    </script>
+
     <script>
-        function delEmployee(id) {
-            if (confirm("Do you want delete this employee's account?")) {
-                $.ajax({
-                    url: '{{url('/admin/employees/del')}}',
-                    type: "POST",
-                    data: {
-                        "id": id,
-                    },
-                    error: function () {
-                    },
-                    success: function (data) {
-                        if (data.message.length == 0) {
-                            window.location.reload();
-                        }
-                    }
-                });
-            }
-        }
 
         $(document).ready(function () {
             $("[name^='enable-toggle-']").on('change', function () {

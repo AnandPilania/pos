@@ -81,6 +81,6 @@
     <!-- Page JS Code -->
 
     <!-- Page JS Helpers (Select2 plugin) -->
-    <script>jQuery(function(){ Dashmix.helpers('select2'); });</script>
+    <script>jQuery(function(){ Pickitapps.helpers('select2'); });</script>
 
 @endsection

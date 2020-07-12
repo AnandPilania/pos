@@ -109,7 +109,9 @@
                     </a>
                 </li>
 
+
                 <li class="nav-main-heading">Client Management</li>
+                @can('client-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*clients*') ? ' active' : '' }}"
                        href="{{route('admin.clients.show')}}">
@@ -117,7 +119,14 @@
                         <span class="nav-main-link-name">Clients</span>
                     </a>
                 </li>
-
+                @endcan
+                <li class="nav-main-item">
+                    <a class="nav-main-link{{ request()->is('*business-types*') ? ' active' : '' }}"
+                       href="{{route('admin.business-types.show')}}">
+                        <i class="nav-main-link-icon si si-emoticon-smile"></i>
+                        <span class="nav-main-link-name">Business Types</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->
@@ -211,14 +220,14 @@
 </div>
 <!-- END Page Container -->
 
-<!-- Dashmix Core JS -->
+<!-- Pickitapps Core JS -->
 <script src="{{ mix('js/pickitapps.admin.js') }}"></script>
 
 <!-- Laravel Scaffolding JS -->
 <script src="{{ mix('js/laravel.app.js') }}"></script>
 
 <script>
-    window.baseUrl = '{{url('/')}}';
+    window.baseUrl = '{{route('admin.home')}}';
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

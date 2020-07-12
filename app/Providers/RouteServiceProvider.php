@@ -25,11 +25,6 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/home';
 
     /**
-     * Prefix of admin site
-     */
-    public const ADMIN_PREFIX = '/admin';
-
-    /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
@@ -37,7 +32,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        View::share('admin_prefix', self::ADMIN_PREFIX);
+        View::share('ADMIN_PREFIX', env('ADMIN_PREFIX'));
         parent::boot();
     }
 

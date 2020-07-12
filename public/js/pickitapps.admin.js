@@ -18641,21 +18641,24 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/admin.js":
-/*!**********************************************!*\
-  !*** ./resources/assets/js/dashmix/admin.js ***!
-  \**********************************************/
+/***/ "./resources/assets/js/pickitapps/admin.js":
+/*!*************************************************!*\
+  !*** ./resources/assets/js/pickitapps/admin.js ***!
+  \*************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
-/* harmony import */ var _modules_tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tools */ "./resources/assets/js/dashmix/modules/tools.js");
-/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/helpers */ "./resources/assets/js/dashmix/modules/helpers.js");
-/* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/template */ "./resources/assets/js/dashmix/modules/template.js");
-/* harmony import */ var _pages_admin_auth_login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../pages/admin/auth.login */ "./resources/assets/js/pages/admin/auth.login.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
+/* harmony import */ var _modules_tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tools */ "./resources/assets/js/pickitapps/modules/tools.js");
+/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/helpers */ "./resources/assets/js/pickitapps/modules/helpers.js");
+/* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/template */ "./resources/assets/js/pickitapps/modules/template.js");
+/* harmony import */ var _pages_admin_auth_login__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/admin/auth-login */ "./resources/assets/js/pickitapps/pages/admin/auth-login.js");
+/* harmony import */ var _pages_admin_positions_list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/admin/positions-list */ "./resources/assets/js/pickitapps/pages/admin/positions-list.js");
+/* harmony import */ var _pages_admin_business_types_list__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/admin/business-types-list */ "./resources/assets/js/pickitapps/pages/admin/business-types-list.js");
+/* harmony import */ var _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./pages/admin/employees-list */ "./resources/assets/js/pickitapps/pages/admin/employees-list.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -18687,6 +18690,9 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
  // Import page js
 
+
+
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -18705,7 +18711,10 @@ var App = /*#__PURE__*/function (_Template) {
 
     _this = _super.call(this);
     _this.pages = {
-      AuthLogin: _pages_admin_auth_login__WEBPACK_IMPORTED_MODULE_4__["default"]
+      AuthLogin: _pages_admin_auth_login__WEBPACK_IMPORTED_MODULE_4__["default"],
+      PositionsList: _pages_admin_positions_list__WEBPACK_IMPORTED_MODULE_5__["default"],
+      BusinessTypesList: _pages_admin_business_types_list__WEBPACK_IMPORTED_MODULE_6__["default"],
+      EmployeesList: _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__["default"]
     };
     return _this;
   }
@@ -18755,15 +18764,15 @@ var App = /*#__PURE__*/function (_Template) {
 
 jQuery(function () {
   // Create a new instance of App
-  window.Dashmix = new App();
+  window.Pickitapps = new App();
 });
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/bootstrap.js":
-/*!**************************************************!*\
-  !*** ./resources/assets/js/dashmix/bootstrap.js ***!
-  \**************************************************/
+/***/ "./resources/assets/js/pickitapps/bootstrap.js":
+/*!*****************************************************!*\
+  !*** ./resources/assets/js/pickitapps/bootstrap.js ***!
+  \*****************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -18803,18 +18812,18 @@ window.Cookies = js_cookie__WEBPACK_IMPORTED_MODULE_2___default.a;
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/helpers.js":
-/*!********************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/helpers.js ***!
-  \********************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/helpers.js":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/helpers.js ***!
+  \***********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Helpers; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
-/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/dashmix/modules/tools.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
+/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/pickitapps/modules/tools.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -19896,19 +19905,19 @@ var Helpers = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/template.js":
-/*!*********************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/template.js ***!
-  \*********************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/template.js":
+/*!************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/template.js ***!
+  \************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Template; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
-/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/dashmix/modules/tools.js");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/assets/js/dashmix/modules/helpers.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
+/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/pickitapps/modules/tools.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/assets/js/pickitapps/modules/helpers.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -20634,17 +20643,17 @@ var Template = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/tools.js":
-/*!******************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/tools.js ***!
-  \******************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/tools.js":
+/*!*********************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/tools.js ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tools; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -20704,10 +20713,10 @@ var Tools = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/pages/admin/auth.login.js":
-/*!*******************************************************!*\
-  !*** ./resources/assets/js/pages/admin/auth.login.js ***!
-  \*******************************************************/
+/***/ "./resources/assets/js/pickitapps/pages/admin/auth-login.js":
+/*!******************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/auth-login.js ***!
+  \******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -20780,14 +20789,243 @@ var AuthLogin = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/pickitapps/pages/admin/business-types-list.js":
+/*!***************************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/business-types-list.js ***!
+  \***************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BusinessTypesList; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BusinessTypesList = /*#__PURE__*/function () {
+  function BusinessTypesList() {
+    _classCallCheck(this, BusinessTypesList);
+
+    this.init();
+  }
+
+  _createClass(BusinessTypesList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      jQuery('.table').dataTable({
+        stateSave: true,
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "delete",
+    value: function _delete(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'This position will be also detached from users.',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(baseUrl + '/business-types/delete', {
+            id: id
+          }).then(function (result) {
+            console.log(result);
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return BusinessTypesList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/employees-list.js":
+/*!**********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/employees-list.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return EmployeesList; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var EmployeesList = /*#__PURE__*/function () {
+  function EmployeesList() {
+    _classCallCheck(this, EmployeesList);
+
+    this.init();
+  }
+
+  _createClass(EmployeesList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      jQuery('.table').dataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "delete",
+    value: function _delete(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'Are you sure to delete this employee ?',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(baseUrl + '/employees/delete', {
+            id: id
+          }).then(function (result) {
+            console.log(result);
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return EmployeesList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/positions-list.js":
+/*!**********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/positions-list.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PositionsList; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var PositionsList = /*#__PURE__*/function () {
+  function PositionsList() {
+    _classCallCheck(this, PositionsList);
+
+    this.init();
+  }
+
+  _createClass(PositionsList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      jQuery('.table').dataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "deletePosition",
+    value: function deletePosition(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'This business type will be also detached from clients.',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(baseUrl + '/positions/delete', {
+            id: id
+          }).then(function (result) {
+            console.log(result);
+          })["catch"](function (error) {
+            console.log(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return PositionsList;
+}();
+
+
+
+/***/ }),
+
 /***/ 2:
-/*!****************************************************!*\
-  !*** multi ./resources/assets/js/dashmix/admin.js ***!
-  \****************************************************/
+/*!*******************************************************!*\
+  !*** multi ./resources/assets/js/pickitapps/admin.js ***!
+  \*******************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/js/dashmix/admin.js */"./resources/assets/js/dashmix/admin.js");
+module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/js/pickitapps/admin.js */"./resources/assets/js/pickitapps/admin.js");
 
 
 /***/ })

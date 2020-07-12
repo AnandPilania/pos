@@ -2,7 +2,6 @@
 
 @section('css_before')
     <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/select2/css/select2.min.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/dataTables.bootstrap4.css')}}">
     <link rel="stylesheet" href="{{asset('js/plugins/datatables/buttons-bs4/buttons.bootstrap4.min.css')}}">
 @endsection
@@ -133,11 +132,7 @@
     <script src="{{asset('js/plugins/datatables/dataTables.bootstrap4.min.js')}}"></script>
 
     <!-- Page JS Code -->
-    <script src="{{asset('js/plugins/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('js/pages/be_tables_datatables.min.js')}}"></script>
-
-    <!-- Page JS Helpers (Select2 plugin) -->
-    <script>jQuery(function(){ Dashmix.helpers('select2'); });</script>
 
     <script>
         function delProduct(id) {

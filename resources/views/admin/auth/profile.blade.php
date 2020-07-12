@@ -109,8 +109,8 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{url('/admin/dashboard')}}">
-                                    <i class="fa fa-times-circle mr-1"></i> Cancel
+                                <a class="btn btn-danger" href="{{url()->previous()}}">
+                                    <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
     <!-- Page JS Plugins -->
     <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
     <script src="{{asset('js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
-    <script>jQuery(function(){ Dashmix.helpers(['colorpicker']); });</script>
+    <script>jQuery(function(){ Pickitapps.helpers(['colorpicker']); });</script>
     <!-- Page JS Code -->
     <script>
         function changeProfile() {

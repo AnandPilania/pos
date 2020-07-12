@@ -7,7 +7,7 @@
     <!-- Page JS Code -->
     <script type="text/javascript">
         $(document).ready(function () {
-            window.page = new Dashmix.pages.AuthLogin();
+            window.page = new Pickitapps.pages.AuthLogin();
         });
     </script>
 

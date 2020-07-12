@@ -174,7 +174,7 @@
 </div>
 <!-- END Page Container -->
 
-<!-- Dashmix Core JS -->
+<!-- Pickitapps Core JS -->
 <script src="{{ mix('js/pickitapps.app.js') }}"></script>
 
 <!-- Laravel Scaffolding JS -->

@@ -14,7 +14,10 @@ import Helpers from './modules/helpers';
 import Template from './modules/template';
 
 // Import page js
-import AuthLogin from '../pages/admin/auth.login';
+import AuthLogin from './pages/admin/auth-login';
+import PositionsList from './pages/admin/positions-list';
+import BusinessTypesList from "./pages/admin/business-types-list";
+import EmployeesList from "./pages/admin/employees-list";
 
 // App extends Template
 export default class App extends Template {
@@ -25,7 +28,10 @@ export default class App extends Template {
     constructor() {
         super();
         this.pages = {
-            AuthLogin
+            AuthLogin,
+            PositionsList,
+            BusinessTypesList,
+            EmployeesList
         }
     }
 
@@ -75,5 +81,5 @@ export default class App extends Template {
 // Once everything is loaded
 jQuery(() => {
     // Create a new instance of App
-   window.Dashmix = new App();
+   window.Pickitapps = new App();
 });

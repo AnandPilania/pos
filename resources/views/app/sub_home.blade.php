@@ -173,7 +173,7 @@
     <!-- Page JS Code -->
 
     <!-- Page JS Helpers (Select2 plugin) -->
-    <script>jQuery(function(){ Dashmix.helpers('select2'); });</script>
+    <script>jQuery(function(){ DashPickitappsmix.helpers('select2'); });</script>
 
     <script>
         function onCategoryChange(id) {

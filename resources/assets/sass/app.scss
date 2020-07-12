@@ -1,5 +1,5 @@
 //
-// Dashmix - UI Framework
+// pickitapps - UI Framework
 // --------------------------------------------------
 
 // Bootstrap functions
@@ -9,7 +9,7 @@
 @import 'custom/variables';
 
 // Custom Bootstrap variables overrides
-@import 'dashmix/variables-bootstrap';
+@import 'pickitapps/variables-bootstrap';
 
 // Bootstrap variables
 @import 'bootstrap/variables';
@@ -18,7 +18,7 @@
 @import 'bootstrap/mixins';
 
 // Custom mixins and Bootstrap overrides
-@import 'dashmix/mixins';
+@import 'pickitapps/mixins';
 
 // Bootstrap components
 //@import 'bootstrap/root';
@@ -55,49 +55,49 @@
 @import 'bootstrap/print';
 
 // Custom variables
-@import 'dashmix/variables';
-@import 'dashmix/variables-themes';
+@import 'pickitapps/variables';
+@import 'pickitapps/variables-themes';
 
 // Extend Bootstrap styles and override the ones..
 // ..we can't alter with the provided variables
-@import 'dashmix/reboot';
-@import 'dashmix/type';
-@import 'dashmix/grid';
-@import 'dashmix/tables';
-@import 'dashmix/forms';
-@import 'dashmix/buttons';
-@import 'dashmix/transitions';
-@import 'dashmix/dropdown';
-@import 'dashmix/input-group';
-@import 'dashmix/custom-forms';
-@import 'dashmix/nav';
-@import 'dashmix/breadcrumb';
-@import 'dashmix/pagination';
-@import 'dashmix/badge';
-@import 'dashmix/modal';
-@import 'dashmix/print';
+@import 'pickitapps/reboot';
+@import 'pickitapps/type';
+@import 'pickitapps/grid';
+@import 'pickitapps/tables';
+@import 'pickitapps/forms';
+@import 'pickitapps/buttons';
+@import 'pickitapps/transitions';
+@import 'pickitapps/dropdown';
+@import 'pickitapps/input-group';
+@import 'pickitapps/custom-forms';
+@import 'pickitapps/nav';
+@import 'pickitapps/breadcrumb';
+@import 'pickitapps/pagination';
+@import 'pickitapps/badge';
+@import 'pickitapps/modal';
+@import 'pickitapps/print';
 
 // Custom layout
-@import 'dashmix/layout';
-@import 'dashmix/header';
-@import 'dashmix/sidebar';
-@import 'dashmix/side-overlay';
-@import 'dashmix/layout-variations';
-@import 'dashmix/hero';
-@import 'dashmix/block';
+@import 'pickitapps/layout';
+@import 'pickitapps/header';
+@import 'pickitapps/sidebar';
+@import 'pickitapps/side-overlay';
+@import 'pickitapps/layout-variations';
+@import 'pickitapps/hero';
+@import 'pickitapps/block';
 
 // Custom components
-@import 'dashmix/page-loader';
-@import 'dashmix/nav-main';
-@import 'dashmix/images';
-@import 'dashmix/lists';
-@import 'dashmix/item';
-@import 'dashmix/overlay';
-@import 'dashmix/timeline';
-@import 'dashmix/ribbon';
+@import 'pickitapps/page-loader';
+@import 'pickitapps/nav-main';
+@import 'pickitapps/images';
+@import 'pickitapps/lists';
+@import 'pickitapps/item';
+@import 'pickitapps/overlay';
+@import 'pickitapps/timeline';
+@import 'pickitapps/ribbon';
 
 // Utilities
-@import 'dashmix/utilities';
+@import 'pickitapps/utilities';
 
 // Core third party components
 @import 'vendor/animate';

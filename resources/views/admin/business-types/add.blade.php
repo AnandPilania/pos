@@ -1,16 +1,11 @@
 @extends('layouts.admin')
 
-@section('css_before')
-    <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
-@endsection
-
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
         <div class="content content-full">
             <div class="d-flex flex-column flex-sm-row justify-content-sm-between align-items-sm-center">
-                <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Add Employee</h1>
+                <h1 class="flex-sm-fill font-size-h2 font-w400 mt-2 mb-0 mb-sm-2">Add Business Type</h1>
             </div>
         </div>
     </div>
@@ -28,7 +23,7 @@
                     </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.
                         <ul>
@@ -39,39 +34,19 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/employees/add')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.business-types.add')}}" method="POST">
                     @csrf
-                    <div class="row push">
-                        <div class="col-12 col-xl-8">
-                            <div class="form-group row">
-                                <div class="col-md-6">
-                                    <label>
-                                        First Name <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="first-name" placeholder="First Name">
-                                </div>
-                                <div class="col-md-6">
-                                    <label>
-                                        Last Name <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="last-name" placeholder="Last Name">
-                                </div>
-                            </div>
+                    <h2 class="content-heading">Business Type Info</h2>
+                    <div class="row">
+                        <div class="col-xl-8 col-12">
                             <div class="form-group">
                                 <label>
-                                    Email <span class="text-danger">*</span>
+                                    Name <span class="text-danger">*</span>
                                 </label>
-                                <input type="email" class="form-control" name="email" placeholder="Email">
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    Password <span class="text-danger">*</span>
-                                </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password">
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Shop">
                             </div>
                         </div>
                     </div>
-
                     <!-- Submit -->
                     <div class="row push">
                         <div class="col-lg-8 col-xl-5">
@@ -79,7 +54,7 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{route('admin.employees.show')}}">
+                                <a class="btn btn-danger" href="{{route('admin.business-types.show')}}">
                                     <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
@@ -94,9 +69,6 @@
 @endsection
 
 @section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
-
     <!-- Page JS Code -->
     <script>
 

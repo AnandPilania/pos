@@ -69,9 +69,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
-        'admin-auth' => AdminAuth::class,
-        'user-auth' => UserAuth::class,
-        'customer-auth' => CustomerAuth::class,
         'api-auth' => APIAuth::class,
         'optimizeImages' => \Spatie\LaravelImageOptimizer\Middlewares\OptimizeImages::class,
 

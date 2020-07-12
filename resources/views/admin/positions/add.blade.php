@@ -1,10 +1,5 @@
 @extends('layouts.admin')
 
-@section('css_before')
-    <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
-@endsection
-
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -28,7 +23,7 @@
                     </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.
                         <ul>
@@ -39,36 +34,65 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.positions.add')}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.positions.add')}}" method="POST">
                     @csrf
-                    <div class="row push">
-                        <div class="col-md-8">
+                    <h2 class="content-heading">Position Info</h2>
+                    <div class="row">
+                        <div class="col-xl-8 col-12">
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-12">
                                     <label>
-                                        First Name <span class="text-danger">*</span>
+                                        Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" name="first-name" placeholder="First Name">
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="Client Manager">
                                 </div>
-                                <div class="col-md-6">
-                                    <label>
-                                        Last Name <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" name="last-name" placeholder="Last Name">
+                                <div class="col-md-6 col-12">
+                                    <div class="form-group">
+                                        <label>
+                                            Slug <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug"
+                                               placeholder="client-manager">
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>
-                                    Email <span class="text-danger">*</span>
-                                </label>
-                                <input type="email" class="form-control" name="email" placeholder="Email">
+                                <label>Description</label>
+                                <textarea class="form-control" name="description" rows="3"
+                                          placeholder="Client Manager Role has the whole permissions to manage clients, like add/edit/delete clients and etc ..."></textarea>
                             </div>
-                            <div class="form-group">
-                                <label>
-                                    Password <span class="text-danger">*</span>
-                                </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password">
-                            </div>
+                        </div>
+                    </div>
+
+                    <h2 class="content-heading">Permissions <span class="text-danger">*</span></h2>
+                    <div class="row">
+                        <div class="col-xl-8 col-12">
+                            <table class="table table-sm table-borderless table-vcenter">
+                                <thead>
+                                <tr>
+                                    <th class="pl-4">Name</th>
+                                    <th class="d-none d-sm-table-cell">Slug</th>
+                                    <th class="d-none d-lg-table-cell">Description</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($permissions as $permission)
+                                    <tr>
+                                        <td class="font-w600">
+                                            <div class="custom-control custom-checkbox custom-control-primary">
+                                                <input type="checkbox" class="custom-control-input"
+                                                       id="permission-{{$permission->id}}" name="permissions[]"
+                                                       value="{{$permission->id}}">
+                                                <label class="custom-control-label"
+                                                       for="permission-{{$permission->id}}">{{$permission->name}}</label>
+                                            </div>
+                                        </td>
+                                        <td class="d-none d-sm-table-cell">{{$permission->slug}}</td>
+                                        <td class="d-none d-lg-table-cell">{{$permission->description}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -80,7 +104,7 @@
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
                                 <a class="btn btn-danger" href="{{route('admin.positions.show')}}">
-                                    <i class="fa fa-times-circle mr-1"></i> Cancel
+                                    <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
                         </div>
@@ -94,8 +118,6 @@
 @endsection
 
 @section('js_after')
-    <!-- Page JS Plugins -->
-    <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
 
     <!-- Page JS Code -->
     <script>

@@ -91,7 +91,7 @@
         <!-- Laravel Original JS -->
         <script src="{{ mix('/js/laravel.app.js') }}"></script>
 
-        <!-- Dashmix Core JS -->
+        <!-- Pickitapps Core JS -->
         <script src="{{ mix('/js/pickitapps.admin.js') }}"></script>
 
         @yield('js_after')

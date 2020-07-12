@@ -158,8 +158,8 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="fa fa-check-circle mr-1"></i> Add New Product
                                 </button>
-                                <a class="btn btn-warning" href="{{url('/admin/products').'/'.$customer_id}}">
-                                    <i class="fa fa-times-circle mr-1"></i> Cancel
+                                <a class="btn btn-warning" href="{{route('admin.clients.products.show', $client_id)}}">
+                                    <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
                         </div>

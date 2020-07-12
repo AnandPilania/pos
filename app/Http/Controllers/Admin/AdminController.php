@@ -10,6 +10,7 @@ use App\Http\Models\Customers;
 use App\Http\Models\Invoices;
 use App\Http\Models\Product;
 use App\Http\Models\Employees;
+use App\Http\Models\Role;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -1040,4 +1041,17 @@ class AdminController
         return Utils::makeResponse();
     }
 
+    public function deletePosition()
+    {
+        echo 'good!';
+        die();
+        $id = request('id');
+        echo $id;
+        die();
+        $role = Role::find($id);
+
+        Role::where('id', $id)->delete();
+
+        return Utils::makeResponse();
+    }
 }

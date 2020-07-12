@@ -184,8 +184,8 @@
                                 <button type="submit" class="btn btn-primary">
                                     <i class="fa fa-check-circle mr-1"></i> Submit
                                 </button>
-                                <a class="btn btn-danger" href="{{url('/admin/customers')}}">
-                                    <i class="fa fa-times-circle mr-1"></i> Cancel
+                                <a class="btn btn-danger" href="{{route('admin.clients.show')}}">
+                                    <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
     <script src="{{asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 
     <script>jQuery(function () {
-            Dashmix.helpers(['datepicker']);
+            Pickitapps.helpers(['datepicker']);
         });</script>
     <!-- Page JS Code -->
     <script>

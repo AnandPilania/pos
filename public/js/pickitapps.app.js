@@ -19297,24 +19297,24 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/app.js":
-/*!********************************************!*\
-  !*** ./resources/assets/js/dashmix/app.js ***!
-  \********************************************/
+/***/ "./resources/assets/js/pickitapps/app.js":
+/*!***********************************************!*\
+  !*** ./resources/assets/js/pickitapps/app.js ***!
+  \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return App; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! aos */ "./node_modules/aos/dist/aos.js");
 /* harmony import */ var aos__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(aos__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var aos_dist_aos_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! aos/dist/aos.css */ "./node_modules/aos/dist/aos.css");
 /* harmony import */ var aos_dist_aos_css__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(aos_dist_aos_css__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _modules_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/tools */ "./resources/assets/js/dashmix/modules/tools.js");
-/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/helpers */ "./resources/assets/js/dashmix/modules/helpers.js");
-/* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/template */ "./resources/assets/js/dashmix/modules/template.js");
+/* harmony import */ var _modules_tools__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/tools */ "./resources/assets/js/pickitapps/modules/tools.js");
+/* harmony import */ var _modules_helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/helpers */ "./resources/assets/js/pickitapps/modules/helpers.js");
+/* harmony import */ var _modules_template__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/template */ "./resources/assets/js/pickitapps/modules/template.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19425,15 +19425,15 @@ var App = /*#__PURE__*/function (_Template) {
 
 jQuery(function () {
   // Create a new instance of App
-  window.Dashmix = new App();
+  window.Pickitapps = new App();
 });
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/bootstrap.js":
-/*!**************************************************!*\
-  !*** ./resources/assets/js/dashmix/bootstrap.js ***!
-  \**************************************************/
+/***/ "./resources/assets/js/pickitapps/bootstrap.js":
+/*!*****************************************************!*\
+  !*** ./resources/assets/js/pickitapps/bootstrap.js ***!
+  \*****************************************************/
 /*! no exports provided */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -19473,18 +19473,18 @@ window.Cookies = js_cookie__WEBPACK_IMPORTED_MODULE_2___default.a;
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/helpers.js":
-/*!********************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/helpers.js ***!
-  \********************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/helpers.js":
+/*!***********************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/helpers.js ***!
+  \***********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Helpers; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
-/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/dashmix/modules/tools.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
+/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/pickitapps/modules/tools.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -20566,19 +20566,19 @@ var Helpers = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/template.js":
-/*!*********************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/template.js ***!
-  \*********************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/template.js":
+/*!************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/template.js ***!
+  \************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Template; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
-/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/dashmix/modules/tools.js");
-/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/assets/js/dashmix/modules/helpers.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
+/* harmony import */ var _tools__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./tools */ "./resources/assets/js/pickitapps/modules/tools.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "./resources/assets/js/pickitapps/modules/helpers.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -21304,17 +21304,17 @@ var Template = /*#__PURE__*/function () {
 
 /***/ }),
 
-/***/ "./resources/assets/js/dashmix/modules/tools.js":
-/*!******************************************************!*\
-  !*** ./resources/assets/js/dashmix/modules/tools.js ***!
-  \******************************************************/
+/***/ "./resources/assets/js/pickitapps/modules/tools.js":
+/*!*********************************************************!*\
+  !*** ./resources/assets/js/pickitapps/modules/tools.js ***!
+  \*********************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Tools; });
-/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/dashmix/bootstrap.js");
+/* harmony import */ var _bootstrap_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./../bootstrap.js */ "./resources/assets/js/pickitapps/bootstrap.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -21375,13 +21375,13 @@ var Tools = /*#__PURE__*/function () {
 /***/ }),
 
 /***/ 1:
-/*!**************************************************!*\
-  !*** multi ./resources/assets/js/dashmix/app.js ***!
-  \**************************************************/
+/*!*****************************************************!*\
+  !*** multi ./resources/assets/js/pickitapps/app.js ***!
+  \*****************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/js/dashmix/app.js */"./resources/assets/js/dashmix/app.js");
+module.exports = __webpack_require__(/*! /Volumes/DATA/project/20200625_pos_laravel/project/pos/resources/assets/js/pickitapps/app.js */"./resources/assets/js/pickitapps/app.js");
 
 
 /***/ })

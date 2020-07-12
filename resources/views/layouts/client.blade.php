@@ -151,11 +151,11 @@
                             User Options
                         </div>
                         <div class="p-2">
-                            <a class="dropdown-item" href="{{url($admin_prefix.'/profile')}}">
+                            <a class="dropdown-item" href="{{route('admin.profile.show')}}">
                                 <i class="far fa-fw fa-user mr-1"></i> Profile
                             </a>
                             <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{{url($admin_prefix.'/logout')}}">
+                            <a class="dropdown-item" href="{{route('admin.logout')}}">
                                 <i class="far fa-fw fa-arrow-alt-circle-left mr-1"></i> Sign Out
                             </a>
                         </div>
@@ -207,7 +207,7 @@
 </div>
 <!-- END Page Container -->
 
-<!-- Dashmix Core JS -->
+<!-- Pickitapps Core JS -->
 <script src="{{ mix('js/pickitapps.admin.js') }}"></script>
 
 <!-- Laravel Scaffolding JS -->

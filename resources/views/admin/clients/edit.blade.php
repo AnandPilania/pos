@@ -250,7 +250,7 @@
     <script src="{{asset('js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js')}}"></script>
 
     <script>jQuery(function () {
-            Dashmix.helpers(['datepicker']);
+            Pickitapps.helpers(['datepicker']);
         });</script>
     <!-- Page JS Code -->
     <script>
