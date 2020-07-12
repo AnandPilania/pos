@@ -114,15 +114,4 @@ class PositionsController
         return Utils::makeResponse();
     }
 
-    public function toggleActive()
-    {
-        $id = request('id');
-        $enable_flag = User::where('id', $id)->first()->enable_flag;
-
-        User::where('id', $id)->update([
-            'enable_flag' => 1 - $enable_flag,
-        ]);
-
-        return Utils::makeResponse();
-    }
 }

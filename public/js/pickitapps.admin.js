@@ -19159,6 +19159,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pages/admin/employees-edit */ "./resources/assets/js/pickitapps/pages/admin/employees-edit.js");
 /* harmony import */ var _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pages/admin/positions-add */ "./resources/assets/js/pickitapps/pages/admin/positions-add.js");
 /* harmony import */ var _pages_admin_business_types_add__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./pages/admin/business-types-add */ "./resources/assets/js/pickitapps/pages/admin/business-types-add.js");
+/* harmony import */ var _pages_admin_subscriptions_list__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./pages/admin/subscriptions-list */ "./resources/assets/js/pickitapps/pages/admin/subscriptions-list.js");
+/* harmony import */ var _pages_admin_subscriptions_add__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./pages/admin/subscriptions-add */ "./resources/assets/js/pickitapps/pages/admin/subscriptions-add.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19197,6 +19199,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -19222,7 +19226,9 @@ var App = /*#__PURE__*/function (_Template) {
       EmployeesAdd: _pages_admin_employees_add__WEBPACK_IMPORTED_MODULE_8__["default"],
       EmployeesEdit: _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__["default"],
       PositionsAdd: _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__["default"],
-      BusinessTypesAdd: _pages_admin_business_types_add__WEBPACK_IMPORTED_MODULE_11__["default"]
+      BusinessTypesAdd: _pages_admin_business_types_add__WEBPACK_IMPORTED_MODULE_11__["default"],
+      SubscriptionsList: _pages_admin_subscriptions_list__WEBPACK_IMPORTED_MODULE_12__["default"],
+      SubscriptionsAdd: _pages_admin_subscriptions_add__WEBPACK_IMPORTED_MODULE_13__["default"]
     };
     return _this;
   }
@@ -21837,6 +21843,151 @@ var PositionsList = /*#__PURE__*/function () {
   }]);
 
   return PositionsList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/subscriptions-add.js":
+/*!*************************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/subscriptions-add.js ***!
+  \*************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SubscriptionsAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var SubscriptionsAdd = /*#__PURE__*/function () {
+  function SubscriptionsAdd() {
+    _classCallCheck(this, SubscriptionsAdd);
+
+    this.init();
+  }
+
+  _createClass(SubscriptionsAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'name': {
+            required: true
+          },
+          'slug': {
+            required: true
+          }
+        }
+      });
+    }
+  }]);
+
+  return SubscriptionsAdd;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/subscriptions-list.js":
+/*!**************************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/subscriptions-list.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SubscriptionsList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var SubscriptionsList = /*#__PURE__*/function () {
+  function SubscriptionsList() {
+    _classCallCheck(this, SubscriptionsList);
+
+    this.init();
+  }
+
+  _createClass(SubscriptionsList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      jQuery('.table').dataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "delete",
+    value: function _delete(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'This subscription will be also detached from clients.',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(route('admin.subscriptions.delete'), {
+            id: id
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
+          })["catch"](function (error) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return SubscriptionsList;
 }();
 
 

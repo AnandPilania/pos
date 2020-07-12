@@ -127,6 +127,13 @@
                         <span class="nav-main-link-name">Business Types</span>
                     </a>
                 </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link{{ request()->is('*subscriptions*') ? ' active' : '' }}"
+                       href="{{route('admin.subscriptions.show')}}">
+                        <i class="nav-main-link-icon si si-emoticon-smile"></i>
+                        <span class="nav-main-link-name">Subscriptions</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

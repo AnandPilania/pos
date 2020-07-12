@@ -128,6 +128,15 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
             Route::post('/{id}', 'BusinessTypesController@edit')->name('edit');
         });
 
+        // Subscriptions
+        Route::group(['prefix' => 'subscriptions', 'as' => 'subscriptions.'], function () {
+            Route::get('/', 'SubscriptionsController@index')->name('show');
+            Route::get('/add', 'SubscriptionsController@showAddPage')->name('add.show');
+            Route::post('/add', 'SubscriptionsController@add')->name('add');
+            Route::post('/delete', 'SubscriptionsController@delete')->name('delete');
+            Route::get('/{id}', 'SubscriptionsController@showEditPage')->name('edit.show');
+            Route::post('/{id}', 'SubscriptionsController@edit')->name('edit');
+        });
 
         Route::get('/profile', 'AuthController@showProfilePage')->name('profile.show');
         Route::post('/profile/edit', 'AuthController@editProfile')->name('profile.edit');

@@ -2,12 +2,14 @@
 
 namespace App\Http\Models;
 
+use App\Permissions\HasSubscriptionsTrait;
 use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Client extends Authenticatable implements JWTSubject
 {
+    use HasSubscriptionsTrait;
 
     public $timestamps = false;
 

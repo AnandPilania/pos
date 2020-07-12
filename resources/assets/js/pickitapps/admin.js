@@ -22,6 +22,8 @@ import EmployeesAdd from "./pages/admin/employees-add";
 import EmployeesEdit from "./pages/admin/employees-edit";
 import PositionsAdd from "./pages/admin/positions-add";
 import BusinessTypesAdd from "./pages/admin/business-types-add";
+import SubscriptionsList from "./pages/admin/subscriptions-list";
+import SubscriptionsAdd from "./pages/admin/subscriptions-add";
 
 // App extends Template
 export default class App extends Template {
@@ -39,7 +41,9 @@ export default class App extends Template {
             EmployeesAdd,
             EmployeesEdit,
             PositionsAdd,
-            BusinessTypesAdd
+            BusinessTypesAdd,
+            SubscriptionsList,
+            SubscriptionsAdd
         }
     }
 
