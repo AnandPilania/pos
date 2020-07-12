@@ -47,7 +47,7 @@ class BusinessTypesController
         $name = request('name');
 
         request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:business_types',
         ]);
 
         $businessTypes = new BusinessType();
@@ -64,7 +64,7 @@ class BusinessTypesController
         $name = request('name');
 
         request()->validate([
-            'name' => 'required'
+            'name' => 'required|unique:business_types,name,' . $id
         ]);
 
         BusinessType::where('id', $id)

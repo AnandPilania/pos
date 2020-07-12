@@ -1,5 +1,15 @@
 @extends('layouts.admin')
+@section('js_after')
+    <!-- Page JS Plugins -->
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
 
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.BusinessTypesAdd();
+        });
+    </script>
+@endsection
 @section('content')
     <!-- Hero -->
     <div class="bg-body-light">
@@ -23,7 +33,7 @@
                     </div>
                 @endif
 
-                @if (count($errors) > 0)
+                @if ($errors->any())
                     <div class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.
                         <ul>
@@ -34,7 +44,7 @@
                     </div>
                 @endif
 
-                <form action="{{route('admin.business-types.edit', $id)}}" method="POST">
+                <form action="{{route('admin.business-types.edit', $id)}}" class="js-validation" method="POST">
                     @csrf
                     <h2 class="content-heading">Business Type Info</h2>
                     <div class="row">
@@ -69,12 +79,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-
-    <!-- Page JS Code -->
-    <script>
-
-    </script>
 @endsection

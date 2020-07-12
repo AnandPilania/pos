@@ -1,3 +1,4 @@
+import {catchErrorHandling, responseBodyHandling} from "../../utils/axios";
 
 export default class BusinessTypesList {
     constructor() {
@@ -25,7 +26,7 @@ export default class BusinessTypesList {
     delete(id) {
         swal({
             title: 'Are you sure?',
-            text: 'This posit type will be also detached from clients.',
+            text: 'This business type will be also detached from clients.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-danger m-1',
@@ -43,17 +44,13 @@ export default class BusinessTypesList {
             if (result.value) {
 
                 axios.post(route('admin.business-types.delete'), {id})
-                    .then(result => {
-                        console.log(this.dataTable);
-                        if (this.dataTable) {
-                            //this.dataTable.fnDestroy().fnDraw(false);
-                        }
-                        console.log(result);
+                    .then(response => response['data'])
+                    .then(data => {
+                        responseBodyHandling(data, true);
                     })
-                    .catch(error=> {
-                        console.log(error);
+                    .catch(error => {
+                        catchErrorHandling(error);
                     });
-
 
             } else if (result.dismiss === 'cancel') {
 

@@ -85,7 +85,7 @@ class EmployeesController
         request()->validate([
             'first-name' => 'required',
             'last-name' => 'required',
-            'email' => 'required|email|unique:users,id,' . $id,
+            'email' => 'required|email|unique:users,email,' . $id,
         ]);
 
         if (empty(request('positions'))) {

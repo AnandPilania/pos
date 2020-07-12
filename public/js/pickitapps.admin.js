@@ -19158,6 +19158,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_employees_add__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./pages/admin/employees-add */ "./resources/assets/js/pickitapps/pages/admin/employees-add.js");
 /* harmony import */ var _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./pages/admin/employees-edit */ "./resources/assets/js/pickitapps/pages/admin/employees-edit.js");
 /* harmony import */ var _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./pages/admin/positions-add */ "./resources/assets/js/pickitapps/pages/admin/positions-add.js");
+/* harmony import */ var _pages_admin_business_types_add__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./pages/admin/business-types-add */ "./resources/assets/js/pickitapps/pages/admin/business-types-add.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19195,6 +19196,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
 
+
  // App extends Template
 
 var App = /*#__PURE__*/function (_Template) {
@@ -19219,7 +19221,8 @@ var App = /*#__PURE__*/function (_Template) {
       EmployeesList: _pages_admin_employees_list__WEBPACK_IMPORTED_MODULE_7__["default"],
       EmployeesAdd: _pages_admin_employees_add__WEBPACK_IMPORTED_MODULE_8__["default"],
       EmployeesEdit: _pages_admin_employees_edit__WEBPACK_IMPORTED_MODULE_9__["default"],
-      PositionsAdd: _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__["default"]
+      PositionsAdd: _pages_admin_positions_add__WEBPACK_IMPORTED_MODULE_10__["default"],
+      BusinessTypesAdd: _pages_admin_business_types_add__WEBPACK_IMPORTED_MODULE_11__["default"]
     };
     return _this;
   }
@@ -21298,6 +21301,67 @@ var AuthLogin = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/assets/js/pickitapps/pages/admin/business-types-add.js":
+/*!**************************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/business-types-add.js ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BusinessTypesAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BusinessTypesAdd = /*#__PURE__*/function () {
+  function BusinessTypesAdd() {
+    _classCallCheck(this, BusinessTypesAdd);
+
+    this.init();
+  }
+
+  _createClass(BusinessTypesAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'name': {
+            required: true
+          }
+        }
+      });
+    }
+  }]);
+
+  return BusinessTypesAdd;
+}();
+
+
+
+/***/ }),
+
 /***/ "./resources/assets/js/pickitapps/pages/admin/business-types-list.js":
 /*!***************************************************************************!*\
   !*** ./resources/assets/js/pickitapps/pages/admin/business-types-list.js ***!
@@ -21308,11 +21372,14 @@ var AuthLogin = /*#__PURE__*/function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return BusinessTypesList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var BusinessTypesList = /*#__PURE__*/function () {
   function BusinessTypesList() {
@@ -21344,11 +21411,9 @@ var BusinessTypesList = /*#__PURE__*/function () {
   }, {
     key: "delete",
     value: function _delete(id) {
-      var _this = this;
-
       swal({
         title: 'Are you sure?',
-        text: 'This posit type will be also detached from clients.',
+        text: 'This business type will be also detached from clients.',
         type: 'warning',
         showCancelButton: true,
         confirmButtonClass: 'btn btn-danger m-1',
@@ -21366,15 +21431,12 @@ var BusinessTypesList = /*#__PURE__*/function () {
         if (result.value) {
           axios.post(route('admin.business-types.delete'), {
             id: id
-          }).then(function (result) {
-            console.log(_this.dataTable);
-
-            if (_this.dataTable) {//this.dataTable.fnDestroy().fnDraw(false);
-            }
-
-            console.log(result);
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
           })["catch"](function (error) {
-            console.log(error);
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
           });
         } else if (result.dismiss === 'cancel') {}
       });
