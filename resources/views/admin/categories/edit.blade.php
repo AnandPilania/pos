@@ -1,8 +1,12 @@
 @extends('layouts.admin')
-
-@section('css_before')
-    <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
+@section('js_after')
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.CategoriesAdd();
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -48,10 +52,11 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/categories/edit')}}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <!-- Vital Info -->
-                    <h2 class="content-heading pt-0">Vital Info</h2>
+                <form action="{{route('admin.clients.categories.edit', ['client_id' => $client_id, 'id' => $category->id])}}"
+                      method="POST" class="ja-validation">
+                @csrf
+                <!-- Vital Info -->
+                    <h2 class="content-heading pt-0">Category Information</h2>
                     <div class="row push">
                         <div class="col-lg-4">
                             <p class="text-muted">
@@ -63,38 +68,34 @@
                                 <label for="dm-project-new-name">
                                     Category Name (English) <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" class="form-control" name="category-name" placeholder="eg: Pizza" value="{{$category->name}}">
+                                <input type="text" class="form-control" name="category-name" placeholder="eg: Pizza"
+                                       value="{{$category->name}}">
                             </div>
                             <div class="form-group">
                                 <label>
                                     Category Name (Other language)
                                 </label>
-                                <div class="custom-control custom-checkbox custom-control-inline custom-control-primary mb-1">
-                                    <input type="checkbox" class="custom-control-input" id="checkbox-name-rtl" name="rtl-direction" @if($category->rtl_direction == 1) checked @endif>
+                                <div
+                                    class="custom-control custom-checkbox custom-control-inline custom-control-primary mb-1">
+                                    <input type="checkbox" class="custom-control-input" id="checkbox-name-rtl"
+                                           name="rtl-direction" @if($category->rtl_direction == 1) checked @endif>
                                     <label class="custom-control-label" for="checkbox-name-rtl">RTL?</label>
                                 </div>
-                                <input type="text" class="form-control" name="category-name-ar" placeholder="eg: Pizza" value="{{$category->name_second}}" @if($category->rtl_direction == 1) dir="rtl" @endif>
-                            </div>
-                            <div class="form-group">
-                                <label for="dm-project-new-name">
-                                    Tags (English)
-                                </label>
-                                <input type="text" class="form-control" name="category-tags" placeholder="eg: Tag1, Tag2, Tag3" value="{{$category->tags}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="dm-project-edit-description">Tags (Other language)</label>
-                                <input type="text" class="form-control" name="category-tags-ar" placeholder="eg: Tag1, Tag2, Tag3"  value="{{$category->tags_second}}" @if($category->rtl_direction == 1) dir="rtl" @endif>
+                                <input type="text" class="form-control" name="category-name-ar" placeholder="eg: Pizza"
+                                       value="{{$category->name_second}}"
+                                       @if($category->rtl_direction == 1) dir="rtl" @endif>
                             </div>
                             <div class="form-group">
                                 <label for="dm-project-new-name">
                                     Display Order
                                 </label>
-                                <input type="text" class="form-control" name="order" placeholder="Order Number" value="{{$category->show_order}}">
+                                <input type="text" class="form-control" name="order" placeholder="Order Number"
+                                       value="{{$category->show_order}}">
                             </div>
                         </div>
                     </div>
                     <!-- END Vital Info -->
-                        <input type="hidden" value="{{$category->id}}" name="id">
+                    <input type="hidden" value="{{$category->id}}" name="id">
                     <!-- Submit -->
                     <div class="row push">
                         <div class="col-lg-8 col-xl-5 offset-lg-4">
@@ -102,7 +103,8 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="fa fa-check-circle mr-1"></i> Update Category
                                 </button>
-                                <a class="btn btn-warning" href="{{url('/admin/categories').'/'.$category->customer_id}}">
+                                <a class="btn btn-warning"
+                                   href="{{route('admin.clients.categories.show', $client_id)}}">
                                     <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
@@ -116,23 +118,3 @@
     <!-- END Page Content -->
 @endsection
 
-@section('js_after')
-    <!-- Page JS Code -->
-    <script>
-
-        $(document).ready(() => {
-
-            $("#checkbox-name-rtl").on("change", () => {
-                if ($("#checkbox-name-rtl").prop("checked") == true) {
-                    $("[name='category-name-ar']").attr("dir", "rtl");
-                    $("[name='category-tags-ar']").attr("dir", "rtl");
-                } else {
-                    $("[name='category-name-ar']").removeAttr("dir");
-                    $("[name='category-tags-ar']").removeAttr("dir");
-                }
-            });
-
-        });
-
-    </script>
-@endsection

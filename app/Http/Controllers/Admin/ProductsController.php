@@ -48,7 +48,7 @@ class ProductsController
     {
         $id = request('id');
         $client_id = request('client_id');
-        $product = Product::where('id', $id)->first();
+        $product = Product::find($id);
         $categories = Category::where('customer_id', $product->customer_id)->get();
         $currency_list = Currency::get();
         if ($product != null) {
@@ -60,7 +60,7 @@ class ProductsController
                     'client_id' => $client_id
                 ]);
         }
-        return redirect()->route('admin.clients.products.show');
+        return redirect()->route('admin.clients.products.show', $client_id);
     }
 
     public function showDetailPage()
@@ -68,13 +68,15 @@ class ProductsController
         $id = request('id');
         $product = Product::where('id', $id)->first();
         $categories = Category::get();
+        $client_id = request('client_id');
         if ($product != null) {
-            return view('product_detail')->with([
+            return view('admin.products.detail')->with([
                 'product' => $product,
-                'categories' => $categories
+                'categories' => $categories,
+                'client_id' => $client_id
             ]);
         }
-        return redirect('/admin/products');
+        return redirect()->route('admin.clients.products.show', $client_id);
     }
 
     public function add()

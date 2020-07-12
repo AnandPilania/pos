@@ -19167,6 +19167,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./pages/admin/products-list */ "./resources/assets/js/pickitapps/pages/admin/products-list.js");
 /* harmony import */ var _pages_admin_products_add__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./pages/admin/products-add */ "./resources/assets/js/pickitapps/pages/admin/products-add.js");
 /* harmony import */ var _pages_admin_products_edit__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./pages/admin/products-edit */ "./resources/assets/js/pickitapps/pages/admin/products-edit.js");
+/* harmony import */ var _pages_admin_categories_list__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./pages/admin/categories-list */ "./resources/assets/js/pickitapps/pages/admin/categories-list.js");
+/* harmony import */ var _pages_admin_categories_add__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./pages/admin/categories-add */ "./resources/assets/js/pickitapps/pages/admin/categories-add.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19197,6 +19199,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 
 
  // Import page js
+
+
 
 
 
@@ -19246,7 +19250,9 @@ var App = /*#__PURE__*/function (_Template) {
       ClientsEdit: _pages_admin_clients_edit__WEBPACK_IMPORTED_MODULE_16__["default"],
       ProductsList: _pages_admin_products_list__WEBPACK_IMPORTED_MODULE_17__["default"],
       ProductsAdd: _pages_admin_products_add__WEBPACK_IMPORTED_MODULE_18__["default"],
-      ProductsEdit: _pages_admin_products_edit__WEBPACK_IMPORTED_MODULE_19__["default"]
+      ProductsEdit: _pages_admin_products_edit__WEBPACK_IMPORTED_MODULE_19__["default"],
+      CategoriesList: _pages_admin_categories_list__WEBPACK_IMPORTED_MODULE_20__["default"],
+      CategoriesAdd: _pages_admin_categories_add__WEBPACK_IMPORTED_MODULE_21__["default"]
     };
     return _this;
   }
@@ -21468,6 +21474,186 @@ var BusinessTypesList = /*#__PURE__*/function () {
   }]);
 
   return BusinessTypesList;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/categories-add.js":
+/*!**********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/categories-add.js ***!
+  \**********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CategoriesAdd; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var CategoriesAdd = /*#__PURE__*/function () {
+  function CategoriesAdd() {
+    _classCallCheck(this, CategoriesAdd);
+
+    this.init();
+  }
+
+  _createClass(CategoriesAdd, [{
+    key: "init",
+    value: function init() {
+      this.initValidators();
+      this.initEventListeners();
+    }
+  }, {
+    key: "initValidators",
+    value: function initValidators() {
+      jQuery('.js-validation').validate({
+        errorClass: 'invalid-feedback animated fadeIn',
+        errorElement: 'div',
+        errorPlacement: function errorPlacement(error, el) {
+          jQuery(el).addClass('is-invalid');
+          jQuery(el).parents('.form-group').append(error);
+        },
+        highlight: function highlight(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid').addClass('is-invalid');
+        },
+        success: function success(el) {
+          jQuery(el).parents('.form-group').find('.is-invalid').removeClass('is-invalid');
+          jQuery(el).remove();
+        },
+        rules: {
+          'category-name': {
+            required: true
+          }
+        }
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("#checkbox-name-rtl").on("change", function () {
+        if ($("#checkbox-name-rtl").prop("checked") === true) {
+          $("[name='category-name-ar']").attr("dir", "rtl");
+          $("[name='category-tags-ar']").attr("dir", "rtl");
+        } else {
+          $("[name='category-name-ar']").removeAttr("dir");
+          $("[name='category-tags-ar']").removeAttr("dir");
+        }
+      });
+    }
+  }]);
+
+  return CategoriesAdd;
+}();
+
+
+
+/***/ }),
+
+/***/ "./resources/assets/js/pickitapps/pages/admin/categories-list.js":
+/*!***********************************************************************!*\
+  !*** ./resources/assets/js/pickitapps/pages/admin/categories-list.js ***!
+  \***********************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CategoriesList; });
+/* harmony import */ var _utils_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../utils/axios */ "./resources/assets/js/pickitapps/utils/axios.js");
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
+
+var CategoriesList = /*#__PURE__*/function () {
+  function CategoriesList() {
+    _classCallCheck(this, CategoriesList);
+
+    this.init();
+  }
+
+  _createClass(CategoriesList, [{
+    key: "init",
+    value: function init() {
+      this.initDataTable();
+      this.initEventListeners();
+    }
+  }, {
+    key: "initDataTable",
+    value: function initDataTable() {
+      this.dataTable = jQuery('.table').dataTable({
+        pageLength: 10,
+        lengthMenu: [5, 10, 20]
+      });
+    }
+  }, {
+    key: "initEventListeners",
+    value: function initEventListeners() {
+      $("[name^='show-toggle-']").on('change', function () {
+        var id = this.name.split("show-toggle-")[1];
+        axios.post(route('admin.clients.categories.toggle-active', clientId), {
+          id: id
+        }).then(function (result) {
+          return result['data'];
+        }).then(function (data) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data);
+        })["catch"](function (error) {
+          Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+        });
+      });
+    }
+  }, {
+    key: "openVideoDialog",
+    value: function openVideoDialog(videoId, productName) {
+      $("#modal-block-fadein .block-title").html(productName);
+      $("#modal-block-fadein iframe").attr("src", "https://www.youtube.com/embed/" + videoId);
+      $("#modal-block-fadein").modal('show');
+    }
+  }, {
+    key: "delete",
+    value: function _delete(id) {
+      swal({
+        title: 'Are you sure?',
+        text: 'Are you sure to delete this category? \nAll products related to this category will be also deleted.',
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonClass: 'btn btn-danger m-1',
+        cancelButtonClass: 'btn btn-secondary m-1',
+        confirmButtonText: 'Yes, delete!',
+        html: false,
+        preConfirm: function preConfirm(e) {
+          return new Promise(function (resolve) {
+            setTimeout(function () {
+              resolve();
+            }, 50);
+          });
+        }
+      }).then(function (result) {
+        if (result.value) {
+          axios.post(route('admin.clients.categories.delete', clientId), {
+            id: id
+          }).then(function (response) {
+            return response['data'];
+          }).then(function (data) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["responseBodyHandling"])(data, true);
+          })["catch"](function (error) {
+            Object(_utils_axios__WEBPACK_IMPORTED_MODULE_0__["catchErrorHandling"])(error);
+          });
+        } else if (result.dismiss === 'cancel') {}
+      });
+    }
+  }]);
+
+  return CategoriesList;
 }();
 
 

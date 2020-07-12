@@ -56,7 +56,7 @@
                       class="js-validation" method="POST" enctype="multipart/form-data">
                 @csrf
                 <!-- Vital Info -->
-                    <h2 class="content-heading pt-0">Vital Info</h2>
+                    <h2 class="content-heading pt-0">Product Information</h2>
                     <div class="row push">
                         <div class="col-lg-4">
                             <p class="text-muted">

@@ -30,6 +30,8 @@ import ClientsEdit from "./pages/admin/clients-edit";
 import ProductsList from "./pages/admin/products-list";
 import ProductsAdd from "./pages/admin/products-add";
 import ProductsEdit from "./pages/admin/products-edit";
+import CategoriesList from "./pages/admin/categories-list";
+import CategoriesAdd from "./pages/admin/categories-add";
 
 // App extends Template
 export default class App extends Template {
@@ -55,7 +57,9 @@ export default class App extends Template {
             ClientsEdit,
             ProductsList,
             ProductsAdd,
-            ProductsEdit
+            ProductsEdit,
+            CategoriesList,
+            CategoriesAdd
         }
     }
 

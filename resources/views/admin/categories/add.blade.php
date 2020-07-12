@@ -1,8 +1,12 @@
 @extends('layouts.admin')
-
-@section('css_before')
-    <!-- Page JS Plugins CSS -->
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
+@section('js_after')
+    <script src="{{asset('js/plugins/jquery-validation/jquery.validate.min.js')}}"></script>
+    <!-- Page JS Code -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.page = new Pickitapps.pages.CategoriesAdd();
+        });
+    </script>
 @endsection
 
 @section('content')
@@ -48,10 +52,10 @@
                     </div>
                 @endif
 
-                <form action="{{url('/admin/categories').'/'.$customer_id.'/add'}}" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.clients.categories.add', $client_id)}}" class="js-validation" method="POST">
                     @csrf
                     <!-- Vital Info -->
-                    <h2 class="content-heading pt-0">Vital Info</h2>
+                    <h2 class="content-heading pt-0">Category Information</h2>
                     <div class="row push">
                         <div class="col-lg-4">
                             <p class="text-muted">
@@ -77,16 +81,6 @@
                             </div>
                             <div class="form-group">
                                 <label for="dm-project-new-name">
-                                    Tags (English)
-                                </label>
-                                <input type="text" class="form-control" name="category-tags" placeholder="eg: Tag1, Tag2, Tag3">
-                            </div>
-                            <div class="form-group">
-                                <label for="dm-project-edit-description">Tags (Other language)</label>
-                                <input type="text" class="form-control" name="category-tags-ar" placeholder="eg: Tag1, Tag2, Tag3">
-                            </div>
-                            <div class="form-group">
-                                <label for="dm-project-new-name">
                                     Display Order
                                 </label>
                                 <input type="text" class="form-control" name="order" placeholder="Order Number">
@@ -102,7 +96,7 @@
                                 <button type="submit" class="btn btn-success">
                                     <i class="fa fa-check-circle mr-1"></i> Add New Category
                                 </button>
-                                <a class="btn btn-warning" href="{{url('/admin/categories').'/'.$customer_id}}">
+                                <a class="btn btn-warning" href="{{route('admin.clients.categories.show', $client_id)}}">
                                     <i class="fa fa-times-circle mr-1"></i> Back
                                 </a>
                             </div>
@@ -114,25 +108,4 @@
         </div>
     </div>
     <!-- END Page Content -->
-@endsection
-
-@section('js_after')
-    <!-- Page JS Code -->
-    <script>
-
-        $(document).ready(() => {
-
-            $("#checkbox-name-rtl").on("change", () => {
-                if ($("#checkbox-name-rtl").prop("checked") == true) {
-                    $("[name='category-name-ar']").attr("dir", "rtl");
-                    $("[name='category-tags-ar']").attr("dir", "rtl");
-                } else {
-                    $("[name='category-name-ar']").removeAttr("dir");
-                    $("[name='category-tags-ar']").removeAttr("dir");
-                }
-            });
-
-        });
-
-    </script>
 @endsection

@@ -93,20 +93,15 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
                 // Categories
                 Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
                     Route::get('/', 'CategoriesController@index')->name('show');
-
-                    Route::get('/edit/{id}', 'AdminController@showCategoryEditPage');
-                    Route::get('/edit', 'AdminController@showCategoriesPage');
-                    Route::post('/edit', 'AdminController@editCategory');
-                    Route::post('/del', 'AdminController@delCategory');
-                    Route::get('/detail/{id}', 'AdminController@showCategoryDetailPage');
-                    Route::post('/toggle-visible', 'AdminController@toggleCategoryVisible');
-                    Route::get('/show-all', 'AdminController@toggleCategoryAllVisible');
-                    Route::get('/hide-all', 'AdminController@toggleCategoryAllInvisible');
-
-                    Route::get('/{customer_id}', 'AdminController@showCategoriesPage');
-                    Route::get('/{customer_id}/add', 'AdminController@showCategoryAddPage');
-                    Route::post('/{customer_id}/add', 'AdminController@addCategory');
-
+                    Route::get('/add', 'CategoriesController@showAddPage')->name('add.show');
+                    Route::post('/add', 'CategoriesController@add')->name('add');
+                    Route::post('/delete', 'CategoriesController@delete')->name('delete');
+                    Route::get('/detail/{id}', 'CategoriesController@showDetailPage')->name('detail.show');
+                    Route::post('/toggle-active', 'CategoriesController@toggleActive')->name('toggle-active');
+                    Route::get('/show-all', 'CategoriesController@toggleCategoryAllVisible')->name('toggle-all-active');
+                    Route::get('/hide-all', 'CategoriesController@toggleCategoryAllInvisible')->name('toggle-all-inactive');
+                    Route::get('/{id}', 'CategoriesController@showEditPage')->name('edit.show');
+                    Route::post('/{id}', 'CategoriesController@edit')->name('edit');
                 });
             });
         });

@@ -1041,17 +1041,4 @@ class AdminController
         return Utils::makeResponse();
     }
 
-    public function deletePosition()
-    {
-        echo 'good!';
-        die();
-        $id = request('id');
-        echo $id;
-        die();
-        $role = Role::find($id);
-
-        Role::where('id', $id)->delete();
-
-        return Utils::makeResponse();
-    }
 }
