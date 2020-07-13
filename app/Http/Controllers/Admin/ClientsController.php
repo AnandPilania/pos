@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Models\BusinessType;
+use App\Http\Models\Category;
 use App\Http\Models\Client;
 use App\Http\Models\Invoice;
 use App\Http\Models\Product;
@@ -16,6 +17,10 @@ class ClientsController
 {
     public function index()
     {
+        if(!auth()->user()->can('client-list')) {
+            return back();
+        }
+
         $clients = Client::with('subscriptions')->get();
         return view('admin.clients.list')
             ->with('clients', $clients)
@@ -24,6 +29,10 @@ class ClientsController
 
     public function showAddPage()
     {
+        if(!auth()->user()->can('client-create')) {
+            return back();
+        }
+
         $subscriptions = Subscription::get();
         $businessTypes = BusinessType::get();
         return view('admin.clients.add')
@@ -36,6 +45,10 @@ class ClientsController
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('client-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $client = Client::find($id);
         $subscriptions = Subscription::get();
@@ -54,18 +67,43 @@ class ClientsController
         return redirect()->route('admin.clients.show');
     }
 
-    public function showDetailPage()
+    public function showOverviewPage()
     {
-        $id = request('client_id');
-        $customer = Client::find($id);
+        if(!auth()->user()->can('client-list')) {
+            return back();
+        }
 
-        $products = Product::where('customer_id', $id)->with('category', 'currency')->get();
-        if ($customer != null) {
+        $client_id = request('client_id');
+
+        $products = Product::where('customer_id', $client_id)->count();
+        $categories = Category::where('customer_id', $client_id)->count();
+
+        return view('admin.clients.dashboard')->with([
+            'products' => $products,
+            'categories' => $categories,
+            'client_id' => $client_id
+        ]);
+    }
+
+    public function showInformationPage()
+    {
+        if(!auth()->user()->can('client-list')) {
+            return back();
+        }
+
+        $id = request('client_id');
+        $client = Client::find($id);
+        $subscriptions = Subscription::get();
+        $invoice = Invoice::find($client->current_invoice_id);
+        $businessTypes = BusinessType::get();
+        if ($client != null) {
             return view('admin.clients.detail')
                 ->with([
-                    'customer' => $customer,
-                    'products' => $products,
-                    'client_id' => $id
+                    'client' => $client,
+                    'client_id' => $id,
+                    'subscriptions' => $subscriptions,
+                    'invoice' => $invoice,
+                    'businessTypes' => $businessTypes
                 ])
                 ->withTitle('Client Detail');
         }
@@ -74,6 +112,10 @@ class ClientsController
 
     public function add()
     {
+        if(!auth()->user()->can('client-create')) {
+            return back();
+        }
+
         $first_name = request('first-name');
         $last_name = request('last-name');
         $email = request('email');
@@ -167,6 +209,10 @@ class ClientsController
 
     public function edit()
     {
+        if(!auth()->user()->can('client-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $first_name = request('first-name');
         $last_name = request('last-name');
@@ -225,6 +271,10 @@ class ClientsController
 
     public function resuscitateCustomer()
     {
+        if(!auth()->user()->can('client-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $start_date = request('start-date');
         $expire_date = request('expire-date');
@@ -295,6 +345,10 @@ class ClientsController
 
     public function delete()
     {
+        if(!auth()->user()->can('client-delete')) {
+            return back();
+        }
+
         $id = request('id');
         $user = Client::find($id);
         $user->subscriptions()->detach();
@@ -306,6 +360,10 @@ class ClientsController
 
     public function toggleActive()
     {
+        if(!auth()->user()->can('client-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $active = Client::where('id', $id)->first()->active;
 
@@ -318,6 +376,10 @@ class ClientsController
 
     public function printCustomerInvoice()
     {
+        if(!auth()->user()->can('client-list')) {
+            return back();
+        }
+
         $id = request('id');
         $customer = Client::find($id);
         $invoices = Invoice::where('customer_id', $id)->get();
@@ -335,6 +397,9 @@ class ClientsController
 
     public function showCustomerInvoicePrintPreviewPage()
     {
+        if(!auth()->user()->can('client-list')) {
+            return back();
+        }
 
         $id = request('id');
         $customer = Client::find($id);

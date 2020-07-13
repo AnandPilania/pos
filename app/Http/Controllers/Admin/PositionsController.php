@@ -13,6 +13,10 @@ class PositionsController
 
     public function index()
     {
+        if(!auth()->user()->can('position-list')) {
+            return back();
+        }
+
         $roles = Role::get();
         return view('admin.positions.list')
             ->with('positions', $roles)
@@ -21,7 +25,11 @@ class PositionsController
 
     public function showAddPage()
     {
-        $permissions = Permission::get();
+        if(!auth()->user()->can('position-create')) {
+            return back();
+        }
+
+        $permissions = Permission::orderBy('slug')->get();
         return view('admin.positions.add')
             ->with('permissions', $permissions)
             ->withTitle('Add Position');
@@ -29,6 +37,10 @@ class PositionsController
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('position-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $role = Role::where('id', $id)->with('permissions:id')->first();
         $permissions = Permission::get();
@@ -43,6 +55,10 @@ class PositionsController
 
     public function add()
     {
+        if(!auth()->user()->can('position-create')) {
+            return back();
+        }
+
         $name = request('name');
         $slug = request('slug');
         $description = request('description');
@@ -72,6 +88,10 @@ class PositionsController
 
     public function edit()
     {
+        if(!auth()->user()->can('position-edit')) {
+            return back();
+        }
+
         $id = request('id');
 
         $name = request('name');
@@ -105,6 +125,10 @@ class PositionsController
 
     public function delete()
     {
+        if(!auth()->user()->can('position-delete')) {
+            return back();
+        }
+
         $id = request('id');
         $role = Role::find($id);
         $role->permissions()->detach();

@@ -46,8 +46,11 @@
             </div>
             <div class="block-content block-content-full">
                 <div class="d-block d-sm-flex justify-content-between mb-2">
+                    @can('category-create')
                     <a class="btn btn-primary mb-2" href="{{route('admin.clients.categories.add.show', $client_id)}}"><i
                             class="si si-plus"></i> Add Category</a>
+                    @endcan
+                    @can('category-edit')
                     <div>
                         <a class="btn btn-success"
                            href="{{route('admin.clients.categories.toggle-all-active', $client_id)}}"><i
@@ -56,6 +59,7 @@
                            href="{{route('admin.clients.categories.toggle-all-inactive', $client_id)}}"><i
                                 class="far fa-eye-slash"></i> Hide all</a>
                     </div>
+                    @endcan
                 </div>
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
@@ -63,7 +67,9 @@
                         <th class="text-center" style="width: 80px;">#</th>
                         <th class="">Name</th>
                         <th class="d-none d-sm-table-cell" style="width: 120px;">Order</th>
+                        @can('category-edit')
                         <th class="" style="width: 120px;">Show</th>
+                        @endcan
                         <th class="" style="width: 120px;">Actions</th>
                     </tr>
                     </thead>
@@ -77,6 +83,7 @@
                             <td class="d-none d-sm-table-cell">
                                 {{$category->show_order}}
                             </td>
+                            @can('category-edit')
                             <td class="text-center">
                                 <div class="custom-control custom-switch custom-control "
                                      align="center">
@@ -86,16 +93,21 @@
                                     <label class="custom-control-label" for="show-toggle-{{$category->id}}"></label>
                                 </div>
                             </td>
+                            @endcan
                             <td class="text-center">
                                 <div class="btn-group">
+                                    @can('category-edit')
                                     <a href="{{route('admin.clients.categories.edit.show', ['client_id' => $client_id, 'id' => $category->id])}}"
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+                                    @can('category-delete')
                                     <a href="javascript:page.delete({{$category->id}})" class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>

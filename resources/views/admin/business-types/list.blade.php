@@ -44,9 +44,12 @@
                 <h3 class="block-title">Business Type List</h3>
             </div>
             <div class="block-content block-content-full">
+                @can('business-type-create')
                 <div class="mb-2">
                     <a class="btn btn-primary" href="{{route('admin.business-types.add.show')}}"><i class="si si-plus"></i> Add Business Type</a>
                 </div>
+                @endcan
+                @can('business-type-list')
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
@@ -64,20 +67,25 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
+                                    @can('business-type-edit')
                                     <a href="{{route('admin.business-types.edit.show', ['id'=>$business_type->id])}}"
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+                                    @can('business-type-delete')
                                     <a href="javascript:page.delete({{$business_type->id}})" class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                @endcan
             </div>
         </div>
     </div>

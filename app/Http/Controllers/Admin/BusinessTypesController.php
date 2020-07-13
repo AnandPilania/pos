@@ -5,15 +5,17 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Models\Client;
-use App\Http\Models\Permission;
 use App\Http\Models\BusinessType;
 use App\Http\Utils\Utils;
-use Yajra\DataTables\DataTables;
 
 class BusinessTypesController
 {
     public function index()
     {
+        if(!auth()->user()->can('business-type-list')) {
+            return back();
+        }
+
         $businessTypes = BusinessType::get();
         return view('admin.business-types.list')
             ->with('business_types', $businessTypes)
@@ -22,12 +24,20 @@ class BusinessTypesController
 
     public function showAddPage()
     {
+        if(!auth()->user()->can('business-type-create')) {
+            return back();
+        }
+
         return view('admin.business-types.add')
             ->withTitle('Add BusinessType');
     }
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('business-type-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $businessType = BusinessType::find($id);
 
@@ -38,14 +48,12 @@ class BusinessTypesController
             ]);
     }
 
-    public function getBusinessTypeList()
-    {
-        $list = BusinessType::get();
-        return datatables()->of($list)->make(true);
-    }
-
     public function add()
     {
+        if(!auth()->user()->can('business-type-create')) {
+            return back();
+        }
+
         $name = request('name');
 
         request()->validate([
@@ -62,6 +70,10 @@ class BusinessTypesController
 
     public function edit()
     {
+        if(!auth()->user()->can('business-type-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $name = request('name');
 
@@ -80,6 +92,10 @@ class BusinessTypesController
 
     public function delete()
     {
+        if(!auth()->user()->can('business-type-delete')) {
+            return back();
+        }
+
         $id = request('id');
         Client::where('business_type_id', $id)
             ->update([

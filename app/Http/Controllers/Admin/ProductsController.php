@@ -15,6 +15,10 @@ class ProductsController
 {
     public function index()
     {
+        if(!auth()->user()->can('product-list')) {
+            return back();
+        }
+
         $client_id = request('client_id');
 
         if (!isset($client_id)) {
@@ -33,6 +37,10 @@ class ProductsController
 
     public function showAddPage()
     {
+        if(!auth()->user()->can('product-create')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         $categories = Category::where('customer_id', $client_id)->get();
         $currency_list = Currency::get();
@@ -46,6 +54,10 @@ class ProductsController
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('product-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $client_id = request('client_id');
         $product = Product::find($id);
@@ -65,6 +77,10 @@ class ProductsController
 
     public function showDetailPage()
     {
+        if(!auth()->user()->can('product-list')) {
+            return back();
+        }
+
         $id = request('id');
         $product = Product::where('id', $id)->first();
         $categories = Category::get();
@@ -81,6 +97,10 @@ class ProductsController
 
     public function add()
     {
+        if(!auth()->user()->can('product-create')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         $name = request('product-name');
         $name_ar = request('product-name-ar');
@@ -93,7 +113,7 @@ class ProductsController
         $direction = request('rtl-direction');
 
         request()->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            //'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480',
             'product-name' => 'required',
             'product-price' => 'required',
             'category' => 'required',
@@ -104,39 +124,42 @@ class ProductsController
         if (isset($direction) && $direction == 'on')
             $rtl_direction = 1;
 
-        $imageName = time() . '.' . request()->image->getClientOriginalExtension();
+        $imageName = '';
+        if (isset(request()->image)) {
+            $imageName = time() . '.' . request()->image->getClientOriginalExtension();
 
-        $original_image_path = public_path('media/images/products/original');
-        if (!file_exists($original_image_path)) {
-            mkdir($original_image_path);
-        }
+            $original_image_path = public_path('media/images/products/original');
+            if (!file_exists($original_image_path)) {
+                mkdir($original_image_path);
+            }
 
-        $appview_image_path = public_path('media/images/products/appview');
-        if (!file_exists($appview_image_path)) {
-            mkdir($appview_image_path);
-        }
+            $appview_image_path = public_path('media/images/products/appview');
+            if (!file_exists($appview_image_path)) {
+                mkdir($appview_image_path);
+            }
 
-        $thumbnail_image_path = public_path('media/images/products/thumbnail');
-        if (!file_exists($thumbnail_image_path)) {
-            mkdir($thumbnail_image_path);
-        }
+            $thumbnail_image_path = public_path('media/images/products/thumbnail');
+            if (!file_exists($thumbnail_image_path)) {
+                mkdir($thumbnail_image_path);
+            }
 
-        //Save original image
-        request()->image->move($original_image_path, $imageName);
+            //Save original image
+            request()->image->move($original_image_path, $imageName);
 
-        // generate appview image
-        Image::make($original_image_path . DIRECTORY_SEPARATOR . $imageName)
-            ->resize(1200, 1200, function ($constraint) {
-                $constraint->aspectRatio();
-            })
-            ->save($appview_image_path . DIRECTORY_SEPARATOR . $imageName);
+            // generate appview image
+            Image::make($original_image_path . DIRECTORY_SEPARATOR . $imageName)
+                ->resize(1200, 1200, function ($constraint) {
+                    $constraint->aspectRatio();
+                })
+                ->save($appview_image_path . DIRECTORY_SEPARATOR . $imageName);
 //        ImageOptimizer::optimize($appview_image_path . DIRECTORY_SEPARATOR . $imageName);
 
-        // generate thumbnail image
-        Image::make($original_image_path . DIRECTORY_SEPARATOR . $imageName)
-            ->fit(320, 320)
-            ->save($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
+            // generate thumbnail image
+            Image::make($original_image_path . DIRECTORY_SEPARATOR . $imageName)
+                ->fit(320, 320)
+                ->save($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
 //        ImageOptimizer::optimize($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
+        }
 
         if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video_url, $match))
             $video_id = $match[1];
@@ -164,6 +187,10 @@ class ProductsController
 
     public function edit()
     {
+        if(!auth()->user()->can('product-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $client_id = request('client_id');
         $name = request('product-name');
@@ -177,7 +204,7 @@ class ProductsController
         $direction = request('rtl-direction');
 
         request()->validate([
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
+            //'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:20480',
             'product-name' => 'required',
             'product-price' => 'required',
             'category' => 'required',
@@ -259,6 +286,10 @@ class ProductsController
 
     public function delete()
     {
+        if(!auth()->user()->can('product-delete')) {
+            return back();
+        }
+
         $id = request('id');
         Product::find($id)->delete();
 
@@ -267,6 +298,10 @@ class ProductsController
 
     public function toggleActive()
     {
+        if(!auth()->user()->can('product-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $active = Product::find($id)->active;
 
@@ -280,6 +315,10 @@ class ProductsController
 
     public function toggleProductAllVisible()
     {
+        if(!auth()->user()->can('product-edit')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         Product::where('customer_id', $client_id)->update(['active' => 1]);
         return back();
@@ -287,6 +326,10 @@ class ProductsController
 
     public function toggleProductAllInvisible()
     {
+        if(!auth()->user()->can('product-edit')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         Product::where('customer_id', $client_id)->update(['active' => 0]);
         return back();

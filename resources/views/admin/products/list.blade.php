@@ -45,9 +45,12 @@
             </div>
             <div class="block-content block-content-full">
                 <div class="mb-2 d-block d-sm-flex justify-content-between">
+                    @can('product-create')
                     <a class="btn btn-primary mb-2 mb-sm-0"
                        href="{{route('admin.clients.products.add.show', $client_id)}}"><i
                             class="si si-plus"></i> Add Product</a>
+                    @endcan
+                    @can('product-edit')
                     <div>
                         <a class="btn btn-success"
                            href="{{route('admin.clients.products.toggle-all-active', $client_id)}}"><i
@@ -56,7 +59,9 @@
                            href="{{route('admin.clients.products.toggle-all-inactive', $client_id)}}"><i
                                 class="far fa-eye-slash"></i> Hide all</a>
                     </div>
+                    @endcan
                 </div>
+                @can('product-list')
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
@@ -66,7 +71,9 @@
                         <th class="d-none d-sm-table-cell" style="width: 150px;">Category</th>
                         <th class="d-none d-xl-table-cell" style="width: 150px;">Price</th>
                         <th class="d-none d-md-table-cell" style="width: 80px;">Video</th>
+                        @can('product-edit')
                         <th class="text-center" style="width: 80px;">Active</th>
+                        @endcan
                         <th class="text-center" style="width: 80px;">Actions</th>
                     </tr>
                     </thead>
@@ -92,6 +99,7 @@
                                 <a href="javascript:page.openVideoDialog('{{$product->video_id}}', '{{$product->name}}');"><i
                                         class="far fa-play-circle"></i> </a>
                             </td>
+                            @can('product-edit')
                             <td class="text-center">
                                 <div class="custom-control custom-switch custom-control">
                                     <input type="checkbox" class="custom-control-input"
@@ -100,22 +108,28 @@
                                     <label class="custom-control-label" for="show-toggle-{{$product->id}}"></label>
                                 </div>
                             </td>
+                            @endcan
                             <td class="text-center">
                                 <div class="btn-group">
+                                    @can('product-edit')
                                     <a href="{{route('admin.clients.products.edit.show', ['client_id' => $client_id, 'id' => $product->id])}}"
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+                                    @can('product-delete')
                                     <a href="javascript:page.delete({{$product->id}})" class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                @endcan
             </div>
         </div>
     </div>

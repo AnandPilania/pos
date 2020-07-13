@@ -75,7 +75,11 @@
                 <div class="ml-3">
                     <a class="font-w600 text-dual"
                        href="{{route('admin.profile.show')}}">{{auth()->user()->first_name.' '.auth()->user()->last_name}}</a>
-                    <div class="font-size-sm font-italic text-dual">Ultimate User</div>
+                    <div class="font-size-sm font-italic text-dual">
+                        @foreach(auth()->user()->roles as $role)
+                            {{$role->name}} <br>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -101,6 +105,7 @@
                         <span class="nav-main-link-name">Employees</span>
                     </a>
                 </li>
+                @can('position-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*positions*') ? ' active' : '' }}"
                        href="{{route('admin.positions.show')}}">
@@ -108,7 +113,7 @@
                         <span class="nav-main-link-name">Positions</span>
                     </a>
                 </li>
-
+                @endcan
 
                 <li class="nav-main-heading">Client Management</li>
                 @can('client-list')
@@ -120,6 +125,7 @@
                     </a>
                 </li>
                 @endcan
+                @can('business-type-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*business-types*') ? ' active' : '' }}"
                        href="{{route('admin.business-types.show')}}">
@@ -127,6 +133,8 @@
                         <span class="nav-main-link-name">Business Types</span>
                     </a>
                 </li>
+                @endcan
+                @can('subscription-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*subscriptions*') ? ' active' : '' }}"
                        href="{{route('admin.subscriptions.show')}}">
@@ -134,6 +142,7 @@
                         <span class="nav-main-link-name">Subscriptions</span>
                     </a>
                 </li>
+                @endcan
             </ul>
         </div>
         <!-- END Side Navigation -->

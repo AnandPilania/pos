@@ -13,6 +13,7 @@ class EmployeesController
     public function index()
     {
         $employees = User::where('id', '!=', 1)->with('roles')->get();
+        //$employees = User::with('roles')->get();
         return view('admin.employees.list')
             ->with('employees', $employees)
             ->withTitle('Employee List');

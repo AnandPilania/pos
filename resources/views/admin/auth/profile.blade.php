@@ -3,7 +3,6 @@
 @section('css_before')
     <!-- Page JS Plugins CSS -->
     <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-imageupload/css/bootstrap-imageupload.min.css')}}">
-    <link rel="stylesheet" href="{{asset('js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}">
 @endsection
 
 @section('content')
@@ -40,7 +39,7 @@
                     </div>
                 @endif
 
-                <form action="/profile/edit" method="POST" enctype="multipart/form-data">
+                <form action="{{route('admin.profile.edit')}}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <h2 class="content-heading pt-0">Account Info</h2>
                     <div class="row push">
@@ -65,7 +64,6 @@
                                        value="{{$user->last_name}}">
                             </div>
 
-                            @if(Session::get('user-type') !== 3)
                             <div class="form-group row">
                                 <div class="col-lg-8">
                                     <label for="dm-project-new-category">
@@ -83,7 +81,6 @@
                                     </div>
                                 </div>
                             </div>
-                            @endif
 
                             <div class="form-group">
                                 <label>
@@ -101,7 +98,6 @@
                         </div>
                     </div>
 
-                    <input type="hidden" value="{{$user->id}}" name="id">
                     <!-- Submit -->
                     <div class="row push">
                         <div class="col-lg-8 col-xl-5 offset-lg-4">
@@ -146,8 +142,6 @@
 @section('js_after')
     <!-- Page JS Plugins -->
     <script src="{{asset('js/plugins/bootstrap-imageupload/js/bootstrap-imageupload.min.js')}}"></script>
-    <script src="{{asset('js/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
-    <script>jQuery(function(){ Pickitapps.helpers(['colorpicker']); });</script>
     <!-- Page JS Code -->
     <script>
         function changeProfile() {
@@ -173,7 +167,6 @@
         }
         function removeImage() {
             $('#preview').attr('src', "{{asset('media/avatars').'/'.$user->avatar}}");
-//      $("#remove").val(1);
         }
 
 
@@ -203,46 +196,5 @@
 //      $("#remove").val(1);
         }
 
-        function resetBannerColor() {
-            $("[name='banner-color']").val("#161616");
-            $("[name='banner-color']").trigger("change");
-        }
-
-        function resetCategoryBackgroundColor() {
-            $("[name='category-background-color']").val("#161616");
-            $("[name='category-background-color']").trigger("change");
-        }
-
-        function resetProductBackgroundColor() {
-            $("[name='product-background-color']").val("#292929");
-            $("[name='product-background-color']").trigger("change");
-        }
-
-        function resetFontColor() {
-            if ($("[name='template-no']").val() == 1) {
-                $("[name='font-color']").val("#ea2225");
-            } else {
-                $("[name='font-color']").val("#e72929");
-            }
-            $("[name='font-color']").trigger("change");
-        }
-
-        $("[name='template-no']").on("change", function () {
-           if ($(this).val() == 2) {
-               $("#category-background-color-div").hide();
-           } else {
-               $("#category-background-color-div").show();
-           }
-        });
-        function showPreviewDialog() {
-            if ($("[name='template-no']").val() == 1) {
-                $("#modal-block-fadein .block-title").html("Template1 Preview");
-                $("#preview-image").attr("src", '{{asset('/media/images/templates/template1.jpg')}}');
-            } else {
-                $("#modal-block-fadein .block-title").html("Template2 Preview");
-                $("#preview-image").attr("src", '{{asset('/media/images/templates/template2.jpg')}}');
-            }
-            $("#modal-block-fadein").modal('show');
-        }
     </script>
 @endsection

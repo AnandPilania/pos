@@ -40,11 +40,13 @@
                 <h3 class="block-title">Client List</h3>
             </div>
             <div class="block-content block-content-full">
+                @can('client-create')
                 <div class="mb-2">
                     <a class="btn btn-primary" href="{{route('admin.clients.add.show')}}">
                         <i class="si si-user-follow"></i> Add Client</a>
                 </div>
-
+                @endcan
+                @can('client-list')
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
@@ -53,7 +55,9 @@
                         <th class="d-none d-sm-table-cell">Subscription</th>
                         <th class="d-none d-xl-table-cell">StartDate</th>
                         <th class="d-none d-xl-table-cell">ExpireDate</th>
+                        @can('client-edit')
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Enable</th>
+                        @endcan
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Print</th>
                         <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
 
@@ -64,7 +68,7 @@
                         <tr>
                             <td class="text-center">{{$loop->iteration}}</td>
                             <td class="font-w600">
-                                <a href="{{route('admin.clients.detail.show', ['client_id' => $client->id])}}">
+                                <a href="{{route('admin.clients.information.show', ['client_id' => $client->id])}}">
                                     {{$client->first_name.' '.$client->last_name}}
                                 </a>
                             </td>
@@ -80,6 +84,7 @@
                                 {{ date('d M Y', strtotime($client->expire_date)) }}
                             </td>
 
+                            @can('client-edit')
                             <td class="text-center">
                                 <div class="custom-control custom-switch custom-control"
                                      align="center">
@@ -91,6 +96,7 @@
                                            for="enable-toggle-{{$client->id}}"></label>
                                 </div>
                             </td>
+                            @endcan
 
                             <td class="text-center">
                                 <a href="{{route('admin.clients.invoice.preview', $client->id)}}"><i
@@ -98,21 +104,26 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
+                                    @can('client-edit')
                                     <a href="{{route('admin.clients.edit.show', ['id'=>$client->id])}}"
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+                                    @can('client-delete')
                                     <a href="javascript:page.delete({{$client->id}})"
                                        class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                @endcan
             </div>
         </div>
     </div>

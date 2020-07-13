@@ -12,6 +12,10 @@ class SubscriptionsController
 {
     public function index()
     {
+        if(!auth()->user()->can('subscription-list')) {
+            return back();
+        }
+
         $subscriptions = Subscription::get();
         return view('admin.subscriptions.list')
             ->with('subscriptions', $subscriptions)
@@ -20,6 +24,10 @@ class SubscriptionsController
 
     public function showAddPage()
     {
+        if(!auth()->user()->can('subscription-create')) {
+            return back();
+        }
+
         $sanctions = Sanction::get();
         return view('admin.subscriptions.add')
             ->with('sanctions', $sanctions)
@@ -28,6 +36,10 @@ class SubscriptionsController
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('subscription-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $subscription = Subscription::where('id', $id)->with('sanctions:id')->first();
         $sanctions = Sanction::get();
@@ -42,6 +54,10 @@ class SubscriptionsController
 
     public function add()
     {
+        if(!auth()->user()->can('subscription-create')) {
+            return back();
+        }
+
         $name = request('name');
         $slug = request('slug');
         $price = request('price');
@@ -74,6 +90,10 @@ class SubscriptionsController
 
     public function edit()
     {
+        if(!auth()->user()->can('subscription-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $name = request('name');
         $price = request('price');
@@ -109,6 +129,10 @@ class SubscriptionsController
 
     public function delete()
     {
+        if(!auth()->user()->can('subscription-delete')) {
+            return back();
+        }
+
         $id = request('id');
         $subscription = Subscription::find($id);
         $subscription->sanctions()->detach();

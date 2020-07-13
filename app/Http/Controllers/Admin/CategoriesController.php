@@ -13,6 +13,10 @@ class CategoriesController
 {
     public function index()
     {
+        if(!auth()->user()->can('category-list')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         $categories = Category::where('customer_id', $client_id)->get();
 
@@ -26,6 +30,10 @@ class CategoriesController
 
     public function showAddPage()
     {
+        if(!auth()->user()->can('category-create')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         return view('admin.categories.add')
             ->with('client_id', $client_id);
@@ -33,6 +41,10 @@ class CategoriesController
 
     public function showEditPage()
     {
+        if(!auth()->user()->can('category-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $client_id = request('client_id');
         $category = Category::where('id', $id)->first();
@@ -48,6 +60,10 @@ class CategoriesController
 
     public function showDetailPage()
     {
+        if(!auth()->user()->can('category-list')) {
+            return back();
+        }
+
         $id = request('id');
         $client_id = request('client_id');
         $category = Category::find($id);
@@ -64,6 +80,10 @@ class CategoriesController
 
     public function add()
     {
+        if(!auth()->user()->can('category-create')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         $name = request('category-name');
         $name_ar = request('category-name-ar');
@@ -102,6 +122,10 @@ class CategoriesController
 
     public function edit()
     {
+        if(!auth()->user()->can('category-list')) {
+            return back();
+        }
+
         $id = request('id');
         $name = request('category-name');
         $name_ar = request('category-name-ar');
@@ -141,6 +165,10 @@ class CategoriesController
 
     public function delete()
     {
+        if(!auth()->user()->can('category-delete')) {
+            return back();
+        }
+
         $id = request('id');
         Product::where('category_id', $id)->delete();
         Category::where('id', $id)->delete();
@@ -149,6 +177,10 @@ class CategoriesController
 
     public function toggleActive()
     {
+        if(!auth()->user()->can('category-edit')) {
+            return back();
+        }
+
         $id = request('id');
         $active = Category::find($id)->active;
 
@@ -161,6 +193,10 @@ class CategoriesController
 
     public function toggleCategoryAllVisible()
     {
+        if(!auth()->user()->can('category-edit')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         Category::where('customer_id', $client_id)->update(['active' => 1]);
         return back();
@@ -168,6 +204,10 @@ class CategoriesController
 
     public function toggleCategoryAllInvisible()
     {
+        if(!auth()->user()->can('category-edit')) {
+            return back();
+        }
+
         $client_id = request('client_id');
         Category::where('customer_id', $client_id)->update(['active' => 0]);
         return back();

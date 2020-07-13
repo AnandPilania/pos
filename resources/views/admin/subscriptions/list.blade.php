@@ -44,9 +44,12 @@
                 <h3 class="block-title">Subscription List</h3>
             </div>
             <div class="block-content block-content-full">
+                @can('subscription-create')
                 <div class="mb-2">
                     <a class="btn btn-primary" href="{{route('admin.subscriptions.add.show')}}"><i class="si si-plus"></i> Add Subscription</a>
                 </div>
+                @endcan
+                @can('subscription-list')
                 <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
                     <thead>
                     <tr>
@@ -72,20 +75,25 @@
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
+                                    @can('subscription-edit')
                                     <a href="{{route('admin.subscriptions.edit.show', ['id'=>$subscription->id])}}"
                                        class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
+                                    @endcan
+                                    @can('subscription-delete')
                                     <a href="javascript:page.delete({{$subscription->id}})" class="btn btn-sm btn-primary"
                                        data-toggle="tooltip" title="Delete">
                                         <i class="fa fa-times"></i>
                                     </a>
+                                    @endcan
                                 </div>
                             </td>
                         </tr>
                     @endforeach
                     </tbody>
                 </table>
+                @endcan
             </div>
         </div>
     </div>

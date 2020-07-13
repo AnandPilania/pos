@@ -44,48 +44,58 @@
                 <h3 class="block-title">Position List</h3>
             </div>
             <div class="block-content block-content-full">
-                <div class="mb-2">
-                    <a class="btn btn-primary" href="{{route('admin.positions.add.show')}}"><i class="si si-plus"></i> Add Position</a>
-                </div>
-                <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
-                    <thead>
-                    <tr>
-                        <th class="text-center d-none d-sm-table-cell" style="width: 80px;">No</th>
-                        <th class="d-none d-sm-table-cell">Name</th>
-                        <th class="d-none d-sm-table-cell">Slug</th>
-                        <th class="d-none d-sm-table-cell">Description</th>
-                        <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($positions as $position)
+                @can('position-create')
+                    <div class="mb-2">
+                        <a class="btn btn-primary" href="{{route('admin.positions.add.show')}}"><i
+                                class="si si-plus"></i> Add Position</a>
+                    </div>
+                @endcan
+                @can('position-list')
+                    <table class="table table-bordered table-striped table-vcenter js-dataTable-full-pagination">
+                        <thead>
                         <tr>
-                            <td class="text-center">{{$loop->iteration}}</td>
-                            <td class="font-w600">
-                                {{$position->name}}
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{$position->slug}}
-                            </td>
-                            <td class="d-none d-sm-table-cell">
-                                {{$position->description}}
-                            </td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="{{route('admin.positions.edit.show', ['id'=>$position->id])}}"
-                                       class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
-                                        <i class="fa fa-pencil-alt"></i>
-                                    </a>
-                                    <a href="javascript:page.deletePosition({{$position->id}})" class="btn btn-sm btn-primary"
-                                       data-toggle="tooltip" title="Delete">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </td>
+                            <th class="text-center d-none d-sm-table-cell" style="width: 80px;">No</th>
+                            <th class="d-none d-sm-table-cell">Name</th>
+                            <th class="d-none d-sm-table-cell">Slug</th>
+                            <th class="d-none d-sm-table-cell">Description</th>
+                            <th class="d-none d-sm-table-cell" style="width: 80px;">Action</th>
                         </tr>
-                    @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        @foreach($positions as $position)
+                            <tr>
+                                <td class="text-center">{{$loop->iteration}}</td>
+                                <td class="font-w600">
+                                    {{$position->name}}
+                                </td>
+                                <td class="d-none d-sm-table-cell">
+                                    {{$position->slug}}
+                                </td>
+                                <td class="d-none d-sm-table-cell">
+                                    {{$position->description}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        @can('position-edit')
+                                            <a href="{{route('admin.positions.edit.show', ['id'=>$position->id])}}"
+                                               class="btn btn-sm btn-primary" data-toggle="tooltip" title="Edit">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                        @endcan
+                                        @can('position-delete')
+                                            <a href="javascript:page.deletePosition({{$position->id}})"
+                                               class="btn btn-sm btn-primary"
+                                               data-toggle="tooltip" title="Delete">
+                                                <i class="fa fa-times"></i>
+                                            </a>
+                                        @endcan
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                @endcan
             </div>
         </div>
     </div>

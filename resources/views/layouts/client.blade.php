@@ -85,14 +85,22 @@
         <div class="content-side content-side-full">
             <ul class="nav-main">
                 <li class="nav-main-item">
-                    <a class="nav-main-link {{ request()->is('*dashboard*') ? 'active' : ''}}"
-                       href="{{route('admin.dashboard')}}">
+                    <a class="nav-main-link {{ request()->is('*overview*') ? 'active' : ''}}"
+                       href="{{route('admin.clients.overview.show', $client_id)}}">
                         <i class="nav-main-link-icon si si-pie-chart"></i>
                         <span class="nav-main-link-name">Overview</span>
                     </a>
                 </li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link {{ request()->is('*information*') ? 'active' : ''}}"
+                       href="{{route('admin.clients.information.show', $client_id)}}">
+                        <i class="nav-main-link-icon si si-pie-chart"></i>
+                        <span class="nav-main-link-name">Information</span>
+                    </a>
+                </li>
 
                 <li class="nav-main-heading">Product</li>
+                @can('product-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*products*') ? ' active' : '' }}"
                        href="{{route('admin.clients.products.show', $client_id)}}">
@@ -100,6 +108,8 @@
                         <span class="nav-main-link-name">Products</span>
                     </a>
                 </li>
+                @endcan
+                @can('category-list')
                 <li class="nav-main-item">
                     <a class="nav-main-link{{ request()->is('*categories*') ? ' active' : '' }}"
                        href="{{route('admin.clients.categories.show', $client_id)}}">
@@ -107,7 +117,7 @@
                         <span class="nav-main-link-name">Categories</span>
                     </a>
                 </li>
-
+                @endcan
                 <li class="nav-main-heading">To Mainboard</li>
                 <li class="nav-main-item">
                     <a class="nav-main-link" href="{{route('admin.clients.show')}}">

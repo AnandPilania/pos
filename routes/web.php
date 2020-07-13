@@ -74,7 +74,8 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
             Route::post('/resuscitate-customer', 'ClientsController@resuscitateCustomer')->name('resuscitate');
 
             Route::group(['prefix' => '{client_id}'], function () {
-                Route::get('/', 'ClientsController@showDetailPage')->name('detail.show');
+                Route::get('/information', 'ClientsController@showInformationPage')->name('information.show');
+                Route::get('/overview', 'ClientsController@showOverviewPage')->name('overview.show');
 
                 // Products
                 Route::group(['prefix' => 'products', 'as' => 'products.'], function () {
@@ -134,12 +135,5 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
         Route::get('/profile', 'AuthController@showProfilePage')->name('profile.show');
         Route::post('/profile/edit', 'AuthController@editProfile')->name('profile.edit');
     });
-
-
-    Route::get('/my-page', 'AdminController@showMyPage');
-    Route::get('/design', 'AdminController@showDesignPage');
-    Route::post('/design/edit', 'AdminController@editDesign');
-    Route::post('/set-client-to-session', 'AdminController@setClientIdToSession');
-
 
 });
