@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,50 +16,53 @@ use Illuminate\Support\Facades\Route;
 Route::group(['namespace' => 'API', 'as' => 'api.'], function () {
 
     // Routes for menu app
-    Route::post('app/login', 'APIController@doLogin');
+    Route::post('app/login', 'MenuAppController@login');
     Route::group(['middleware' => 'api-auth', 'prefix' => 'app'], function () {
-        Route::post('get-categories', 'APIController@getCategoriesByClient');
-        Route::post('get-products', 'APIController@getProductsByCategory');
-        Route::post('get-product-detail', 'APIController@getProductDetail');
-        Route::post('get-client-detail', 'APIController@getClientDetail');
-    });
-});
-
-// Routes for BO
-Route::prefix('user')->group(function () {
-    Route::post('login', 'APIController@userLogin');
-});
-
-Route::middleware('api-auth')->group(function (){
-
-    Route::prefix('user')->group(function () {
-        Route::get('/check-auth', 'APIController@getUserAuth');
-        Route::post('/update-menu-app-colors', 'APIController@updateMenuAppColors');
-        Route::post('/update-menu-app-logo', 'APIController@updateMenuAppLogo');
+        Route::post('get-categories', 'MenuAppController@getCategoriesByClient');
+        Route::post('get-products', 'MenuAppController@getProductsByCategory');
+        Route::post('get-product-detail', 'MenuAppController@getProductDetail');
+        Route::post('get-client-detail', 'MenuAppController@getClientDetail');
     });
 
-    Route::prefix('products')->group(function () {
-        Route::get('/paging', 'APIController@getProductsWithPageInfo');
-        Route::get('/get', 'APIController@getProductInfo');
-        Route::post('/add', 'APIController@addProduct');
-        Route::post('/update', 'APIController@updateProduct');
-        Route::delete('/delete', 'APIController@deleteProducts');
-        Route::post('/toggleActive', 'APIController@toggleActiveProduct');
-        Route::post('/changeState', 'APIController@changeProductsState');
-        Route::post('/allActivate', 'APIController@toggleProductAllVisible');
-        Route::post('/allInactivate', 'APIController@toggleProductAllInvisible');
-    });
+    //Routes for BackOffice
+    Route::post('auth/login', 'AuthController@login');
+    Route::group(['middleware' => 'api-auth'], function () {
 
-    Route::prefix('categories')->group(function () {
-        Route::get('/paging', 'APIController@getCategoriesWithPageInfo');
-        Route::get('/all', 'APIController@getAllCategoryList');
-        Route::get('/get', 'APIController@getCategoryInfo');
-        Route::post('/add', 'APIController@addCategory');
-        Route::post('/update', 'APIController@updateCategory');
-        Route::delete('/delete', 'APIController@deleteCategories');
-        Route::post('/toggleActive', 'APIController@toggleActiveCategory');
-        Route::post('/changeState', 'APIController@changeCategoriesState');
-        Route::post('/allActivate', 'APIController@toggleCategoryAllVisible');
-        Route::post('/allInactivate', 'APIController@toggleCategoryAllInvisible');
+        Route::prefix('auth')->group(function () {
+            Route::get('/check-auth', 'AuthController@getUserAuth');
+            Route::get('/me', 'AuthController@me');
+            Route::get('/refresh', 'AuthController@refresh');
+            Route::get('/logout', 'AuthController@logout');
+        });
+
+        Route::prefix('profile')->group(function () {
+            Route::post('/update-menu-app-colors', 'ProfileController@updateMenuAppColors');
+            Route::post('/update-menu-app-logo', 'ProfileController@updateMenuAppLogo');
+        });
+
+        Route::prefix('products')->group(function () {
+            Route::get('/paging', 'ProductsController@getProductsWithPageInfo');
+            Route::get('/get', 'ProductsController@getProductInfo');
+            Route::post('/add', 'ProductsController@addProduct');
+            Route::post('/update', 'ProductsController@updateProduct');
+            Route::delete('/delete', 'ProductsController@deleteProducts');
+            Route::post('/toggleActive', 'ProductsController@toggleActiveProduct');
+            Route::post('/changeState', 'ProductsController@changeProductsState');
+            Route::post('/allActivate', 'ProductsController@toggleProductAllVisible');
+            Route::post('/allInactivate', 'ProductsController@toggleProductAllInvisible');
+        });
+
+        Route::prefix('categories')->group(function () {
+            Route::get('/paging', 'CategoryController@getCategoriesWithPageInfo');
+            Route::get('/all', 'CategoryController@getAllCategoryList');
+            Route::get('/get', 'CategoryController@getCategoryInfo');
+            Route::post('/add', 'CategoryController@addCategory');
+            Route::post('/update', 'CategoryController@updateCategory');
+            Route::delete('/delete', 'CategoryController@deleteCategories');
+            Route::post('/toggleActive', 'CategoryController@toggleActiveCategory');
+            Route::post('/changeState', 'CategoryController@changeCategoriesState');
+            Route::post('/allActivate', 'CategoryController@toggleCategoryAllVisible');
+            Route::post('/allInactivate', 'CategoryController@toggleCategoryAllInvisible');
+        });
     });
 });
