@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,18 +14,16 @@ use Illuminate\Http\Request;
 |
 */
 
-// Routes for menu app
-Route::prefix('auth')->group(function () {
-    Route::post('login', 'APIController@doLogin');
-});
+Route::group(['namespace' => 'API', 'as' => 'api.'], function () {
 
-Route::middleware('api-auth')->group(function (){
-
-    Route::post('get-categories', 'APIController@getCategoriesByClient');
-    Route::post('get-products', 'APIController@getProductsByCategory');
-    Route::post('get-product-detail', 'APIController@getProductDetail');
-    Route::post('get-client-detail', 'APIController@getClientDetail');
-
+    // Routes for menu app
+    Route::post('app/login', 'APIController@doLogin');
+    Route::group(['middleware' => 'api-auth', 'prefix' => 'app'], function () {
+        Route::post('get-categories', 'APIController@getCategoriesByClient');
+        Route::post('get-products', 'APIController@getProductsByCategory');
+        Route::post('get-product-detail', 'APIController@getProductDetail');
+        Route::post('get-client-detail', 'APIController@getClientDetail');
+    });
 });
 
 // Routes for BO

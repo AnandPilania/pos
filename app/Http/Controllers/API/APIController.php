@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Http\Models\Category;
 use App\Http\Models\Client;
@@ -16,12 +16,6 @@ use Validator;
 
 class APIController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
-
     public function doLogin()
     {
         $validation = Validator::make(request()->all(), [
@@ -39,7 +33,7 @@ class APIController extends Controller
             'banner_color', 'font_color', 'product_background_color', 'company_logo')
             ->where([
                 ['email', $credentials['email']],
-                ['enable_flag', 1],
+                ['active', 1],
             ])->first();
 
         if ($user == null) {
@@ -50,7 +44,7 @@ class APIController extends Controller
             return Utils::makeResponse([], config('constants.response-message.invalid-credentials'));
         }
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return Utils::makeResponse([], config('constants.response-message.error-generate-api-token'));
         }
 
@@ -60,11 +54,11 @@ class APIController extends Controller
 
         $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $user->id],
-            ['show_flag', 1],
+            ['active', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
             $query->
             select('category_id', 'name', 'name_second', 'img', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
-            where('show_flag', 1);;
+            where('active', 1);;
         }])->get();
 
         return Utils::makeResponse([
@@ -77,6 +71,10 @@ class APIController extends Controller
     public function me()
     {
         return response()->json(auth('api')->user());
+    }
+
+    public function refresh() {
+        return $this->respondWithToken(auth('api')->refresh());
     }
 
     public function logout()
@@ -96,7 +94,7 @@ class APIController extends Controller
 
         $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $client->id],
-            ['show_flag', 1],
+            ['active', 1],
         ])->orderBy('show_order')->with('products:category_id,name,name_second,img,video_id,price,description,description_second,video_url,currency_id')->get();
 
         return Utils::makeResponse([
@@ -125,7 +123,7 @@ class APIController extends Controller
 
         $total_count = Product::where([
             ['category_id', $category_id],
-            ['show_flag', 1]
+            ['active', 1]
         ])->where(function ($query) use ($where_clause) {
             if (count($where_clause) > 0) {
                 $query->where([$where_clause[0]]);
@@ -137,7 +135,7 @@ class APIController extends Controller
 
         $products = Product::where([
             ['category_id', $category_id],
-            ['show_flag', 1]
+            ['active', 1]
         ])->where(function ($query) use ($where_clause) {
             if (count($where_clause) > 0) {
                 $query->where([$where_clause[0]]);
@@ -163,7 +161,7 @@ class APIController extends Controller
 
         $product = Product::where([
             ['id', $product_id],
-            ['show_flag', 1]
+            ['active', 1]
         ])->with('category', 'currency')->first();
 
         if ($product == null) {
@@ -196,11 +194,11 @@ class APIController extends Controller
 
         $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $client->id],
-            ['show_flag', 1],
+            ['active', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
             $query->
             select('category_id', 'name', 'name_second', 'img', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
-            where('show_flag', 1);;
+            where('active', 1);;
         }])->get();
 
         $client = $client->setHidden([
@@ -227,9 +225,9 @@ class APIController extends Controller
 
         $credentials = request(['email', 'password']);
 
-        $user = Customers::where([
+        $user = Client::where([
             ['email', $credentials['email']],
-            ['enable_flag', 1],
+            ['active', 1],
         ])->first();
 
         if ($user == null) {
@@ -240,7 +238,7 @@ class APIController extends Controller
             return Utils::makeResponse([], config('constants.response-message.invalid-credentials'));
         }
 
-        if (!$token = auth()->attempt($credentials)) {
+        if (!$token = auth('api')->attempt($credentials)) {
             return Utils::makeResponse([], config('constants.response-message.error-generate-api-token'));
         }
 
@@ -275,6 +273,13 @@ class APIController extends Controller
             'apiToken' => $token,
             'userInfo' => $user_info,
             'menuAppConfig' => $menu_app_settings
+        ]);
+    }
+
+    public function respondWithToken($token) {
+        return response()->json([
+            'access_token' => $token,
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 
@@ -422,7 +427,7 @@ class APIController extends Controller
         } else if ($order_by == "category") {
             $order_by = "category_id";
         } else if ($order_by == "status") {
-            $order_by = "show_flag";
+            $order_by = "active";
             $sort = "desc";
         } else if ($order_by != "name") {
             $order_by = "id";
@@ -478,7 +483,7 @@ class APIController extends Controller
 
         $categories = Category::where([
             ['customer_id', $user->id],
-            ['show_flag', 1]
+            ['active', 1]
         ])
             ->select('id as value', 'name as label', 'id as key')
             ->get();
@@ -604,7 +609,7 @@ class APIController extends Controller
                 'video_id' => $video_id,
                 'video_url' => $video_url,
                 'img' => $imageName,
-                'show_flag' => $status
+                'active' => $status
             ]);
             return Utils::makeResponse([$imageName]);
         } else {
@@ -616,7 +621,7 @@ class APIController extends Controller
                 'description' => $description,
                 'video_id' => $video_id,
                 'video_url' => $video_url,
-                'show_flag' => $status
+                'active' => $status
             ]);
             return Utils::makeResponse();
         }
@@ -907,11 +912,9 @@ class APIController extends Controller
             return Utils::makeResponse([], config('constants.response-message.invalid-params'));
         }
 
-        $show_flag = Category::where('id', $category_id)->first()->show_flag;
-
-        Product::where('id', $category_id)->update([
-            'show_flag' => 1 - $show_flag,
-        ]);
+        $cu = Category::find($category_id);
+        $cu->active = 1 - $cu->active;
+        $cu->save();
 
         return Utils::makeResponse();
     }

@@ -27,7 +27,7 @@ class APIAuth
         foreach ($chain as $item) {
             if ($item instanceof AuthHeaders) {
                 $item->setHeaderName('X-API-TOKEN');
-                $item->setHeaderPrefix('pickitapps');
+                $item->setHeaderPrefix(env('APP_NAME'));
             }
         }
 
