@@ -12,12 +12,13 @@ use App\Http\Models\Product;
 use App\Http\Models\Subscription;
 use App\Http\Utils\Utils;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Activitylog\Models\Activity;
 
 class ClientsController
 {
     public function index()
     {
-        if(!auth()->user()->can('client-list')) {
+        if (!auth()->user()->can('client-list')) {
             return back();
         }
 
@@ -29,7 +30,7 @@ class ClientsController
 
     public function showAddPage()
     {
-        if(!auth()->user()->can('client-create')) {
+        if (!auth()->user()->can('client-create')) {
             return back();
         }
 
@@ -43,9 +44,16 @@ class ClientsController
             ->withTitle('Add Client');
     }
 
+    public function showLogsPage()
+    {
+        $logs = Activity::all();
+        return view('admin.clients.logs')
+            ->with('logs', $logs);
+    }
+
     public function showEditPage()
     {
-        if(!auth()->user()->can('client-edit')) {
+        if (!auth()->user()->can('client-edit')) {
             return back();
         }
 
@@ -69,7 +77,7 @@ class ClientsController
 
     public function showOverviewPage()
     {
-        if(!auth()->user()->can('client-list')) {
+        if (!auth()->user()->can('client-list')) {
             return back();
         }
 
@@ -87,7 +95,7 @@ class ClientsController
 
     public function showInformationPage()
     {
-        if(!auth()->user()->can('client-list')) {
+        if (!auth()->user()->can('client-list')) {
             return back();
         }
 
@@ -112,7 +120,7 @@ class ClientsController
 
     public function add()
     {
-        if(!auth()->user()->can('client-create')) {
+        if (!auth()->user()->can('client-create')) {
             return back();
         }
 
@@ -209,7 +217,7 @@ class ClientsController
 
     public function edit()
     {
-        if(!auth()->user()->can('client-edit')) {
+        if (!auth()->user()->can('client-edit')) {
             return back();
         }
 
@@ -241,29 +249,30 @@ class ClientsController
         $birthday = strtotime($birthday);
         $birthday = date('Y-m-d', $birthday);
 
-        $updateArray = [
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-            'birthday' => $birthday,
-            'gender' => $gender,
-            'phonenumber' => $phonenumber,
-            'company' => $company,
-            'address' => $address,
-            'city' => $city,
-            'state' => $state,
-            'zipcode' => $zipcode,
-            'business_type_id' => $business,
-            'contact_email' => $contact_email,
-            'contact_phone' => $contact_phone,
-            'contact_person' => $contact_person
-        ];
+        $client = Client::find($id);
+
+        $client->first_name = $first_name;
+        $client->last_name = $last_name;
+        $client->email = $email;
+        $client->birthday = $birthday;
+        $client->gender = $gender;
+        $client->phonenumber = $phonenumber;
+        $client->company = $company;
+        $client->address = $address;
+        $client->city = $city;
+        $client->state = $state;
+        $client->zipcode = $zipcode;
+        $client->business_type_id = $business;
+        $client->contact_email = $contact_email;
+        $client->contact_phone = $contact_phone;
+        $client->contact_person = $contact_person;
+
 
         if ($password != '') {
-            $updateArray['password'] = bcrypt($password);
+            $client->password = bcrypt($password);
         }
 
-        Client::where('id', $id)->update($updateArray);
+        $client->save();
 
         return back()
             ->with('success', 'Successfully updated.');
@@ -271,7 +280,7 @@ class ClientsController
 
     public function resuscitateCustomer()
     {
-        if(!auth()->user()->can('client-edit')) {
+        if (!auth()->user()->can('client-edit')) {
             return back();
         }
 
@@ -297,6 +306,8 @@ class ClientsController
         $sb = Subscription::find($subscription);
         $total_price = $sb->price * $numberOfMonths;
 
+        $client = Client::find($id);
+
         if ($add_flag == 1) {
 
             $invoice = new Invoice();
@@ -312,32 +323,29 @@ class ClientsController
 
             $invoice->save();
 
-            Client::where('id', $id)->update([
-                'start_date' => $start_date,
-                'expire_date' => $expire_date,
-                'price' => $invoice->price,
-                'current_invoice_id' => $invoice->id,
-            ]);
-        } else {
-            Invoice::where('id', Client::find($id)->current_invoice_id)
-                ->update([
-                    'start_date' => $start_date,
-                    'expire_date' => $expire_date,
-                    'discount' => $discount,
-                    'price' => ($total_price - $discount) < 0 ? 0 : ($total_price - $discount),
-                    'subscription_id' => $subscription,
-                    'subscription_months' => $numberOfMonths,
-                    'subscription_total_price' => $total_price
-                ]);
+            $client->start_date = $start_date;
+            $client->expire_date = $expire_date;
+            $client->price = $invoice->price;
+            $client->current_invoice_id = $invoice->id;
+            $client->save();
 
-            Client::where('id', $id)->update([
-                'start_date' => $start_date,
-                'expire_date' => $expire_date,
-                'price' => ($total_price - $discount) < 0 ? 0 : ($total_price - $discount),
-            ]);
+        } else {
+            $invoice = Invoice::find($client->current_invoice_id);
+            $invoice->start_date = $start_date;
+            $invoice->expire_date = $expire_date;
+            $invoice->discount = $discount;
+            $invoice->price = ($total_price - $discount) < 0 ? 0 : ($total_price - $discount);
+            $invoice->subscription_id = $subscription;
+            $invoice->subscription_months = $numberOfMonths;
+            $invoice->subscription_total_price = $total_price;
+            $invoice->save();
+
+            $client->start_date = $start_date;
+            $client->expire_date = $expire_date;
+            $client->price = ($total_price - $discount) < 0 ? 0 : ($total_price - $discount);
+            $client->save();
         }
 
-        $client = Client::find($id);
         $client->subscriptions()->sync($subscription);
 
         return Utils::makeResponse();
@@ -345,11 +353,15 @@ class ClientsController
 
     public function delete()
     {
-        if(!auth()->user()->can('client-delete')) {
+        if (!auth()->user()->can('client-delete')) {
             return back();
         }
 
         $id = request('id');
+
+        Product::where('customer_id', $id)->delete();
+        Product::where('customer_id', $id)->delete();
+
         $user = Client::find($id);
         $user->subscriptions()->detach();
         $user->sanctions()->detach();
@@ -360,23 +372,21 @@ class ClientsController
 
     public function toggleActive()
     {
-        if(!auth()->user()->can('client-edit')) {
+        if (!auth()->user()->can('client-edit')) {
             return back();
         }
 
         $id = request('id');
-        $active = Client::where('id', $id)->first()->active;
-
-        Client::where('id', $id)->update([
-            'active' => 1 - $active,
-        ]);
+        $client = Client::find($id);
+        $client->active = 1 - $client->active;
+        $client->save();
 
         return Utils::makeResponse();
     }
 
     public function printCustomerInvoice()
     {
-        if(!auth()->user()->can('client-list')) {
+        if (!auth()->user()->can('client-list')) {
             return back();
         }
 
@@ -397,7 +407,7 @@ class ClientsController
 
     public function showCustomerInvoicePrintPreviewPage()
     {
-        if(!auth()->user()->can('client-list')) {
+        if (!auth()->user()->can('client-list')) {
             return back();
         }
 

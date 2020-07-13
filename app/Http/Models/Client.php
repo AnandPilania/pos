@@ -2,14 +2,24 @@
 
 namespace App\Http\Models;
 
-use App\Permissions\HasSubscriptionsTrait;
-use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasSubscriptionsTrait;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Client extends Authenticatable implements JWTSubject
 {
     use HasSubscriptionsTrait;
+    use LogsActivity;
+    use CausesActivity;
+
+    protected static $logAttributes = ['*'];
+    protected static $logAttributesToIgnore = ['template_no', 'banner_color', 'category_background_color',
+        'product_background_color', 'font_color'];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'Client';
+    protected static $submitEmptyLogs = false;
 
     public $timestamps = false;
 

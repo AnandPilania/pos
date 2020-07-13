@@ -128,7 +128,7 @@
                     @endif
                     <div class="col-md-6 col-xl-3">
                         <div class="block block-rounded block-link-pop text-center" onclick="onProductSelect({{$product->id}});" >
-                            <div class="bg-image" style="width: 100%; position: relative; padding-top:75%; background-image: url('{{asset('media/images/products/thumbnail').'/'.$product->picture}}');">
+                            <div class="bg-image" style="width: 100%; position: relative; padding-top:75%; background-image: url('{{asset('media/images/products/thumbnail').'/'.$product->img}}');">
                                 <div class="block-content block-content-full d-flex justify-content-between" style="background-color: {{$theme->product_background_color.'90'}};">
                                     <p class="mb-0">{{ $lang == 'en' ? $product->name : ($product->name_second == null ? $product->name : $product->name_second)}}</p>
                                     @if(isset($product->video_id))
@@ -220,7 +220,7 @@
                         var product = data.data.product;
                         $("#modal-block-fadein .block-title").html((lang == 'en' ? product.name : (product.name_second == null ? product.name : product.name_second)));
                         var html_str = '<div style="margin-bottom: 8px;">';
-                        html_str += '<img src="' + '{{asset('/media/images/products/original/')}}' + '/' + product.picture + '" style="width:100%;">';
+                        html_str += '<img src="' + '{{asset('/media/images/products/original/')}}' + '/' + product.img + '" style="width:100%;">';
                         html_str += '<div>' +
                             '<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">' +
                             '<span style="font-weight: bold;">' + (lang == 'en' ? product.name : (product.name_second == null ? product.name : product.name_second)) + '</span>' +

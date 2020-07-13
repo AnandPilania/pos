@@ -143,6 +143,14 @@
                     </a>
                 </li>
                 @endcan
+                <li class="nav-main-heading">Others</li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link{{ request()->is('*logs*') ? ' active' : '' }}"
+                       href="{{route('admin.logs.show')}}">
+                        <i class="nav-main-link-icon si si-emoticon-smile"></i>
+                        <span class="nav-main-link-name">Logs</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- END Side Navigation -->

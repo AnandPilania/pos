@@ -29,11 +29,13 @@ class AuthController
             ]);
         }
 
+        Utils::logActivity(auth()->user(), auth()->user(), 'logged in', ['email' => auth()->user()->email]);
         return redirect()->route('admin.dashboard');
     }
 
     public function logout()
     {
+        Utils::logActivity(auth()->user(), auth()->user(), 'logged out', ['email' => auth()->user()->email]);
         auth()->logout();
         return redirect()->route('admin.home');
     }
@@ -68,14 +70,14 @@ class AuthController
             'email' => 'required|email|unique:users,email,' . $id,
         ]);
 
-        $update_array = array(
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-        );
+        $user = User::find($id);
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->email = $email;
+
 
         if ($password != '') {
-            $update_array['password'] = bcrypt($password);
+            $user->password = bcrypt($password);
         }
 
         if (isset(request()->image)) {
@@ -87,10 +89,10 @@ class AuthController
             }
 
             request()->image->move($original_image_path, $imageName);
-            $update_array['avatar'] = $imageName;
+            $user->avatar = $imageName;
         }
 
-        User::where('id', $id)->update($update_array);
+        $user->save();
 
         return back()
             ->with('success', 'You have successfully updated your profile.');

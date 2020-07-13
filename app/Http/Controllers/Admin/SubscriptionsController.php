@@ -112,15 +112,13 @@ class SubscriptionsController
             ]);
         }
 
-        Subscription::where('id', $id)
-            ->update([
-                'name' => $name,
-                'slug' => $slug,
-                'price' => $price,
-                'description' => $description,
-            ]);
-
         $subscription = Subscription::find($id);
+        $subscription->name = $name;
+        $subscription->slug = $slug;
+        $subscription->price = $price;
+        $subscription->description = $description;
+        $subscription->save();
+
         $subscription->sanctions()->sync(request('sanctions'));
 
         return back()

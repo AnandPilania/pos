@@ -95,22 +95,16 @@ class EmployeesController
             ]);
         }
 
-        if ($password != '') {
-            User::where('id', $id)->update([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-                'password' => bcrypt($password),
-            ]);
-        } else {
-            User::where('id', $id)->update([
-                'first_name' => $first_name,
-                'last_name' => $last_name,
-                'email' => $email,
-            ]);
-        }
-
         $user = User::find($id);
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->email = $email;
+
+        if ($password != '') {
+            $user->password = bcrypt($password);
+        }
+        $user->save();
+
         $user->roles()->sync(request('positions'));
 
         return back()
@@ -130,12 +124,9 @@ class EmployeesController
     public function toggleActive()
     {
         $id = request('id');
-        $active = User::where('id', $id)->first()->active;
-
-        User::where('id', $id)
-            ->update([
-                'active' => 1 - $active,
-            ]);
+        $user = User::find($id);
+        $user->active = 1 - $user->active;
+        $user->save();
 
         return Utils::makeResponse();
     }

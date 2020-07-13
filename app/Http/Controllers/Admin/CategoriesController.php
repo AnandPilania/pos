@@ -152,12 +152,12 @@ class CategoriesController
         if (isset($direction) && $direction == 'on')
             $rtl_direction = 1;
 
-        Category::where('id', $id)->update([
-            'name' => $name,
-            'name_second' => $name_ar,
-            'show_order' => $order,
-            'rtl_direction' => $rtl_direction
-        ]);
+        $category = Category::find($id);
+        $category->name = $name;
+        $category->name_second = $name_ar;
+        $category->show_order = $order;
+        $category->rtl_direction = $rtl_direction;
+        $category->save();
 
         return back()
             ->with('success', 'You have successfully updated category.');
@@ -171,7 +171,9 @@ class CategoriesController
 
         $id = request('id');
         Product::where('category_id', $id)->delete();
-        Category::where('id', $id)->delete();
+
+        $category = Category::find($id);
+        $category->delete();
         return Utils::makeResponse();
     }
 
@@ -182,11 +184,10 @@ class CategoriesController
         }
 
         $id = request('id');
-        $active = Category::find($id)->active;
 
-        Category::where('id', $id)->update([
-            'active' => 1 - $active,
-        ]);
+        $category = Category::find($id);
+        $category->active = 1 - $category->active;
+        $category->save();
 
         return Utils::makeResponse();
     }

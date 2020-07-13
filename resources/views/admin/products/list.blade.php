@@ -82,7 +82,7 @@
                         <tr>
                             <td class="text-center">{{$loop->iteration}}</td>
                             <td class="font-w600 d-none d-sm-table-cell text-center">
-                                <img src="{{asset('/media/images/products/thumbnail/').'/'.$product->picture}}"
+                                <img src="{{asset('/media/images/products/thumbnail/').'/'.$product->img}}"
                                      style="width: 80px;">
                             </td>
                             <td class="">

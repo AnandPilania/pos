@@ -32,7 +32,7 @@
                                     <!-- bootstrap-imageupload. -->
                                     <div class="imageupload panel panel-default">
                                         <img id="preview"
-                                             src="{{asset('media/images/products/original').'/'.$product->picture}}"
+                                             src="{{asset('media/images/products/original').'/'.$product->img}}"
                                              class="image-preview-edit"/>
 
                                     </div>

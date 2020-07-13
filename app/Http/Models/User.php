@@ -5,12 +5,20 @@ namespace App\Http\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Permissions\HasPermissionsTrait;
+use App\Traits\HasPermissionsTrait;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
     use Notifiable;
     use HasPermissionsTrait;
+    use LogsActivity;
+
+    protected static $logAttributes = ['*'];
+    protected static $logAttributesToIgnore = ['created_at', 'updated_at'];
+    protected static $logOnlyDirty = true;
+    protected static $logName = 'Employee';
+    protected static $submitEmptyLogs = false;
 
     /**
      * The attributes that are mass assignable.

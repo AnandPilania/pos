@@ -42,7 +42,7 @@
                                     position: relative; ">
                                         <div style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
                                             <img id="preview"
-                                                 src="{{asset('media/images/categories/original').'/'.$category->picture}}"
+                                                 src="{{asset('media/images/categories/original').'/'.$category->img}}"
                                                  class="image-preview-detail"/>
                                         </div>
                                     </div>
@@ -91,7 +91,7 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center" style="width: 80px;">#</th>
-                                    <th class="d-none d-sm-table-cell" style="width: 100px;">Picture</th>
+                                    <th class="d-none d-sm-table-cell" style="width: 100px;">Image</th>
                                     <th class="d-none d-sm-table-cell" style="width: 20%;">Product Name</th>
                                     <th class="d-none d-sm-table-cell">Description</th>
                                     <th class="d-none d-sm-table-cell" style="width: 15%;">Price</th>
@@ -108,7 +108,7 @@
                                         <td class="font-w600">
                                             <div align="center">
                                                 <img
-                                                    src="{{asset('/media/images/products/thumbnail/').'/'.$product->picture}}"
+                                                    src="{{asset('/media/images/products/thumbnail/').'/'.$product->img}}"
                                                     style="width: 80px;">
                                             </div>
                                         </td>

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Permissions;
+namespace App\Traits;
 
 use App\Http\Models\Permission;
 use App\Http\Models\Role;

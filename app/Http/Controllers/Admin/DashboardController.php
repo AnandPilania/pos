@@ -7,6 +7,7 @@ use App\Http\Models\Category;
 use App\Http\Models\Client;
 use App\Http\Models\Product;
 use App\Http\Models\User;
+use Spatie\Activitylog\Models\Activity;
 
 class DashboardController
 {
@@ -23,5 +24,12 @@ class DashboardController
             'products' => $products,
             'categories' => $categories,
         ]);
+    }
+
+    public function showLogPage()
+    {
+        $logs = Activity::all();
+        return view('admin.logs')
+            ->with('logs', $logs);
     }
 }

@@ -95,7 +95,7 @@
                                     <!-- bootstrap-imageupload. -->
                                     <div class="imageupload panel panel-default">
                                         <img id="preview"
-                                             src="{{asset('media/images/products/original').'/'.$product->picture}}"
+                                             src="{{asset('media/images/products/original').'/'.$product->img}}"
                                              class="image-preview-edit"/>
                                         <input type="file" id="image" name="image" style="display: none;"/>
                                         <!--<input type="hidden" style="display: none" value="0" name="remove" id="remove">-->

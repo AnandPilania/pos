@@ -81,10 +81,9 @@ class BusinessTypesController
             'name' => 'required|unique:business_types,name,' . $id
         ]);
 
-        BusinessType::where('id', $id)
-            ->update([
-                'name' => $name
-            ]);
+        $business_type = BusinessType::find($id);
+        $business_type->name = $name;
+        $business_type->save();
 
         return back()
             ->with('success', 'You have successfully updated.');
@@ -97,12 +96,14 @@ class BusinessTypesController
         }
 
         $id = request('id');
+
         Client::where('business_type_id', $id)
             ->update([
                 'business_type_id' => NULL
             ]);
 
-        BusinessType::where('id', $id)->delete();
+        $business_type = BusinessType::find($id);
+        $business_type->delete();
 
         return Utils::makeResponse();
     }

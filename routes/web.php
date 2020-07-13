@@ -34,6 +34,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
 
     Route::middleware('auth')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+        Route::get('/logs', 'DashboardController@showLogPage')->name('logs.show');
 
         // Employees
         Route::group(['prefix' => 'employees', 'as' => 'employees.'], function () {
@@ -76,6 +77,7 @@ Route::group(['prefix' => env('ADMIN_PREFIX'), 'as' => 'admin.', 'namespace' => 
             Route::group(['prefix' => '{client_id}'], function () {
                 Route::get('/information', 'ClientsController@showInformationPage')->name('information.show');
                 Route::get('/overview', 'ClientsController@showOverviewPage')->name('overview.show');
+                Route::get('/logs', 'ClientsController@showLogsPage')->name('logs.show');
 
                 // Products
                 Route::group(['prefix' => 'products', 'as' => 'products.'], function () {

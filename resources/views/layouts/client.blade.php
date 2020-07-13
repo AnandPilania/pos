@@ -118,6 +118,14 @@
                     </a>
                 </li>
                 @endcan
+                <li class="nav-main-heading">Others</li>
+                <li class="nav-main-item">
+                    <a class="nav-main-link{{ request()->is('*logs*') ? ' active' : '' }}"
+                       href="{{route('admin.clients.logs.show', $client_id)}}">
+                        <i class="nav-main-link-icon si si-notebook"></i>
+                        <span class="nav-main-link-name">Logs</span>
+                    </a>
+                </li>
                 <li class="nav-main-heading">To Mainboard</li>
                 <li class="nav-main-item">
                     <a class="nav-main-link" href="{{route('admin.clients.show')}}">

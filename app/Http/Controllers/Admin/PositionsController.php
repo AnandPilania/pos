@@ -109,14 +109,12 @@ class PositionsController
             ]);
         }
 
-        Role::where('id', $id)
-            ->update([
-                'name' => $name,
-                'slug' => $slug,
-                'description' => $description,
-            ]);
-
         $role = Role::find($id);
+        $role->name = $name;
+        $role->slug = $slug;
+        $role->description = $description;
+        $role->save();
+
         $role->permissions()->sync(request('permissions'));
 
         return back()

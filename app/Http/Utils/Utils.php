@@ -35,4 +35,12 @@ class Utils
         $diff = (($year2 - $year1) * 12) + ($month2 - $month1);
         return $diff;
     }
+
+    public static function logActivity($performed, $caused, $log = '', $property = []) {
+        activity()
+            ->performedOn($performed)
+            ->causedBy($caused)
+            ->withProperties($property)
+            ->log($log);
+    }
 }

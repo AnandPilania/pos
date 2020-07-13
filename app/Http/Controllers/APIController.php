@@ -4,17 +4,24 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Category;
+use App\Http\Models\Client;
 use App\Http\Models\Currency;
-use App\Http\Models\Customers;
 use App\Http\Models\Product;
 use App\Http\Utils\Utils;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Intervention\Image\Facades\Image;
 use Validator;
 
 
-class APIController
+class APIController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
     public function doLogin()
     {
         $validation = Validator::make(request()->all(), [
@@ -28,7 +35,7 @@ class APIController
 
         $credentials = request(['email', 'password']);
 
-        $user = Customers::select('id', 'password', 'first_name', 'last_name', 'email', 'template_no', 'category_background_color',
+        $user = Client::select('id', 'password', 'first_name', 'last_name', 'email', 'template_no', 'category_background_color',
             'banner_color', 'font_color', 'product_background_color', 'company_logo')
             ->where([
                 ['email', $credentials['email']],
@@ -56,7 +63,7 @@ class APIController
             ['show_flag', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
             $query->
-            select('category_id', 'name', 'name_second', 'picture', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
+            select('category_id', 'name', 'name_second', 'img', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
             where('show_flag', 1);;
         }])->get();
 
@@ -65,6 +72,17 @@ class APIController
             'user' => $user,
             'category_array' => $categoryList
         ]);
+    }
+
+    public function me()
+    {
+        return response()->json(auth('api')->user());
+    }
+
+    public function logout()
+    {
+        auth('api')->logout();
+        return Utils::makeResponse();
     }
 
     public function getCategoriesByClient()
@@ -79,7 +97,7 @@ class APIController
         $categoryList = Category::select('id', 'name', 'name_second', 'rtl_direction')->where([
             ['customer_id', $client->id],
             ['show_flag', 1],
-        ])->orderBy('show_order')->with('products:category_id,name,name_second,picture,video_id,price,description,description_second,video_url,currency_id')->get();
+        ])->orderBy('show_order')->with('products:category_id,name,name_second,img,video_id,price,description,description_second,video_url,currency_id')->get();
 
         return Utils::makeResponse([
             'category_array' => $categoryList
@@ -181,7 +199,7 @@ class APIController
             ['show_flag', 1],
         ])->orderBy('show_order')->with(['products' => function ($query) {
             $query->
-            select('category_id', 'name', 'name_second', 'picture', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
+            select('category_id', 'name', 'name_second', 'img', 'video_id', 'price', 'description', 'description_second', 'video_url', 'currency_id')->
             where('show_flag', 1);;
         }])->get();
 
@@ -585,7 +603,7 @@ class APIController
                 'description' => $description,
                 'video_id' => $video_id,
                 'video_url' => $video_url,
-                'picture' => $imageName,
+                'img' => $imageName,
                 'show_flag' => $status
             ]);
             return Utils::makeResponse([$imageName]);

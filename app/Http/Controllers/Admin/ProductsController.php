@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Http\Models\Category;
-use App\Http\Models\Client;
 use App\Http\Models\Currency;
 use App\Http\Models\Product;
 use App\Http\Utils\Utils;
@@ -174,7 +173,7 @@ class ProductsController
         $product->category_id = $category_id;
         $product->description = $description;
         $product->description_second = $description_ar;
-        $product->picture = $imageName;
+        $product->img = $imageName;
         $product->video_id = $video_id;
         $product->video_url = $video_url;
         $product->rtl_direction = $rtl_direction;
@@ -219,6 +218,18 @@ class ProductsController
             $video_id = $match[1];
         else $video_id = $video_url;
 
+        $product = Product::find($id);
+        $product->name = $name;
+        $product->name_second = $name_ar;
+        $product->price = $price;
+        $product->currency_id = $currency;
+        $product->category_id = $category_id;
+        $product->description = $description;
+        $product->description_second = $description_ar;
+        $product->video_id = $video_id;
+        $product->rtl_direction = $rtl_direction;
+        $product->video_url = $video_url;
+
         if (isset(request()->image)) {
             $imageName = time() . '.' . request()->image->getClientOriginalExtension();
 
@@ -253,33 +264,11 @@ class ProductsController
                 ->fit(320, 320)
                 ->save($thumbnail_image_path . DIRECTORY_SEPARATOR . $imageName);
 
-            Product::where('id', $id)->update([
-                'name' => $name,
-                'name_second' => $name_ar,
-                'price' => $price,
-                'currency_id' => $currency,
-                'category_id' => $category_id,
-                'description' => $description,
-                'description_second' => $description_ar,
-                'video_id' => $video_id,
-                'video_url' => $video_url,
-                'rtl_direction' => $rtl_direction,
-                'picture' => $imageName,
-            ]);
-        } else {
-            Product::where('id', $id)->update([
-                'name' => $name,
-                'name_second' => $name_ar,
-                'price' => $price,
-                'currency_id' => $currency,
-                'category_id' => $category_id,
-                'description' => $description,
-                'description_second' => $description_ar,
-                'video_id' => $video_id,
-                'rtl_direction' => $rtl_direction,
-                'video_url' => $video_url
-            ]);
+            $product->img = $imageName;
         }
+
+        $product->save();
+
         return back()
             ->with('success', 'You have successfully updated the product.');
     }
@@ -303,12 +292,9 @@ class ProductsController
         }
 
         $id = request('id');
-        $active = Product::find($id)->active;
-
-        Product::where('id', $id)
-            ->update([
-                'active' => 1 - $active,
-            ]);
+        $product = Product::find($id);
+        $product->active = 1 - $product->active;
+        $product->save();
 
         return Utils::makeResponse();
     }
